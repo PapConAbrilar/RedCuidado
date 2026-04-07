@@ -1,0 +1,191 @@
+{% extends 'lms/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<main class="flex-1 p-6 w-full">
+    <div class="max-w-5xl mx-auto">
+        <!-- Breadcrumb -->
+        <div class="mb-4">
+            <a href="{% url 'home' %}?portal={{ active_portal|urlencode }}" class="text-blue-600 hover:underline">
+                &larr; Volver a Cursos
+            </a>
+        </div>
+
+        <!-- Course Header -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6 shadow-sm">
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <div class="text-sm text-gray-500 uppercase mb-2">
+                        [Internal] - {{ course.courseCode|default:'ELD 101' }}
+                    </div>
+                    <h1 class="text-3xl mb-3">{{ course.title|default:'Fundamentos del Cuidado del Paciente' }}</h1>
+                    <div class="flex items-center gap-6 text-sm text-gray-600 mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-blue-600"></div>
+                            <span>4 módulos</span>
+                        </div>
+                        <span>&bull;</span>
+                        <span>12 elementos</span>
+                    </div>
+                    <div class="max-w-2xl">
+                        <div class="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Progreso del Curso</span>
+                            <span>2/12</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: 16%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules -->
+        <div class="space-y-4">
+            <!-- Module 1 -->
+            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden module-container">
+                <button class="module-toggle w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-600 toggle-icon"></i>
+                        <span class="font-medium text-lg">Introducción al Cuidado del Paciente</span>
+                    </div>
+                    <span class="text-sm text-gray-500">2/3</span>
+                </button>
+
+                <div class="module-content border-t border-gray-200">
+                    <!-- Item completed -->
+                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors flex items-center gap-4">
+                        <button class="flex-shrink-0 item-complete-toggle">
+                            <i data-lucide="check-circle-2" class="w-6 h-6 text-green-600 check-icon"></i>
+                        </button>
+                        <div class="flex-shrink-0 text-gray-600">
+                            <i data-lucide="video" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="line-through text-gray-500 item-title">Bienvenida al Curso</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mt-1">5 min</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Item completed -->
+                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors flex items-center gap-4">
+                        <button class="flex-shrink-0 item-complete-toggle">
+                            <i data-lucide="check-circle-2" class="w-6 h-6 text-green-600 check-icon"></i>
+                        </button>
+                        <div class="flex-shrink-0 text-gray-600">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="line-through text-gray-500 item-title">Manual de Introducción</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mt-1">10 min</div>
+                        </div>
+                    </div>
+
+                    <!-- Item incomplete -->
+                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors flex items-center gap-4">
+                        <button class="flex-shrink-0 item-complete-toggle">
+                            <i data-lucide="circle" class="w-6 h-6 text-gray-300 check-icon"></i>
+                        </button>
+                        <div class="flex-shrink-0 text-gray-600">
+                            <i data-lucide="link" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="item-title">Recursos Adicionales</span>
+                            </div>
+                        </div>
+                        <button class="action-btn flex-shrink-0 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2">
+                            <i data-lucide="play" class="w-4 h-4"></i>
+                            Comenzar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden module-container">
+                <button class="module-toggle w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-600 toggle-icon"></i>
+                        <span class="font-medium text-lg">Evaluación Final</span>
+                    </div>
+                    <span class="text-sm text-gray-500">0/1</span>
+                </button>
+
+                <div class="module-content border-t border-gray-200 hidden">
+                    <!-- Item test -->
+                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors flex items-center gap-4">
+                        <button class="flex-shrink-0 item-complete-toggle">
+                            <i data-lucide="circle" class="w-6 h-6 text-gray-300 check-icon"></i>
+                        </button>
+                        <div class="flex-shrink-0 text-orange-600">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="item-title">Examen Final del Curso</span>
+                                <span class="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded">Examen</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mt-1">30 min</div>
+                        </div>
+                        <button class="action-btn flex-shrink-0 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                            Comenzar Examen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block dashboard_scripts %}
+<script>
+    // Module toggle logic
+    document.querySelectorAll('.module-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const container = btn.closest('.module-container');
+            const content = container.querySelector('.module-content');
+            const icon = btn.querySelector('.toggle-icon');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.setAttribute('data-lucide', 'chevron-down');
+            } else {
+                content.classList.add('hidden');
+                icon.setAttribute('data-lucide', 'chevron-right');
+            }
+            lucide.createIcons();
+        });
+    });
+
+    // Item completion toggle mockup
+    document.querySelectorAll('.item-complete-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const icon = btn.querySelector('.check-icon');
+            const parent = btn.closest('div');
+            const itemTitle = parent.querySelector('.item-title');
+            const actionBtn = parent.querySelector('.action-btn');
+            
+            if (icon.getAttribute('data-lucide') === 'circle') {
+                icon.setAttribute('data-lucide', 'check-circle-2');
+                icon.classList.remove('text-gray-300');
+                icon.classList.add('text-green-600');
+                itemTitle.classList.add('line-through', 'text-gray-500');
+                if(actionBtn) actionBtn.style.display = 'none';
+            } else {
+                icon.setAttribute('data-lucide', 'circle');
+                icon.classList.add('text-gray-300');
+                icon.classList.remove('text-green-600');
+                itemTitle.classList.remove('line-through', 'text-gray-500');
+                if(actionBtn) actionBtn.style.display = 'flex';
+            }
+            lucide.createIcons();
+        });
+    });
+</script>
+{% endblock %}

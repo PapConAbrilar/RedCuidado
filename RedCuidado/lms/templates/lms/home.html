@@ -1,0 +1,155 @@
+{% extends 'lms/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<main class="flex-1 p-6 w-full">
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+            <h1 class="text-2xl">{{ active_portal }}</h1>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Filtros
+            </button>
+            <div class="flex items-center gap-2 text-gray-600">
+                <span class="text-sm">Ordenar por</span>
+                <select class="px-3 py-1 border border-gray-300 rounded bg-white text-sm">
+                    <option>Nombre</option>
+                    <option>Fecha</option>
+                    <option>Progreso</option>
+                </select>
+                <button class="p-1 hover:bg-gray-100 rounded">
+                    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <h2 class="text-xl">Actividad Reciente de Cursos</h2>
+                <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="p-1 hover:bg-gray-100 rounded opacity-50 cursor-not-allowed">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <span class="text-sm text-gray-600">1/2</span>
+                <button class="p-1 hover:bg-gray-100 rounded">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for course in courses %}
+            <div class="bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full" onclick="window.location.href=`{% url 'course_detail' course.id %}?portal={{ active_portal|urlencode }}`">
+                <div class="relative h-48">
+                    <img
+                        src="{{ course.image }}"
+                        alt="{{ course.title }}"
+                        class="w-full h-full object-cover"
+                    />
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <button class="px-6 py-2 bg-white text-gray-900 rounded-lg font-medium shadow-lg transform translate-y-4 hover:translate-y-0 transition-all">
+                            Continuar
+                        </button>
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-1">
+                    <div class="flex items-start justify-between mb-2">
+                        <span class="text-xs font-semibold px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                            {{ course.courseCode }}
+                        </span>
+                        <div class="flex gap-2">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors" title="Bookmark">
+                                <i data-lucide="bookmark" class="w-4 h-4"></i>
+                            </button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors" title="Download Materials">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-4 text-gray-900 line-clamp-2">
+                        {{ course.title }}
+                    </h3>
+                    
+                    <div class="mt-auto">
+                        <div class="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Progreso</span>
+                            <span class="font-medium text-blue-600">45%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2 mb-4">
+                            <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 45%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500 pt-4 border-t">
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="clock" class="w-4 h-4"></i>
+                                <span>2.5h restantes</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="book-open" class="w-4 h-4"></i>
+                                <span>4/10 Módulos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+{% if active_portal == 'Portal de Administrador' and active_menu != 'reports' %}
+<aside class="w-80 p-6 border-l border-gray-200">
+    <!-- PortalStats Mockup -->
+    <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 text-white mb-6">
+        <h3 class="font-semibold text-lg mb-1">Portal de Administrador</h3>
+        <p class="text-blue-100 text-sm mb-6">Resumen del sistema</p>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/10 rounded-lg p-4">
+                <i data-lucide="users" class="w-5 h-5 mb-2 text-blue-200"></i>
+                <div class="text-2xl font-bold">1,245</div>
+                <div class="text-xs text-blue-200">Usuarios Totales</div>
+            </div>
+            
+            <div class="bg-white/10 rounded-lg p-4">
+                <i data-lucide="graduation-cap" class="w-5 h-5 mb-2 text-blue-200"></i>
+                <div class="text-2xl font-bold">85</div>
+                <div class="text-xs text-blue-200">Cursos Activos</div>
+            </div>
+            
+            <div class="bg-white/10 rounded-lg p-4">
+                <i data-lucide="award" class="w-5 h-5 mb-2 text-blue-200"></i>
+                <div class="text-2xl font-bold">432</div>
+                <div class="text-xs text-blue-200">Certificados Este Mes</div>
+            </div>
+            
+            <div class="bg-white/10 rounded-lg p-4">
+                <i data-lucide="clock" class="w-5 h-5 mb-2 text-blue-200"></i>
+                <div class="text-2xl font-bold">8.5k</div>
+                <div class="text-xs text-blue-200">Horas de Aprendizaje</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-6">
+        <h3 class="font-semibold text-gray-800 mb-4">Acciones Rápidas</h3>
+        <div class="space-y-2">
+            <button class="w-full flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                <span class="text-sm font-medium">Añadir Nuevo Usuario</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+            </button>
+            <button class="w-full flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                <span class="text-sm font-medium">Crear Curso</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+            </button>
+            <button class="w-full flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                <span class="text-sm font-medium">Generar Reporte</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+            </button>
+        </div>
+    </div>
+</aside>
+{% endif %}
+
+{% endblock %}
