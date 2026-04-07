@@ -1,10 +1,11 @@
 {% extends 'lms/base_dashboard.html' %}
+{% load lms_extras %}
 
 {% block dashboard_content %}
 <main class="flex-1 p-6 w-full">
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-4">
-            <h1 class="text-2xl">{{ active_portal }}</h1>
+            <h1 class="text-2xl">Portal de {{ request.user.groups.first.name|default:"Usuario" }}</h1>
             <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                 Filtros
             </button>
@@ -41,13 +42,19 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for course in courses %}
-            <div class="bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full" onclick="window.location.href=`{% url 'course_detail' course.id %}?portal={{ active_portal|urlencode }}`">
+            <div class="bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full" onclick="window.location.href=`{% url 'course_detail' course.id %}`">
                 <div class="relative h-48">
+                    {% if course.image %}
                     <img
-                        src="{{ course.image }}"
+                        src="{{ course.image.url }}"
                         alt="{{ course.title }}"
                         class="w-full h-full object-cover"
                     />
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                        <i data-lucide="image" class="w-12 h-12"></i>
+                    </div>
+                    {% endif %}
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                         <button class="px-6 py-2 bg-white text-gray-900 rounded-lg font-medium shadow-lg transform translate-y-4 hover:translate-y-0 transition-all">
                             Continuar
@@ -57,7 +64,7 @@
                 <div class="p-5 flex flex-col flex-1">
                     <div class="flex items-start justify-between mb-2">
                         <span class="text-xs font-semibold px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                            {{ course.courseCode }}
+                            {{ course.code }}
                         </span>
                         <div class="flex gap-2">
                             <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors" title="Bookmark">
@@ -98,7 +105,7 @@
     </div>
 </main>
 
-{% if active_portal == 'Portal de Administrador' and active_menu != 'reports' %}
+{% if request.user|has_group:"Administrador" and active_menu != 'reports' %}
 <aside class="w-80 p-6 border-l border-gray-200">
     <!-- PortalStats Mockup -->
     <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 text-white mb-6">

@@ -1,0 +1,122 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+# User Profile (Extending standard user with Employee ID)
+class UserProfile(models.fields.related.OneToOneField):
+    pass # Replaced below to avoid import error loop during draft, but actually we use models.OneToOneField
+
+# Work Areas
+class WorkArea(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name="Área de Trabajo")
+
+    def __str__(self):
+        return self.name
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    employee_id = models.CharField(max_length=50, unique=True, blank=True, null=True, verbose_name="ID de Empleado")
+    work_area = models.ForeignKey(WorkArea, on_delete=models.SET_NULL, null=True, blank=True, related_name="employees", verbose_name="Área de Trabajo")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.employee_id or 'Sin ID'}"
+
+# --------- COURSE STRUCTURE ---------
+
+class Course(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Título del Curso")
+    code = models.CharField(max_length=50, unique=True, verbose_name="Código (ej. ELD 101)")
+    description = models.TextField(verbose_name="Descripción", blank=True)
+    image = models.ImageField(upload_to='course_images/', blank=True, null=True, verbose_name="Imagen de Portada")
+    assigned_work_areas = models.ManyToManyField(WorkArea, blank=True, related_name="assigned_courses", verbose_name="Áreas de Trabajo Asignadas")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"[{self.code}] {self.title}"
+
+class Module(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='modules')
+    title = models.CharField(max_length=200, verbose_name="Título del Módulo")
+    order = models.PositiveIntegerField(default=0, verbose_name="Orden")
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.course.code} - {self.title}"
+
+class Content(models.Model):
+    CONTENT_TYPES = (
+        ('video', 'Video'),
+        ('pdf', 'PDF / Documento'),
+        ('powerpoint', 'Presentación (PPT/PPTX)'),
+    )
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='contents')
+    title = models.CharField(max_length=200, verbose_name="Título del Contenido")
+    content_type = models.CharField(max_length=20, choices=CONTENT_TYPES, verbose_name="Tipo de Contenido")
+    file = models.FileField(upload_to='course_content/', verbose_name="Archivo")
+    duration = models.CharField(max_length=50, blank=True, help_text="Ej: '5 min'")
+    order = models.PositiveIntegerField(default=0, verbose_name="Orden")
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.title} ({self.get_content_type_display()})"
+
+# --------- ASSESSMENTS ---------
+
+class Test(models.Model):
+    module = models.OneToOneField(Module, on_delete=models.CASCADE, related_name='test')
+    title = models.CharField(max_length=200, default="Evaluación Final")
+    passing_score = models.PositiveIntegerField(default=70, help_text="Porcentaje mínimo para aprobar")
+
+    def __str__(self):
+        return f"Examen: {self.title} - {self.module.title}"
+
+class Question(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='questions')
+    text = models.TextField(verbose_name="Pregunta")
+
+    def __str__(self):
+        return self.text
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+    text = models.CharField(max_length=255, verbose_name="Respuesta")
+    is_correct = models.BooleanField(default=False, verbose_name="Es correcta")
+
+    def __str__(self):
+        return self.text
+
+# --------- USER PROGRESS ---------
+
+class Enrollment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='enrollments')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='enrollments')
+    enrolled_at = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('user', 'course')
+
+    def __str__(self):
+        return f"{self.user.username} -> {self.course.code}"
+
+class ContentProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='content_progress')
+    content = models.ForeignKey(Content, on_delete=models.CASCADE)
+    is_completed = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'content')
+
+class TestResult(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='test_results')
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    score = models.FloatField(verbose_name="Puntaje (%)")
+    passed = models.BooleanField(default=False)
+    attempted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.test.title} - {self.score}%"
