@@ -1,4 +1,5 @@
 {% extends 'lms/base_dashboard.html' %}
+{% load lms_extras %}
 
 {% block dashboard_content %}
 <main class="flex-1 p-6 w-full">
@@ -17,22 +18,27 @@
                     <div class="text-sm text-gray-500 uppercase mb-2">
                         [Internal] - {{ course.code }}
                     </div>
-                    <h1 class="text-3xl mb-3">{{ course.title }}</h1>
+                    <div class="flex justify-between items-center mb-3">
+                        <h1 class="text-3xl">{{ course.title }}</h1>
+                        {% if request.user|has_group:"Administrador" or request.user|has_group:"Profesor" %}
+                        <a href="{% url 'course_manage' course.id %}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+                            <i data-lucide="settings" class="w-4 h-4"></i> Gestionar Curso
+                        </a>
+                        {% endif %}
+                    </div>
                     <div class="flex items-center gap-6 text-sm text-gray-600 mb-4">
                         <div class="flex items-center gap-2">
                             <div class="w-2 h-2 rounded-full bg-blue-600"></div>
-                            <span>4 módulos</span>
+                            <span>{{ modules.count }} módulos</span>
                         </div>
-                        <span>&bull;</span>
-                        <span>12 elementos</span>
                     </div>
                     <div class="max-w-2xl">
                         <div class="flex justify-between text-sm text-gray-600 mb-2">
                             <span>Progreso del Curso</span>
-                            <span>2/12</span>
+                            <span>0%</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-3">
-                            <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: 16%;"></div>
+                            <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: 0%;"></div>
                         </div>
                     </div>
                 </div>
@@ -41,103 +47,62 @@
 
         <!-- Modules -->
         <div class="space-y-4">
-            <!-- Module 1 -->
+            {% for module in modules %}
             <div class="bg-white rounded-lg border border-gray-200 overflow-hidden module-container">
                 <button class="module-toggle w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
                     <div class="flex items-center gap-3">
-                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-600 toggle-icon"></i>
-                        <span class="font-medium text-lg">Introducción al Cuidado del Paciente</span>
+                        <i data-lucide="{% if forloop.first %}chevron-down{% else %}chevron-right{% endif %}" class="w-5 h-5 text-gray-600 toggle-icon"></i>
+                        <span class="font-medium text-lg">{{ module.title }}</span>
                     </div>
-                    <span class="text-sm text-gray-500">2/3</span>
+                    <span class="text-sm text-gray-500">0/{{ module.contents.count }}</span>
                 </button>
 
-                <div class="module-content border-t border-gray-200">
-                    <!-- Item completed -->
-                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors flex items-center gap-4">
-                        <button class="flex-shrink-0 item-complete-toggle">
-                            <i data-lucide="check-circle-2" class="w-6 h-6 text-green-600 check-icon"></i>
-                        </button>
-                        <div class="flex-shrink-0 text-gray-600">
-                            <i data-lucide="video" class="w-5 h-5"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2">
-                                <span class="line-through text-gray-500 item-title">Bienvenida al Curso</span>
+                <div class="module-content border-t border-gray-200 {% if not forloop.first %}hidden{% endif %}">
+                    {% for content in module.contents.all %}
+                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <button class="flex-shrink-0 item-complete-toggle">
+                                <i data-lucide="circle" class="w-6 h-6 text-gray-300 check-icon"></i>
+                            </button>
+                            <div class="flex-shrink-0 text-gray-600">
+                                {% if content.content_type == 'video' %}
+                                    <i data-lucide="video" class="w-5 h-5"></i>
+                                {% elif content.content_type == 'text' %}
+                                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                                {% elif content.content_type == 'powerpoint' %}
+                                    <i data-lucide="presentation" class="w-5 h-5"></i>
+                                {% else %}
+                                    <i data-lucide="file" class="w-5 h-5"></i>
+                                {% endif %}
                             </div>
-                            <div class="text-sm text-gray-500 mt-1">5 min</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Item completed -->
-                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors flex items-center gap-4">
-                        <button class="flex-shrink-0 item-complete-toggle">
-                            <i data-lucide="check-circle-2" class="w-6 h-6 text-green-600 check-icon"></i>
-                        </button>
-                        <div class="flex-shrink-0 text-gray-600">
-                            <i data-lucide="file-text" class="w-5 h-5"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2">
-                                <span class="line-through text-gray-500 item-title">Manual de Introducción</span>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-gray-900 item-title">{{ content.title }}</span>
+                                </div>
+                                {% if content.duration %}
+                                <div class="text-sm text-gray-500 mt-1">{{ content.duration }}</div>
+                                {% endif %}
                             </div>
-                            <div class="text-sm text-gray-500 mt-1">10 min</div>
+                            <a href="{% url 'course_learn' course.id content.id %}" class="action-btn flex-shrink-0 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2">
+                                <i data-lucide="play" class="w-4 h-4"></i>
+                                {% if content.content_type == 'text' %}Ver{% else %}Comenzar{% endif %}
+                            </a>
                         </div>
+                        
+                        {% if content.content_type == 'text' and content.text_content %}
+                        <div class="mt-4 p-4 bg-gray-50 rounded-lg text-gray-700 text-sm whitespace-pre-line hidden content-body">
+                            {{ content.text_content }}
+                        </div>
+                        {% endif %}
                     </div>
-
-                    <!-- Item incomplete -->
-                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors flex items-center gap-4">
-                        <button class="flex-shrink-0 item-complete-toggle">
-                            <i data-lucide="circle" class="w-6 h-6 text-gray-300 check-icon"></i>
-                        </button>
-                        <div class="flex-shrink-0 text-gray-600">
-                            <i data-lucide="link" class="w-5 h-5"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2">
-                                <span class="item-title">Recursos Adicionales</span>
-                            </div>
-                        </div>
-                        <button class="action-btn flex-shrink-0 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2">
-                            <i data-lucide="play" class="w-4 h-4"></i>
-                            Comenzar
-                        </button>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
-
-            <!-- Module 2 -->
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden module-container">
-                <button class="module-toggle w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-600 toggle-icon"></i>
-                        <span class="font-medium text-lg">Evaluación Final</span>
-                    </div>
-                    <span class="text-sm text-gray-500">0/1</span>
-                </button>
-
-                <div class="module-content border-t border-gray-200 hidden">
-                    <!-- Item test -->
-                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors flex items-center gap-4">
-                        <button class="flex-shrink-0 item-complete-toggle">
-                            <i data-lucide="circle" class="w-6 h-6 text-gray-300 check-icon"></i>
-                        </button>
-                        <div class="flex-shrink-0 text-orange-600">
-                            <i data-lucide="file-text" class="w-5 h-5"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2">
-                                <span class="item-title">Examen Final del Curso</span>
-                                <span class="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded">Examen</span>
-                            </div>
-                            <div class="text-sm text-gray-500 mt-1">30 min</div>
-                        </div>
-                        <button class="action-btn flex-shrink-0 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2">
-                            <i data-lucide="file-text" class="w-4 h-4"></i>
-                            Comenzar Examen
-                        </button>
-                    </div>
-                </div>
+            {% empty %}
+            <div class="text-center py-12 bg-white border border-gray-200 rounded-lg">
+                <p class="text-gray-500">No hay contenido disponible para este curso.</p>
             </div>
+            {% endfor %}
         </div>
     </div>
 </main>
@@ -165,26 +130,39 @@
 
     // Item completion toggle mockup
     document.querySelectorAll('.item-complete-toggle').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
             const icon = btn.querySelector('.check-icon');
-            const parent = btn.closest('div');
+            const parent = btn.closest('.flex.items-center.gap-4');
             const itemTitle = parent.querySelector('.item-title');
-            const actionBtn = parent.querySelector('.action-btn');
             
             if (icon.getAttribute('data-lucide') === 'circle') {
                 icon.setAttribute('data-lucide', 'check-circle-2');
                 icon.classList.remove('text-gray-300');
                 icon.classList.add('text-green-600');
                 itemTitle.classList.add('line-through', 'text-gray-500');
-                if(actionBtn) actionBtn.style.display = 'none';
             } else {
                 icon.setAttribute('data-lucide', 'circle');
                 icon.classList.add('text-gray-300');
                 icon.classList.remove('text-green-600');
                 itemTitle.classList.remove('line-through', 'text-gray-500');
-                if(actionBtn) actionBtn.style.display = 'flex';
             }
             lucide.createIcons();
+        });
+    });
+
+    // Toggle text content
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const container = btn.closest('.px-6.py-4');
+            const body = container.querySelector('.content-body');
+            if (body) {
+                body.classList.toggle('hidden');
+                btn.innerHTML = body.classList.contains('hidden') 
+                    ? '<i data-lucide="play" class="w-4 h-4"></i> Comenzar' 
+                    : '<i data-lucide="eye-off" class="w-4 h-4"></i> Cerrar';
+                lucide.createIcons();
+            }
         });
     });
 </script>

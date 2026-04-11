@@ -27,6 +27,7 @@ class Course(models.Model):
     code = models.CharField(max_length=50, unique=True, verbose_name="Código (ej. ELD 101)")
     description = models.TextField(verbose_name="Descripción", blank=True)
     image = models.ImageField(upload_to='course_images/', blank=True, null=True, verbose_name="Imagen de Portada")
+    image_url = models.URLField(max_length=500, blank=True, null=True, verbose_name="URL de Imagen Externa")
     assigned_work_areas = models.ManyToManyField(WorkArea, blank=True, related_name="assigned_courses", verbose_name="Áreas de Trabajo Asignadas")
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -49,11 +50,13 @@ class Content(models.Model):
         ('video', 'Video'),
         ('pdf', 'PDF / Documento'),
         ('powerpoint', 'Presentación (PPT/PPTX)'),
+        ('text', 'Texto / Lectura'),
     )
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='contents')
     title = models.CharField(max_length=200, verbose_name="Título del Contenido")
     content_type = models.CharField(max_length=20, choices=CONTENT_TYPES, verbose_name="Tipo de Contenido")
-    file = models.FileField(upload_to='course_content/', verbose_name="Archivo")
+    file = models.FileField(upload_to='course_content/', verbose_name="Archivo", blank=True, null=True)
+    text_content = models.TextField(blank=True, null=True, verbose_name="Contenido de Texto")
     duration = models.CharField(max_length=50, blank=True, help_text="Ej: '5 min'")
     order = models.PositiveIntegerField(default=0, verbose_name="Orden")
 
