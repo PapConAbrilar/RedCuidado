@@ -104,6 +104,47 @@
             </div>
             {% endfor %}
         </div>
+
+        <!-- Evaluación Final -->
+        {% if course.test %}
+        <div class="mt-6 bg-white rounded-lg border {% if test_passed %}border-green-200 bg-green-50{% elif test_available %}border-blue-200 text-blue-900{% else %}border-gray-200{% endif %} p-6 shadow-sm flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="p-3 rounded-full {% if test_passed %}bg-green-100 text-green-600{% elif test_available %}bg-blue-100 text-blue-600{% else %}bg-gray-100 text-gray-400{% endif %}">
+                    <i data-lucide="{% if test_passed %}award{% elif test_available %}check-square{% else %}lock{% endif %}" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold {% if not test_available and not test_passed %}text-gray-500{% endif %}">
+                        {{ course.test.title }}
+                    </h3>
+                    <p class="text-sm {% if test_passed %}text-green-700{% elif test_available %}text-blue-600{% else %}text-gray-400{% endif %}">
+                        {% if test_passed %}
+                            ¡Aprobado con {{ test_score|floatformat:0 }}%! Certificado disponible en el perfil.
+                        {% elif test_available %}
+                            Has completado el contenido. El examen final está desbloqueado.
+                        {% else %}
+                            Disponible automáticamente al ver el 100% de los módulos.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div>
+                {% if test_passed %}
+                    <span class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg shadow-sm">
+                        Curso Completado
+                    </span>
+                {% elif test_available %}
+                    <a href="{% url 'take_test' course.id %}" class="px-6 py-2 bg-blue-600 text-white hover:bg-blue-700 transition-colors rounded-lg shadow-sm font-medium">
+                        Realizar Examen
+                    </a>
+                {% else %}
+                    <button disabled class="px-6 py-2 bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed font-medium border border-gray-200">
+                        Bloqueado
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 </main>
 {% endblock %}

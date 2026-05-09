@@ -42,7 +42,7 @@ class QuestionInline(admin.TabularInline):
 
 @admin.register(Test)
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('title', 'module', 'passing_score')
+    list_display = ('title', 'course', 'passing_score')
     inlines = [QuestionInline]
 
 @admin.register(Enrollment)

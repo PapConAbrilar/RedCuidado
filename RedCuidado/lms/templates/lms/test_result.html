@@ -1,0 +1,68 @@
+{% extends 'lms/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<main class="flex-1 p-6 w-full max-w-3xl mx-auto">
+    <div class="text-center mb-10 mt-10">
+        {% if result.passed %}
+            <div class="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-green-100 mb-6">
+                <i data-lucide="check-circle" class="h-12 w-12 text-green-600"></i>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">¡Felicidades, aprobaste!</h1>
+            <p class="text-gray-600 text-lg">Has completado el "{{ test.title }}" del curso "{{ course.title }}" con éxito.</p>
+        {% else %}
+            <div class="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-red-100 mb-6">
+                <i data-lucide="x-circle" class="h-12 w-12 text-red-600"></i>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Examen no aprobado</h1>
+            <p class="text-gray-600 text-lg">Tu puntaje está por debajo del mínimo requerido. Tu progreso ha sido reiniciado.</p>
+        {% endif %}
+    </div>
+
+    <!-- Puntaje Card -->
+    <div class="bg-white rounded-xl shadow-sm border {% if result.passed %}border-green-200{% else %}border-red-200{% endif %} overflow-hidden max-w-sm mx-auto mb-10">
+        <div class="px-6 py-6 text-center">
+            <p class="text-sm uppercase tracking-widest font-semibold {% if result.passed %}text-green-600{% else %}text-red-500{% endif %} mb-2">Tu Puntaje Final</p>
+            <div class="text-5xl font-black text-gray-800">{{ result.score|floatformat:0 }}<span class="text-2xl text-gray-400">%</span></div>
+            <p class="text-sm text-gray-500 mt-3">Mínimo para aprobar: {{ test.passing_score }}%</p>
+        </div>
+    </div>
+
+    <!-- Feedback Preguntas INCORRECTAS -->
+    {% if wrong_answers %}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2 flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-5 h-5 text-orange-500"></i> Puntos de Mejora
+        </h3>
+        <p class="text-gray-600 mb-4 text-sm">Respondiste incorrectamente las siguientes preguntas (las respuestas correctas no se muestran para promover el repaso del material):</p>
+        
+        <ul class="space-y-3">
+            {% for question_text in wrong_answers %}
+            <li class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <i data-lucide="x" class="w-5 h-5 text-red-400 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700">{{ question_text }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Opciones / Botones -->
+    <div class="flex justify-center mt-8">
+        {% if result.passed %}
+            <a href="{% url 'course_detail' course.id %}" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors flex items-center gap-2">
+                <i data-lucide="award" class="w-5 h-5"></i> Ir al Dashboard del Curso
+            </a>
+            {% if result.passed %}
+            <a href="{% url 'profile' %}" class="ml-4 px-8 py-3 bg-purple-600 text-white font-semibold rounded-xl hover:bg-purple-700 transition-colors flex items-center gap-2">
+                <i data-lucide="external-link" class="w-5 h-5"></i> Ver Certificado en Perfil
+            </a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'course_detail' course.id %}" class="px-8 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors flex items-center gap-2">
+                <i data-lucide="refresh-cw" class="w-5 h-5"></i> Volver a tomar el curso
+            </a>
+        {% endif %}
+    </div>
+
+</main>
+{% endblock %}

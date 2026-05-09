@@ -1,3 +1,10 @@
+import os
+import django
+
+# Configure Django settings
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RedCuidado.settings')
+django.setup()
+
 from django.contrib.auth.models import User
 from lms.models import Course, Module, Content, Enrollment
 

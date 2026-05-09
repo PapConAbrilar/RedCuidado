@@ -10,6 +10,7 @@ class CourseForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all'}),
             'code': forms.TextInput(attrs={'class': 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all'}),
             'image_url': forms.URLInput(attrs={'class': 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all'}),
+            'assigned_work_areas': forms.CheckboxSelectMultiple(attrs={'class': 'space-y-2 mt-2'}),
         }
 
 class ModuleForm(forms.ModelForm):

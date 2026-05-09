@@ -46,19 +46,19 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for course in courses %}
-            <div class="bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full" onclick="window.location.href=`{% url 'course_detail' course.id %}`">
+            {% for item in courses %}
+            <div class="bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full" onclick="window.location.href=`{% url 'course_detail' item.course.id %}`">
                 <div class="relative h-48">
-                    {% if course.image_url %}
+                    {% if item.course.image_url %}
                     <img
-                        src="{{ course.image_url }}"
-                        alt="{{ course.title }}"
+                        src="{{ item.course.image_url }}"
+                        alt="{{ item.course.title }}"
                         class="w-full h-full object-cover"
                     />
-                    {% elif course.image %}
+                    {% elif item.course.image %}
                     <img
-                        src="{{ course.image.url }}"
-                        alt="{{ course.title }}"
+                        src="{{ item.course.image.url }}"
+                        alt="{{ item.course.title }}"
                         class="w-full h-full object-cover"
                     />
                     {% else %}
@@ -67,7 +67,7 @@
                     </div>
                     {% endif %}
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                        <a href="{% url 'course_learn_start' course.id %}" class="px-6 py-2 bg-white text-gray-900 rounded-lg font-medium shadow-lg transform translate-y-4 hover:translate-y-0 transition-all text-center">
+                        <a href="{% url 'course_learn_start' item.course.id %}" class="px-6 py-2 bg-white text-gray-900 rounded-lg font-medium shadow-lg transform translate-y-4 hover:translate-y-0 transition-all text-center">
                             Continuar
                         </a>
                     </div>
@@ -75,7 +75,7 @@
                 <div class="p-5 flex flex-col flex-1">
                     <div class="flex items-start justify-between mb-2">
                         <span class="text-xs font-semibold px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                            {{ course.code }}
+                            {{ item.course.code }}
                         </span>
                         <div class="flex gap-2">
                             <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors" title="Bookmark">
@@ -87,25 +87,23 @@
                         </div>
                     </div>
                     <h3 class="font-semibold text-lg mb-4 text-gray-900 line-clamp-2">
-                        {{ course.title }}
+                        {{ item.course.title }}
                     </h3>
                     
                     <div class="mt-auto">
                         <div class="flex justify-between text-sm text-gray-600 mb-2">
                             <span>Progreso</span>
-                            <span class="font-medium text-blue-600">45%</span>
+                            <span class="font-medium text-blue-600">{{ item.progress }}%</span>
                         </div>
                         <div class="w-full bg-gray-100 rounded-full h-2 mb-4">
-                            <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 45%;"></div>
+                            <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: {{ item.progress }}%;"></div>
                         </div>
                         <div class="flex items-center justify-between text-sm text-gray-500 pt-4 border-t">
-                            <div class="flex items-center gap-1">
-                                <i data-lucide="clock" class="w-4 h-4"></i>
-                                <span>2.5h restantes</span>
-                            </div>
+                            <!-- Left placeholder item kept visually balanced -->
+                            <div class="flex items-center gap-1 opacity-0"></div>
                             <div class="flex items-center gap-1">
                                 <i data-lucide="book-open" class="w-4 h-4"></i>
-                                <span>4/10 Módulos</span>
+                                <span>{{ item.modules_count }} Módulos</span>
                             </div>
                         </div>
                     </div>

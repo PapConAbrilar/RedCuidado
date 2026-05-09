@@ -6,45 +6,37 @@
 <div class="w-60 bg-[#0047AB] h-screen fixed left-0 top-0 flex flex-col text-white">
     <div class="flex-1 py-6">
         <a href="{% url 'home' %}"
-           class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'homepage' %}bg-[#003A8C]{% endif %}">
+            class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'homepage' %}bg-[#003A8C]{% endif %}">
             <i data-lucide="home" class="w-5 h-5"></i>
             <span>Inicio</span>
         </a>
         <a href="{% url 'home' %}"
-           class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'courses' %}bg-[#003A8C]{% endif %}">
+            class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'courses' %}bg-[#003A8C]{% endif %}">
             <i data-lucide="book-open" class="w-5 h-5"></i>
             <span>Cursos</span>
         </a>
         <a href="{% url 'groups' %}"
-           class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'groups' %}bg-[#003A8C]{% endif %}">
+            class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'groups' %}bg-[#003A8C]{% endif %}">
             <i data-lucide="users" class="w-5 h-5"></i>
             <span>Grupos</span>
         </a>
-        
+
         {% if request.user|has_group:"Administrador" or request.user|has_group:"Profesor" %}
         <a href="{% url 'reports' %}"
-           class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'reports' %}bg-[#003A8C]{% endif %}">
+            class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'reports' %}bg-[#003A8C]{% endif %}">
             <i data-lucide="file-text" class="w-5 h-5"></i>
             <span>Reportes</span>
         </a>
         {% endif %}
-        
+
         <a href="{% url 'calendar' %}"
-           class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'calendar' %}bg-[#003A8C]{% endif %}">
+            class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'calendar' %}bg-[#003A8C]{% endif %}">
             <i data-lucide="calendar" class="w-5 h-5"></i>
             <span>Calendario</span>
         </a>
     </div>
-    
+
     <div class="pb-6">
-        <a href="#" class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors">
-            <i data-lucide="mail" class="w-5 h-5"></i>
-            <span>Bandeja de entrada</span>
-        </a>
-        <a href="#" class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors">
-            <i data-lucide="message-square" class="w-5 h-5"></i>
-            <span>Mensajes</span>
-        </a>
         <a href="#" class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors">
             <i data-lucide="settings" class="w-5 h-5"></i>
             <span>Configuración</span>
@@ -53,16 +45,14 @@
 </div>
 
 <!-- Header -->
-<div class="h-16 bg-white border-b border-gray-200 fixed top-0 left-60 right-0 z-10 flex items-center justify-between px-6">
+<div
+    class="h-16 bg-white border-b border-gray-200 fixed top-0 left-60 right-0 z-10 flex items-center justify-between px-6">
     <div class="flex items-center gap-6">
         <img src="{% static 'lms/img/logo.png' %}" alt="ALUMCO" style="max-height: 40px;">
         <div class="relative">
             <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-            <input
-                type="text"
-                placeholder="Buscar"
-                class="pl-10 pr-4 py-2 w-64 bg-gray-100 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <input type="text" placeholder="Buscar"
+                class="pl-10 pr-4 py-2 w-64 bg-gray-100 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
     </div>
 
@@ -71,12 +61,9 @@
             <i data-lucide="help-circle" class="w-5 h-5"></i>
             <span class="text-sm">Cómo usar</span>
         </button>
-        
+
         <div class="relative" id="portal-menu-container">
-            <button
-                id="portal-menu-trigger"
-                class="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 rounded-lg"
-            >
+            <button id="portal-menu-trigger" class="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 rounded-lg">
                 <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-purple-500"></div>
                 <div class="text-left">
                     <div class="text-sm font-medium">{{ request.user.username }}</div>
@@ -85,9 +72,15 @@
                 <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
             </button>
 
-            <div id="portal-menu" class="hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden">
+            <div id="portal-menu"
+                class="hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden">
+                <a href="{% url 'profile' %}"
+                    class="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700 border-b border-gray-100">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                    <span>Mi Perfil</span>
+                </a>
                 <a href="{% url 'logout' %}"
-                   class="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 text-red-600">
+                    class="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 text-red-600">
                     <i data-lucide="log-out" class="w-4 h-4"></i>
                     <span>Cerrar Sesión</span>
                 </a>
@@ -108,7 +101,7 @@
     // Header portal dropdown logic (just logout now)
     const portalMenuTrigger = document.getElementById('portal-menu-trigger');
     const portalMenu = document.getElementById('portal-menu');
-    
+
     portalMenuTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         portalMenu.classList.toggle('hidden');

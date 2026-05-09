@@ -3,7 +3,7 @@
 {% block dashboard_content %}
 <main class="flex-1 p-6 w-full max-w-2xl mx-auto">
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Añadir Módulo a {{ course.title }}</h1>
+        <h1 class="text-2xl font-bold text-gray-800">{{ title }} para {{ course.title }}</h1>
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
@@ -13,8 +13,8 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Título del Módulo</label>
                 {{ form.title }}
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Orden</label>
+            
+            <div class="hidden">
                 {{ form.order }}
             </div>
 
@@ -23,7 +23,7 @@
                     Cancelar
                 </a>
                 <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    Añadir Módulo
+                    {{ title }}
                 </button>
             </div>
         </form>

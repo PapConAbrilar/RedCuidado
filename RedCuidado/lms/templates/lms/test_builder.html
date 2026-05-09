@@ -1,0 +1,248 @@
+{% extends 'lms/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<main class="flex-1 p-6 w-full max-w-4xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Constructor de Evaluación</h1>
+            <p class="text-gray-500">Curso: {{ course.title }}</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="{% url 'course_manage' course.id %}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver al curso
+            </a>
+        </div>
+    </div>
+
+    <!-- Ajustes Generales -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Ajustes Generales</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Título de la Evaluación</label>
+                <input type="text" id="test-title" value="{{ test.title|default:'Evaluación Final' }}" class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Puntaje Mínimo de Aprobación (%)</label>
+                <input type="number" id="test-passing-score" value="{{ test.passing_score|default:60 }}" min="0" max="100" class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+            </div>
+        </div>
+    </div>
+
+    <!-- Preguntas -->
+    <div id="questions-container" class="space-y-6">
+        <!-- Las preguntas se renderizan aquí por JS -->
+    </div>
+
+    <!-- Botón Añadir Pregunta -->
+    <div class="mt-8 text-center">
+        <button id="add-question-btn" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-all font-medium flex items-center gap-2 mx-auto">
+            <i data-lucide="plus-circle" class="w-5 h-5"></i> Añadir Nueva Pregunta
+        </button>
+    </div>
+
+    <!-- Tareas Finales -->
+    <div class="mt-12 flex justify-end">
+        <button id="save-test-btn" class="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-semibold flex items-center gap-2 shadow-sm transition-all focus:ring-4 focus:ring-blue-200">
+            <i data-lucide="save" class="w-5 h-5"></i> Guardar Evaluación
+        </button>
+    </div>
+</main>
+{% endblock %}
+
+{% block dashboard_scripts %}
+<script>
+    // Inicializar datos desde Django
+    let questionsData = [];
+
+    {% if test %}
+        {% for question in test.questions.all %}
+            questionsData.push({
+                text: "{{ question.text|escapejs }}",
+                answers: [
+                    {% for answer in question.answers.all %}
+                        {
+                            text: "{{ answer.text|escapejs }}",
+                            is_correct: {{ answer.is_correct|yesno:"true,false" }}
+                        },
+                    {% endfor %}
+                ]
+            });
+        {% endfor %}
+    {% endif %}
+
+    if (questionsData.length === 0) {
+        // Añadir una pregunta vacía de ejemplo
+        questionsData.push({
+            text: "",
+            answers: [
+                { text: "", is_correct: true },
+                { text: "", is_correct: false }
+            ]
+        });
+    }
+
+    const container = document.getElementById('questions-container');
+
+    function renderQuestions() {
+        container.innerHTML = '';
+        questionsData.forEach((q, qIndex) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden';
+            
+            // Header: Pregunta
+            let html = `
+                <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="font-medium text-gray-800">Pregunta ${qIndex + 1}</h3>
+                    <button onclick="removeQuestion(${qIndex})" class="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors" title="Eliminar Pregunta">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <input type="text" class="question-text w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none mb-6 font-medium text-gray-800" placeholder="Escribe tu pregunta aquí..." value="${q.text}">
+                    
+                    <div class="space-y-3">
+            `;
+
+            // Respuestas
+            q.answers.forEach((a, aIndex) => {
+                html += `
+                    <div class="flex items-center gap-3">
+                        <input type="radio" name="correct-${qIndex}" value="${aIndex}" ${a.is_correct ? 'checked' : ''} class="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer" title="Marcar como correcta">
+                        <input type="text" class="answer-text flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:border-blue-500 outline-none" placeholder="Opción de respuesta..." value="${a.text}">
+                        <button onclick="removeAnswer(${qIndex}, ${aIndex})" class="text-gray-400 hover:text-red-500 transition-colors p-1" title="Eliminar Opción">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            // Botón Añadir Respuesta Local
+            html += `
+                    </div>
+                    <button onclick="addAnswer(${qIndex})" class="mt-4 text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Añadir opción
+                    </button>
+                </div>
+            `;
+            
+            qDiv.innerHTML = html;
+            container.appendChild(qDiv);
+        });
+        lucide.createIcons();
+    }
+
+    /* Actions */
+    function gatherData() {
+        // Sincroniza el DOM hacia variables antes de re-renderizar
+        const qElements = container.children;
+        for (let i = 0; i < qElements.length; i++) {
+            const qDiv = qElements[i];
+            questionsData[i].text = qDiv.querySelector('.question-text').value;
+            
+            const aInputs = qDiv.querySelectorAll('.answer-text');
+            const radios = qDiv.querySelectorAll(`input[name="correct-${i}"]`);
+            
+            for (let j = 0; j < aInputs.length; j++) {
+                questionsData[i].answers[j].text = aInputs[j].value;
+                questionsData[i].answers[j].is_correct = radios[j].checked;
+            }
+        }
+    }
+
+    function addQuestion() {
+        gatherData();
+        questionsData.push({
+            text: "",
+            answers: [
+                { text: "", is_correct: true },
+                { text: "", is_correct: false }
+            ]
+        });
+        renderQuestions();
+    }
+
+    function removeQuestion(qIndex) {
+        if(confirm("¿Seguro que quieres eliminar esta pregunta?")) {
+            gatherData();
+            questionsData.splice(qIndex, 1);
+            renderQuestions();
+        }
+    }
+
+    function addAnswer(qIndex) {
+        gatherData();
+        questionsData[qIndex].answers.push({ text: "", is_correct: false });
+        renderQuestions();
+    }
+
+    function removeAnswer(qIndex, aIndex) {
+        gatherData();
+        questionsData[qIndex].answers.splice(aIndex, 1);
+        // Si borró la que estaba checked, marcamos la primera si existe
+        if (!questionsData[qIndex].answers.some(a => a.is_correct) && questionsData[qIndex].answers.length > 0) {
+            questionsData[qIndex].answers[0].is_correct = true;
+        }
+        renderQuestions();
+    }
+
+
+    /* Eventos */
+    document.getElementById('add-question-btn').addEventListener('click', addQuestion);
+
+    document.getElementById('save-test-btn').addEventListener('click', async () => {
+        gatherData();
+        
+        // Validación básica
+        for (let q of questionsData) {
+            if (!q.text.trim()) {
+                alert("Hay preguntas sin enunciado.");
+                return;
+            }
+            if (!q.answers.some(a => a.is_correct)) {
+                alert("Cada pregunta debe tener al menos una respuesta marcada como correcta.");
+                return;
+            }
+        }
+
+        const btn = document.getElementById('save-test-btn');
+        btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Guardando...';
+        lucide.createIcons();
+
+        const payload = {
+            title: document.getElementById('test-title').value,
+            passing_score: document.getElementById('test-passing-score').value,
+            questions: questionsData
+        };
+
+        try {
+            const response = await fetch("{% url 'test_builder' course.id %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert("Examen guardado exitosamente.");
+                window.location.href = "{% url 'course_manage' course.id %}";
+            } else {
+                const err = await response.json();
+                alert("Error: " + err.message);
+                btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar Evaluación';
+                lucide.createIcons();
+            }
+        } catch (e) {
+            alert("Error de conexión");
+            btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar Evaluación';
+            lucide.createIcons();
+        }
+    });
+
+    // Iniciar
+    renderQuestions();
+
+</script>
+{% endblock %}

@@ -13,9 +13,14 @@ class WorkArea(models.Model):
         return self.name
 
 class UserProfile(models.Model):
+    HEADQUARTER_CHOICES = (
+        ('Hualpen', 'Hualpén'),
+        ('Coyhaique', 'Coyhaique'),
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     employee_id = models.CharField(max_length=50, unique=True, blank=True, null=True, verbose_name="ID de Empleado")
     work_area = models.ForeignKey(WorkArea, on_delete=models.SET_NULL, null=True, blank=True, related_name="employees", verbose_name="Área de Trabajo")
+    headquarters = models.CharField(max_length=50, choices=HEADQUARTER_CHOICES, default='Hualpen', verbose_name="Sede")
 
     def __str__(self):
         return f"{self.user.username} - {self.employee_id or 'Sin ID'}"
@@ -69,12 +74,12 @@ class Content(models.Model):
 # --------- ASSESSMENTS ---------
 
 class Test(models.Model):
-    module = models.OneToOneField(Module, on_delete=models.CASCADE, related_name='test')
+    course = models.OneToOneField(Course, on_delete=models.CASCADE, related_name='test', null=True, blank=True)
     title = models.CharField(max_length=200, default="Evaluación Final")
     passing_score = models.PositiveIntegerField(default=70, help_text="Porcentaje mínimo para aprobar")
 
     def __str__(self):
-        return f"Examen: {self.title} - {self.module.title}"
+        return f"Examen: {self.title} - {self.course.title}"
 
 class Question(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='questions')

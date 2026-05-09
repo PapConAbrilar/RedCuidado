@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado - {{ enrollment.course.title }}</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            /* Fallback background if browser doesn't apply print background */
+            background-color: #f3f4f6;
+        }
+
+        .certificate-container {
+            width: 297mm;
+            height: 210mm;
+            margin: 20mm auto;
+            position: relative;
+            background: white;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        /* Glassmorphism elements for premium feel */
+        .glass-blob-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 50%;
+            height: 50%;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(79, 70, 229, 0.05));
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .glass-blob-2 {
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 60%;
+            height: 60%;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(37, 99, 235, 0.05));
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .border-pattern {
+            position: absolute;
+            top: 15mm;
+            bottom: 15mm;
+            left: 15mm;
+            right: 15mm;
+            border: 2px solid #E5E7EB;
+            border-radius: 2px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .border-pattern-inner {
+            position: absolute;
+            top: 4mm;
+            bottom: 4mm;
+            left: 4mm;
+            right: 4mm;
+            border: 1px solid #F3F4F6;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 40px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .title-font {
+            font-family: 'Cinzel', serif;
+        }
+
+        .signature-font {
+            font-family: 'Pinyon Script', cursive;
+        }
+
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; }
+            .certificate-container {
+                margin: 0;
+                width: 100%;
+                height: 100vh;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col pt-8">
+
+    <!-- Action Bar (Not Printed) -->
+    <div class="no-print max-w-4xl mx-auto w-full bg-white rounded-xl shadow-md border border-gray-200 p-4 mb-8 flex justify-between items-center z-50">
+        <div>
+            <!-- Header text removed per request -->
+        </div>
+        <div class="flex gap-4">
+            <a href="{% url 'profile' %}" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors flex items-center gap-2">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver al Perfil
+            </a>
+            <button onclick="window.print()" class="px-6 py-2 bg-blue-600 border border-transparent rounded-lg text-white hover:bg-blue-700 font-medium transition-colors shadow flex items-center gap-2">
+                <i data-lucide="printer" class="w-4 h-4"></i> Imprimir en PDF
+            </button>
+        </div>
+    </div>
+
+
+    <!-- True Certificate Area -->
+    <div class="certificate-container">
+        
+        <!-- Premium glass background shapes -->
+        <div class="glass-blob-1"></div>
+        <div class="glass-blob-2"></div>
+        
+        <!-- Elegant Borders -->
+        <div class="border-pattern">
+            <div class="border-pattern-inner"></div>
+            
+            <!-- Corner Accents -->
+            <div class="absolute -top-[5px] -left-[5px] w-6 h-6 border-t-2 border-l-2 border-blue-600 bg-white z-20"></div>
+            <div class="absolute -top-[5px] -right-[5px] w-6 h-6 border-t-2 border-r-2 border-blue-600 bg-white z-20"></div>
+            <div class="absolute -bottom-[5px] -left-[5px] w-6 h-6 border-b-2 border-l-2 border-blue-600 bg-white z-20"></div>
+            <div class="absolute -bottom-[5px] -right-[5px] w-6 h-6 border-b-2 border-r-2 border-blue-600 bg-white z-20"></div>
+        </div>
+
+        <!-- Inner Content (Centered) -->
+        <div class="content-layer">
+            
+            <div class="mb-4">
+                <div class="w-16 h-16 mx-auto bg-blue-600 rounded-lg flex justify-center items-center text-white mb-2 shadow-lg shadow-blue-200">
+                    <i data-lucide="shield-check" stroke-width="1.5" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-gray-400 tracking-widest uppercase text-xs font-semibold">ONG Alumco</h3>
+            </div>
+
+            <h1 class="title-font text-5xl md:text-6xl text-gray-900 font-bold mb-8 uppercase tracking-wide">
+                Certificado de Aprobación
+            </h1>
+            
+            <p class="text-gray-500 mb-6 text-lg tracking-wide uppercase">Se otorga con orgullo el presente diploma a:</p>
+            
+            <!-- Student Name -->
+            <h2 class="signature-font text-6xl md:text-[80px] text-blue-800 leading-none mb-8 border-b pl-16 pr-16 border-gray-300 inline-block pb-4">
+                {{ enrollment.user.get_full_name|default:enrollment.user.username }}
+            </h2>
+
+            <!-- Achievement Text -->
+            <p class="max-w-2xl text-gray-600 text-lg leading-relaxed mb-6 font-medium">
+                Por haber completado satisfactoriamente los requisitos académicos y de evaluación estipulados para el programa de formación:
+            </p>
+            
+            <!-- Course Name -->
+            <h3 class="title-font text-3xl text-gray-800 font-bold mb-16 uppercase px-8 text-center max-w-4xl">
+                "{{ enrollment.course.title }}"
+            </h3>
+
+            <!-- Footer block: Signatures and Date -->
+            <div class="flex justify-between items-end w-full max-w-4xl absolute bottom-12 px-12">
+                <!-- Data Area -->
+                <div class="text-center">
+                    <div class="border-b border-gray-400 w-48 mb-2 pb-1 text-gray-800 font-medium">
+                        {{ date|date:"d \d\e F, Y" }}
+                    </div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Fecha de Expedición</p>
+                </div>
+                
+                <!-- Seal or Stamp -->
+                <div class="relative w-28 h-28 flex justify-center items-center">
+                    <!-- Base circle -->
+                    <div class="absolute inset-0 border-[3px] border-amber-500 rounded-full border-dashed opacity-50 z-0"></div>
+                    <div class="absolute inset-[6px] bg-amber-50 rounded-full flex flex-col justify-center items-center z-10 border border-amber-200">
+                        <i data-lucide="award" class="w-8 h-8 text-amber-600 mb-1"></i>
+                        <span class="text-[8px] font-bold uppercase tracking-widest text-amber-700">Oficial</span>
+                    </div>
+                </div>
+
+                <!-- Signature -->
+                <div class="text-center">
+                    <div class="signature-font text-4xl text-gray-800 mb-1 relative w-56 pt-2">
+                        <span class="relative z-10">Dirección Ejecutiva</span>
+                        <!-- Custom pseudo-line for sig -->
+                        <div class="absolute bottom-0 w-full border-b border-gray-400 z-0"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mt-2">Director General, ONG Alumco</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

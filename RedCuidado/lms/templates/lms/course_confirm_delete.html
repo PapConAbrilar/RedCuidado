@@ -1,0 +1,26 @@
+{% extends 'lms/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<main class="flex-1 p-6 w-full max-w-2xl mx-auto mt-10">
+    <div class="bg-red-50 border border-red-200 rounded-xl p-8 text-center shadow-sm">
+        <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-6">
+            <i data-lucide="alert-triangle" class="h-8 w-8 text-red-600"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Eliminar Curso Permanentemente</h2>
+        <p class="text-gray-600 mb-6">
+            Estás a punto de eliminar el curso <strong>"{{ course.title }}"</strong>.<br><br>
+            Esta acción borrará <span class="font-semibold text-red-600">para siempre</span> todos los módulos, secciones, archivos subidos y el registro de progreso de los estudiantes para este material. No podrás deshacer este cambio.
+        </p>
+
+        <form method="post" class="flex items-center justify-center gap-4">
+            {% csrf_token %}
+            <a href="{% url 'course_manage' course.id %}" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-white font-medium transition-colors">
+                Cancelar y Volver
+            </a>
+            <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors shadow-sm flex items-center gap-2">
+                <i data-lucide="trash-2" class="w-4 h-4"></i> Eliminar Definitivamente
+            </button>
+        </form>
+    </div>
+</main>
+{% endblock %}
