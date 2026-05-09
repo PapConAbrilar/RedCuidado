@@ -1,16 +1,17 @@
 {% extends 'lms/base_dashboard.html' %}
 {% load lms_extras %}
 
-{% block extra_css %}
+{% block extra_head %}
 <!-- FullCalendar CSS -->
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css' rel='stylesheet' />
 <style>
     .fc { font-family: 'Inter', sans-serif; }
-    .fc-toolbar-title { font-size: 1.25rem !important; font-weight: 600; color: #1f2937; }
+    .fc-toolbar-title { font-size: 1.15rem !important; font-weight: 600; color: #1f2937; }
     .fc-button-primary { background-color: #3b82f6 !important; border-color: #3b82f6 !important; }
     .fc-event { cursor: pointer; border-radius: 4px; padding: 2px 4px; font-size: 0.75rem; border-left-width: 4px !important; }
     .fc-daygrid-day-number { font-size: 0.875rem; color: #64748b; padding: 8px !important; }
     .fc-col-header-cell-cushion { font-size: 0.875rem; font-weight: 600; color: #475569; padding: 8px !important; }
+    .fc-scroller { overflow: hidden !important; }
 </style>
 {% endblock %}
 
@@ -24,7 +25,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Calendar Card -->
             <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                <div id="calendar"></div>
+                <div id="calendar" style="min-height: 500px;"></div>
                 
                 <!-- Legend -->
                 <div class="flex items-center gap-6 mt-6 pt-6 border-t border-gray-200">
@@ -88,32 +89,31 @@
 </main>
 {% endblock %}
 
-{% block extra_js %}
+{% block dashboard_scripts %}
 <!-- FullCalendar JS -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const calendarEl = document.getElementById('calendar');
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            locale: 'es',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek'
-            },
-            buttonText: {
-                today: 'Hoy',
-                month: 'Mes',
-                week: 'Semana'
-            },
-            events: {{ events_json|safe }},
-            eventClick: function(info) {
-                // Posibilidad de redirigir al curso al hacer clic
-                console.log('Evento:', info.event.title);
-            }
-        });
-        calendar.render();
+        if (calendarEl) {
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth'
+                },
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes'
+                },
+                events: {{ events_json|safe }},
+                height: 'auto'
+            });
+            calendar.render();
+            console.log("Calendario renderizado con eventos:", {{ events_json|safe }});
+        }
     });
 </script>
 {% endblock %}
