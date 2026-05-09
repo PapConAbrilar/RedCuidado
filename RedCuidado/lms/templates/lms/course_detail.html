@@ -35,10 +35,10 @@
                     <div class="max-w-2xl">
                         <div class="flex justify-between text-sm text-gray-600 mb-2">
                             <span>Progreso del Curso</span>
-                            <span>0%</span>
+                            <span>{{ progress_percentage }}%</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-3">
-                            <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                            <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: {{ progress_percentage }}%;"></div>
                         </div>
                     </div>
                 </div>
@@ -54,16 +54,20 @@
                         <i data-lucide="{% if forloop.first %}chevron-down{% else %}chevron-right{% endif %}" class="w-5 h-5 text-gray-600 toggle-icon"></i>
                         <span class="font-medium text-lg">{{ module.title }}</span>
                     </div>
-                    <span class="text-sm text-gray-500">0/{{ module.contents.count }}</span>
+                    <span class="text-sm text-gray-500">{{ module|completed_in_module:completed_ids }}/{{ module.contents.count }}</span>
                 </button>
 
                 <div class="module-content border-t border-gray-200 {% if not forloop.first %}hidden{% endif %}">
                     {% for content in module.contents.all %}
                     <div class="px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors">
                         <div class="flex items-center gap-4">
-                            <button class="flex-shrink-0 item-complete-toggle">
-                                <i data-lucide="circle" class="w-6 h-6 text-gray-300 check-icon"></i>
-                            </button>
+                            <div class="flex-shrink-0">
+                                {% if content.id|is_in:completed_ids %}
+                                    <i data-lucide="check-circle-2" class="w-6 h-6 text-green-600"></i>
+                                {% else %}
+                                    <i data-lucide="circle" class="w-6 h-6 text-gray-300"></i>
+                                {% endif %}
+                            </div>
                             <div class="flex-shrink-0 text-gray-600">
                                 {% if content.content_type == 'video' %}
                                     <i data-lucide="video" class="w-5 h-5"></i>
@@ -77,7 +81,7 @@
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center gap-2">
-                                    <span class="font-medium text-gray-900 item-title">{{ content.title }}</span>
+                                    <span class="font-medium {% if content.id|is_in:completed_ids %}text-gray-500 line-through{% else %}text-gray-900{% endif %}">{{ content.title }}</span>
                                 </div>
                                 {% if content.duration %}
                                 <div class="text-sm text-gray-500 mt-1">{{ content.duration }}</div>
@@ -164,29 +168,6 @@
             } else {
                 content.classList.add('hidden');
                 icon.setAttribute('data-lucide', 'chevron-right');
-            }
-            lucide.createIcons();
-        });
-    });
-
-    // Item completion toggle mockup
-    document.querySelectorAll('.item-complete-toggle').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const icon = btn.querySelector('.check-icon');
-            const parent = btn.closest('.flex.items-center.gap-4');
-            const itemTitle = parent.querySelector('.item-title');
-            
-            if (icon.getAttribute('data-lucide') === 'circle') {
-                icon.setAttribute('data-lucide', 'check-circle-2');
-                icon.classList.remove('text-gray-300');
-                icon.classList.add('text-green-600');
-                itemTitle.classList.add('line-through', 'text-gray-500');
-            } else {
-                icon.setAttribute('data-lucide', 'circle');
-                icon.classList.add('text-gray-300');
-                icon.classList.remove('text-green-600');
-                itemTitle.classList.remove('line-through', 'text-gray-500');
             }
             lucide.createIcons();
         });

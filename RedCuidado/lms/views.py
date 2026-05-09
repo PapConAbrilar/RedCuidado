@@ -136,6 +136,13 @@ def course_detail_view(request, course_id):
             test_passed = True
             test_score = last_result.score
     
+    # Get completed content IDs for this user
+    completed_ids = list(ContentProgress.objects.filter(
+        user=request.user, 
+        content__module__course=course, 
+        is_completed=True
+    ).values_list('content_id', flat=True))
+
     context = {
         'course': course,
         'modules': modules,
@@ -144,6 +151,7 @@ def course_detail_view(request, course_id):
         'test_passed': test_passed,
         'test_score': test_score,
         'active_menu': 'courses',
+        'completed_ids': completed_ids,
     }
     return render(request, 'lms/course_detail.html', context)
 
