@@ -2,8 +2,7 @@
 {% load lms_extras %}
 
 {% block extra_head %}
-<!-- FullCalendar CSS -->
-<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css' rel='stylesheet' />
+<!-- FullCalendar 6.1.11 Global Bundle -->
 <style>
     .fc { font-family: 'Inter', sans-serif; }
     .fc-toolbar-title { font-size: 1.15rem !important; font-weight: 600; color: #1f2937; }
@@ -49,7 +48,7 @@
                         Próximos Plazos
                     </h3>
                     <div class="space-y-3">
-                        {% for event in events_json %}
+                        {% for event in events_list %}
                             {% if "PLAZO" in event.title %}
                             <div class="p-3 bg-red-50 rounded-lg border border-red-100">
                                 <div class="text-xs font-bold text-red-700 uppercase mb-1">Evaluación Final</div>
@@ -91,7 +90,7 @@
 
 {% block dashboard_scripts %}
 <!-- FullCalendar JS -->
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const calendarEl = document.getElementById('calendar');

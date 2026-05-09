@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Max, Count, Avg, Sum, Q
 from django.db.models.functions import TruncMonth
@@ -270,7 +271,8 @@ def calendar_view(request):
             
     context = {
         'active_menu': 'calendar',
-        'events_json': events, # We pass it as a list to be JSON serialized in template
+        'events_list': events,
+        'events_json': json.dumps(events), 
         'enrolled_courses': [enr.course for enr in enrollments]
     }
     return render(request, 'lms/calendar.html', context)
