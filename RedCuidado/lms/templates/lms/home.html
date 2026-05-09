@@ -116,7 +116,7 @@
 
 {% if request.user|has_group:"Administrador" and active_menu != 'reports' %}
 <aside class="w-80 p-6 border-l border-gray-200">
-    <!-- PortalStats Mockup -->
+    <!-- PortalStats Dinámico -->
     <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 text-white mb-6">
         <h3 class="font-semibold text-lg mb-1">Portal de Administrador</h3>
         <p class="text-blue-100 text-sm mb-6">Resumen del sistema</p>
@@ -124,45 +124,27 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="bg-white/10 rounded-lg p-4">
                 <i data-lucide="users" class="w-5 h-5 mb-2 text-blue-200"></i>
-                <div class="text-2xl font-bold">1,245</div>
+                <div class="text-2xl font-bold">{{ admin_stats.total_users }}</div>
                 <div class="text-xs text-blue-200">Usuarios Totales</div>
             </div>
             
             <div class="bg-white/10 rounded-lg p-4">
                 <i data-lucide="graduation-cap" class="w-5 h-5 mb-2 text-blue-200"></i>
-                <div class="text-2xl font-bold">85</div>
+                <div class="text-2xl font-bold">{{ admin_stats.total_courses }}</div>
                 <div class="text-xs text-blue-200">Cursos Activos</div>
             </div>
             
             <div class="bg-white/10 rounded-lg p-4">
                 <i data-lucide="award" class="w-5 h-5 mb-2 text-blue-200"></i>
-                <div class="text-2xl font-bold">432</div>
-                <div class="text-xs text-blue-200">Certificados Este Mes</div>
+                <div class="text-2xl font-bold">{{ admin_stats.certificates_month }}</div>
+                <div class="text-xs text-blue-200">Certificados Mes</div>
             </div>
             
             <div class="bg-white/10 rounded-lg p-4">
                 <i data-lucide="clock" class="w-5 h-5 mb-2 text-blue-200"></i>
-                <div class="text-2xl font-bold">8.5k</div>
-                <div class="text-xs text-blue-200">Horas de Aprendizaje</div>
+                <div class="text-2xl font-bold">{{ admin_stats.total_certificates }}</div>
+                <div class="text-xs text-blue-200">Total Certificados</div>
             </div>
-        </div>
-    </div>
-    
-    <div class="mb-6">
-        <h3 class="font-semibold text-gray-800 mb-4">Acciones Rápidas</h3>
-        <div class="space-y-2">
-            <button class="w-full flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
-                <span class="text-sm font-medium">Añadir Nuevo Usuario</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-            </button>
-            <button class="w-full flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
-                <span class="text-sm font-medium">Crear Curso</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-            </button>
-            <button class="w-full flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
-                <span class="text-sm font-medium">Generar Reporte</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-            </button>
         </div>
     </div>
 </aside>

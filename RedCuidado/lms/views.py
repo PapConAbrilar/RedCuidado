@@ -86,9 +86,22 @@ def home_view(request):
             'modules_count': modules_count
         })
 
+    # Estadísticas para el Sidebar de Administrador
+    admin_stats = None
+    if user.is_superuser or user.groups.filter(name='Administrador').exists():
+        from django.utils import timezone
+        now = timezone.now()
+        admin_stats = {
+            'total_users': User.objects.count(),
+            'total_courses': Course.objects.count(),
+            'certificates_month': Enrollment.objects.filter(is_completed=True, enrolled_at__month=now.month, enrolled_at__year=now.year).count(),
+            'total_certificates': Enrollment.objects.filter(is_completed=True).count(),
+        }
+
     context = {
         'courses': course_list,
         'active_menu': 'homepage',
+        'admin_stats': admin_stats,
     }
     return render(request, 'lms/home.html', context)
 
