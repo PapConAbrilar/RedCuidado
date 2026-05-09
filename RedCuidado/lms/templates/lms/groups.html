@@ -5,13 +5,13 @@
 <main class="flex-1 p-6 w-full max-w-7xl mx-auto">
     <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Directorio de Empleados</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Directorio de Colaboradores</h1>
             <p class="text-sm text-gray-500">Gestiona y filtra los colaboradores por área y sede</p>
         </div>
         {% if request.user|has_group:"Administrador" %}
-        <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center gap-2">
-            <i data-lucide="plus" class="w-4 h-4"></i> Añadir Empleado
-        </button>
+        <a href="{% url 'collaborator_create' %}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center gap-2">
+            <i data-lucide="plus" class="w-4 h-4"></i> Añadir Colaborador
+        </a>
         {% endif %}
     </div>
 
@@ -51,7 +51,7 @@
         <table class="w-full text-left text-sm whitespace-nowrap">
             <thead class="uppercase tracking-wider border-b border-gray-200 bg-gray-50 text-gray-600">
                 <tr>
-                    <th class="px-6 py-4 font-medium">Empleado</th>
+                    <th class="px-6 py-4 font-medium">Colaborador</th>
                     <th class="px-6 py-4 font-medium">Área de Trabajo</th>
                     <th class="px-6 py-4 font-medium">Sede</th>
                     
@@ -109,7 +109,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" class="px-6 py-8 text-center text-gray-500">No hay empleados registrados.</td>
+                    <td colspan="4" class="px-6 py-8 text-center text-gray-500">No hay colaboradores registrados.</td>
                 </tr>
                 {% endfor %}
             </tbody>

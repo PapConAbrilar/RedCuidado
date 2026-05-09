@@ -6,14 +6,23 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from functools import wraps
-from .models import Course, Module, Content, ContentProgress, Enrollment, TestResult, WorkArea
-from .forms import CourseForm, ModuleForm, ContentForm
+from .models import Course, Module, Content, ContentProgress, Enrollment, TestResult, WorkArea, UserProfile
+from .forms import CourseForm, ModuleForm, ContentForm, CollaboratorCreationForm
 
 def staff_required(view_func):
     @wraps(view_func)
     @login_required
     def _wrapped_view(request, *args, **kwargs):
         if request.user.is_superuser or request.user.groups.filter(name__in=['Administrador', 'Profesor']).exists():
+            return view_func(request, *args, **kwargs)
+        raise PermissionDenied
+    return _wrapped_view
+
+def admin_required(view_func):
+    @wraps(view_func)
+    @login_required
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_superuser or request.user.groups.filter(name='Administrador').exists():
             return view_func(request, *args, **kwargs)
         raise PermissionDenied
     return _wrapped_view
@@ -539,3 +548,15 @@ def certificate_view(request, enrollment_id):
         # Using timezone.now() for the seal
     }
     return render(request, 'lms/certificate.html', context)
+
+@admin_required
+def collaborator_create_view(request):
+    if request.method == 'POST':
+        form = CollaboratorCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('groups')
+    else:
+        form = CollaboratorCreationForm()
+        
+    return render(request, 'lms/collaborator_form.html', {'form': form})

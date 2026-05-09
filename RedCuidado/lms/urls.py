@@ -11,6 +11,7 @@ urlpatterns = [
     path('reports/', views.reports_view, name='reports'),
     path('calendar/', views.calendar_view, name='calendar'),
     path('groups/', views.groups_view, name='groups'),
+    path('collaborator/create/', views.collaborator_create_view, name='collaborator_create'),
     
     # Management
     path('course/create/', views.course_create_view, name='course_create'),

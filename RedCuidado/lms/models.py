@@ -18,7 +18,7 @@ class UserProfile(models.Model):
         ('Coyhaique', 'Coyhaique'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    employee_id = models.CharField(max_length=50, unique=True, blank=True, null=True, verbose_name="ID de Empleado")
+    employee_id = models.CharField(max_length=50, unique=True, blank=True, null=True, verbose_name="ID de Colaborador")
     work_area = models.ForeignKey(WorkArea, on_delete=models.SET_NULL, null=True, blank=True, related_name="employees", verbose_name="Área de Trabajo")
     headquarters = models.CharField(max_length=50, choices=HEADQUARTER_CHOICES, default='Hualpen', verbose_name="Sede")
 
