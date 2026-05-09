@@ -171,10 +171,15 @@ def reports_view(request):
                 'count': entry['count']
             })
 
+    # 3. Cursos Populares (Gráfico de barras horizontal)
+    popular_courses = Course.objects.annotate(
+        enrollment_count=Count('enrollments')
+    ).order_by('-enrollment_count')[:5].values('title', 'enrollment_count')
+
     context = {
         'active_menu': 'reports',
         'work_areas': WorkArea.objects.all(),
-        'headquarters': [('Hualpen', 'Hualpén'), ('Talca', 'Talca'), ('Chillán', 'Chillán'), ('Coyhaique', 'Coyhaique')],
+        'headquarters': [('Hualpen', 'Hualpén'), ('Coyhaique', 'Coyhaique')],
         'selected_area': area_id,
         'selected_hq': hq,
         'total_collaborators': total_collaborators,
@@ -183,6 +188,7 @@ def reports_view(request):
         'avg_score': round(avg_score, 1),
         'area_stats': list(area_stats),
         'monthly_data': monthly_data,
+        'popular_courses': list(popular_courses),
     }
     return render(request, 'lms/reports_dashboard.html', context)
 

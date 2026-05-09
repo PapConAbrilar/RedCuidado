@@ -13,15 +13,15 @@ from lms.models import Course, Module, Content, Enrollment, Test, Question, Answ
 def populate_data():
     print("🚀 Iniciando repoblación de datos dinámicos...")
     
-    # 1. Asegurar Áreas de Trabajo
-    areas_nombres = ['Enfermería', 'Kinesiología', 'Administración', 'Servicios Generales', 'Cuidado Directo']
-    areas = []
-    for name in areas_nombres:
-        area, _ = WorkArea.objects.get_or_create(name=name)
-        areas.append(area)
+    # 1. Obtener Áreas de Trabajo REALES (ya deberían existir en el sistema)
+    areas = list(WorkArea.objects.all())
+    if not areas:
+        # Fallback si no hay ninguna, pero el usuario dice que ya se dan de opción
+        print("⚠️ No se encontraron áreas de trabajo. Asegúrate de que estén cargadas.")
+        return
 
-    # 2. Asegurar Sedes
-    sedes = ['Hualpen', 'Talca', 'Chillán', 'Coyhaique']
+    # 2. Sedes Correctas
+    sedes = ['Hualpen', 'Coyhaique']
 
     # 3. Crear Colaboradores (15 en total)
     nombres = ['Juan', 'María', 'Pedro', 'Ana', 'Luis', 'Carla', 'Diego', 'Elena', 'Roberto', 'Sonia', 'Miguel', 'Lucía', 'Gabriel', 'Rosa', 'Felipe']
@@ -55,6 +55,7 @@ def populate_data():
             profile.save()
             print(f"✅ Usuario creado: {username}")
         users.append(user)
+
 
     # 4. Asegurar Tests y Preguntas para todos los cursos
     courses = Course.objects.all()

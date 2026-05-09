@@ -287,14 +287,17 @@
             }
         });
 
-        // 3. Desempeño por Sede (Horizontal Bar Chart)
+        // 3. Cursos más Populares (Horizontal Bar Chart)
+        const courseLabels = [{% for c in popular_courses %}"{{ c.title }}",{% endfor %}];
+        const courseData = [{% for c in popular_courses %}{{ c.enrollment_count }},{% endfor %}];
+
         new Chart(document.getElementById('popularCoursesChart'), {
             type: 'bar',
             data: {
-                labels: ['Hualpén', 'Talca', 'Chillán', 'Coyhaique'],
+                labels: courseLabels.length > 0 ? courseLabels : ['Sin datos'],
                 datasets: [{
-                    label: 'Promedio %',
-                    data: [{{ avg_score }}, {{ avg_score }}*0.92, {{ avg_score }}*0.88, {{ avg_score }}*0.95],
+                    label: 'Inscritos',
+                    data: courseData.length > 0 ? courseData : [0],
                     backgroundColor: '#3b82f6',
                     borderRadius: 6,
                     barThickness: 20
@@ -306,7 +309,7 @@
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { beginAtZero: true, max: 100, grid: { borderDash: [5, 5] } },
+                    x: { beginAtZero: true, grid: { borderDash: [5, 5] } },
                     y: { grid: { display: false } }
                 }
             }
