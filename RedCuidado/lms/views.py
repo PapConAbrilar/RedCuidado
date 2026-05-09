@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Max, Count, Avg, Sum, Q
 from django.db.models.functions import TruncMonth
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
@@ -207,7 +208,6 @@ def reports_view(request):
 
 @login_required
 def groups_view(request):
-    from django.contrib.auth.models import User
     
     area_id = request.GET.get('area')
     hq = request.GET.get('headquarters')
