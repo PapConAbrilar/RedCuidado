@@ -64,8 +64,7 @@ def populate_data():
             course=course,
             defaults={
                 'title': f'Evaluación: {course.title}', 
-                'passing_score': 70,
-                'due_date': (datetime.now() + timedelta(days=random.randint(15, 60))).date()
+                'passing_score': 70
             }
         )
         if created:

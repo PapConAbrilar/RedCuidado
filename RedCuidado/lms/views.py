@@ -9,6 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from functools import wraps
+from datetime import timedelta
 from .models import Course, Module, Content, ContentProgress, Enrollment, TestResult, WorkArea, UserProfile
 from .forms import CourseForm, ModuleForm, ContentForm, CollaboratorCreationForm
 
@@ -265,12 +266,12 @@ def calendar_view(request):
             'allDay': True
         })
         
-        # 2. Plazos (Due Date del Test)
-        test = getattr(enr.course, 'test', None)
-        if test and test.due_date:
+        # 2. Plazos (Calculado desde inscripción + duración del curso)
+        if enr.course.duration_days:
+            due_date = enr.enrolled_at + timedelta(days=enr.course.duration_days)
             events.append({
                 'title': f"PLAZO: {enr.course.title}",
-                'start': test.due_date.isoformat(),
+                'start': due_date.date().isoformat(),
                 'backgroundColor': 'rgba(239, 68, 68, 0.1)',
                 'borderColor': '#ef4444',
                 'textColor': '#991b1b',

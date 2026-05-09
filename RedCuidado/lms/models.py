@@ -34,6 +34,7 @@ class Course(models.Model):
     image = models.ImageField(upload_to='course_images/', blank=True, null=True, verbose_name="Imagen de Portada")
     image_url = models.URLField(max_length=500, blank=True, null=True, verbose_name="URL de Imagen Externa")
     assigned_work_areas = models.ManyToManyField(WorkArea, blank=True, related_name="assigned_courses", verbose_name="Áreas de Trabajo Asignadas")
+    duration_days = models.PositiveIntegerField(default=30, verbose_name="Plazo para completar (días)")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -14,21 +14,24 @@ COURSES = [
         'title': 'Fundamentos del Cuidado del Paciente',
         'code': 'ELD 101',
         'desc': 'Un curso detallado sobre el cuidado inicial.',
+        'duration_days': 15,
     },
     {
         'title': 'Protocolos de Seguridad y Prevención de Caídas',
         'code': 'SAF 205',
         'desc': 'Cómo mantener seguros a los pacientes mayores.',
+        'duration_days': 20,
     },
     {
         'title': 'Cuidado de Demencia y Memoria',
         'code': 'DEM 310',
         'desc': 'Aspectos clave del tratado moderno de la demencia.',
+        'duration_days': 30,
     }
 ]
 
 for cd in COURSES:
-    c, created = Course.objects.get_or_create(code=cd['code'], defaults={'title': cd['title'], 'description': cd['desc']})
+    c, created = Course.objects.get_or_create(code=cd['code'], defaults={'title': cd['title'], 'description': cd['desc'], 'duration_days': cd['duration_days']})
     if created:
         print(f"Created course {c.code}")
         # Add a module

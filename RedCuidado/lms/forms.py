@@ -5,13 +5,14 @@ from .models import Course, Module, Content, UserProfile, WorkArea
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['title', 'code', 'description', 'image', 'image_url', 'assigned_work_areas']
+        fields = ['title', 'code', 'description', 'image', 'image_url', 'assigned_work_areas', 'duration_days']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4, 'class': 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all'}),
             'title': forms.TextInput(attrs={'class': 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all'}),
             'code': forms.TextInput(attrs={'class': 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all'}),
             'image_url': forms.URLInput(attrs={'class': 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all'}),
             'assigned_work_areas': forms.CheckboxSelectMultiple(attrs={'class': 'space-y-2 mt-2'}),
+            'duration_days': forms.NumberInput(attrs={'class': 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all', 'min': '1', 'placeholder': 'Ej. 30'}),
         }
 
 class ModuleForm(forms.ModelForm):
