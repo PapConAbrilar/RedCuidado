@@ -1,39 +1,46 @@
 import os
 import django
 import random
+from datetime import datetime, timedelta
 
 # Configure Django settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RedCuidado.settings')
 django.setup()
 
 from django.contrib.auth.models import User, Group
-from lms.models import Course, Module, Content, Enrollment, Test, Question, Answer, TestResult, UserProfile
+from lms.models import Course, Module, Content, Enrollment, Test, Question, Answer, TestResult, UserProfile, WorkArea
 
-def populate_tests_and_results():
-    print("Starting data population...")
+def populate_data():
+    print("🚀 Iniciando repoblación de datos dinámicos...")
     
-    # 1. Ensure Groups exist (just in case)
-    groups = ['Administrador', 'Profesor', 'Trabajador']
-    for gname in groups:
-        Group.objects.get_or_create(name=gname)
+    # 1. Asegurar Áreas de Trabajo
+    areas_nombres = ['Enfermería', 'Kinesiología', 'Administración', 'Servicios Generales', 'Cuidado Directo']
+    areas = []
+    for name in areas_nombres:
+        area, _ = WorkArea.objects.get_or_create(name=name)
+        areas.append(area)
 
-    # 2. Get or create test users (Colaboradores)
-    users_data = [
-        {'username': 'colaborador_1', 'first_name': 'Juan', 'last_name': 'Pérez', 'area': 'Enfermería', 'sede': 'Hualpen'},
-        {'username': 'colaborador_2', 'first_name': 'María', 'last_name': 'González', 'area': 'Kinesiología', 'sede': 'Talca'},
-        {'username': 'colaborador_3', 'first_name': 'Pedro', 'last_name': 'Soto', 'area': 'Administración', 'sede': 'Chillán'},
-    ]
+    # 2. Asegurar Sedes
+    sedes = ['Hualpen', 'Talca', 'Chillán', 'Coyhaique']
+
+    # 3. Crear Colaboradores (15 en total)
+    nombres = ['Juan', 'María', 'Pedro', 'Ana', 'Luis', 'Carla', 'Diego', 'Elena', 'Roberto', 'Sonia', 'Miguel', 'Lucía', 'Gabriel', 'Rosa', 'Felipe']
+    apellidos = ['Pérez', 'González', 'Soto', 'Muñoz', 'Rojas', 'Díaz', 'Morales', 'Silva', 'Sepúlveda', 'Castro', 'Tapia', 'Lara', 'Vidal', 'Ortiz', 'Garrido']
     
-    colaborador_group = Group.objects.get(name='Trabajador')
+    colaborador_group, _ = Group.objects.get_or_create(name='Trabajador')
     
-    created_users = []
-    for ud in users_data:
+    users = []
+    for i in range(15):
+        username = f"user_{i+1}"
+        first_name = nombres[i]
+        last_name = apellidos[i]
+        
         user, created = User.objects.get_or_create(
-            username=ud['username'],
+            username=username,
             defaults={
-                'first_name': ud['first_name'],
-                'last_name': ud['last_name'],
-                'email': f"{ud['username']}@ejemplo.com"
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': f"{username}@redcuidado.cl"
             }
         )
         if created:
@@ -41,70 +48,63 @@ def populate_tests_and_results():
             user.save()
             user.groups.add(colaborador_group)
             
-            # Create Profile
             profile, _ = UserProfile.objects.get_or_create(user=user)
-            profile.employee_id = f"ID-{ud['username'].upper()}"
-            profile.headquarters = ud['sede']
-            # Area lookup if exists, else skip
-            from lms.models import WorkArea
-            wa = WorkArea.objects.filter(name=ud['area']).first()
-            if wa:
-                profile.work_area = wa
+            profile.employee_id = f"COL-{1000 + i}"
+            profile.headquarters = random.choice(sedes)
+            profile.work_area = random.choice(areas)
             profile.save()
-            print(f"Created user {user.username}")
-        created_users.append(user)
+            print(f"✅ Usuario creado: {username}")
+        users.append(user)
 
-    # 3. Add Tests to Courses
+    # 4. Asegurar Tests y Preguntas para todos los cursos
     courses = Course.objects.all()
-    if not courses:
-        print("No courses found. Run populate_courses.py first.")
-        return
-
-    test_questions = [
-        ("¿Cuál es la primera regla del cuidado?", ["Seguridad ante todo", "Rapidez", "Silencio"], 0),
-        ("¿Qué se debe hacer en caso de emergencia?", ["Llamar al supervisor", "Salir corriendo", "Ignorar"], 0),
-        ("¿Es importante el lavado de manos?", ["Sí, siempre", "Sólo a veces", "No es necesario"], 0),
-    ]
-
     for course in courses:
         test, created = Test.objects.get_or_create(
             course=course,
-            defaults={'title': f'Evaluación Final: {course.title}', 'passing_score': 70}
+            defaults={'title': f'Evaluación: {course.title}', 'passing_score': 70}
         )
-        
         if created:
-            print(f"Created test for {course.code}")
-            for q_text, answers, correct_idx in test_questions:
-                q = Question.objects.create(test=test, text=q_text)
-                for i, a_text in enumerate(answers):
-                    Answer.objects.create(question=q, text=a_text, is_correct=(i == correct_idx))
-        else:
-            print(f"Test already exists for {course.code}")
+            q = Question.objects.create(test=test, text="¿Es este un curso obligatorio?")
+            Answer.objects.create(question=q, text="Sí", is_correct=True)
+            Answer.objects.create(question=q, text="No", is_correct=False)
+            print(f"📝 Test creado para: {course.code}")
 
-    # 4. Generate Test Results (Randomized completions)
-    for user in created_users:
-        # Enroll in 1-2 random courses
-        enrolled_courses = random.sample(list(courses), random.randint(1, min(2, len(courses))))
-        for course in enrolled_courses:
+    # 5. Generar Resultados y Completitudes (Aleatoriedad histórica)
+    # Vamos a simular que algunos terminaron hace meses y otros hace poco
+    base_date = datetime.now()
+    
+    for user in users:
+        # Cada usuario se matricula en 2 a 4 cursos
+        num_courses = random.randint(2, min(4, len(courses)))
+        my_courses = random.sample(list(courses), num_courses)
+        
+        for course in my_courses:
             enr, _ = Enrollment.objects.get_or_create(user=user, course=course)
             
-            # 70% chance they completed it
-            if random.random() < 0.7:
-                test = getattr(course, 'test', None)
-                if test:
-                    # Create a passing result
-                    score = random.randint(70, 100)
-                    TestResult.objects.create(
-                        user=user,
-                        test=test,
-                        score=score,
-                        passed=True
-                    )
-                    enr.is_completed = True
-                    enr.save()
-                    print(f"User {user.username} completed {course.code} with {score}%")
+            # 80% de probabilidad de haber terminado el test
+            if random.random() < 0.8:
+                test = course.test
+                # Fecha aleatoria en los últimos 5 meses
+                days_ago = random.randint(0, 150)
+                completion_date = base_date - timedelta(days=days_ago)
+                
+                score = random.randint(70, 100)
+                # Crear resultado (Hackeamos la fecha de creación si es posible o asumimos actual)
+                res = TestResult.objects.create(
+                    user=user,
+                    test=test,
+                    score=score,
+                    passed=True
+                )
+                # Forzar fecha para que el gráfico de meses se vea bien
+                TestResult.objects.filter(id=res.id).update(attempted_at=completion_date)
+                
+                enr.is_completed = True
+                enr.save()
+                # También hackeamos la fecha de enrolamiento para reportes si fuera necesario
+                Enrollment.objects.filter(id=enr.id).update(enrolled_at=completion_date)
 
-    print("Data population finished successfully!")
+    print("\n✨ ¡Datos poblados con éxito! El dashboard ahora debería mostrar curvas y barras reales.")
 
 if __name__ == "__main__":
-    populate_tests_and_results()
+    populate_data()

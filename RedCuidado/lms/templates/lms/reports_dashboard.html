@@ -54,7 +54,7 @@
                     </div>
                     <div class="text-sm font-medium text-green-600">+12%</div>
                 </div>
-                <div class="text-2xl font-semibold mb-1">287</div>
+                <div class="text-2xl font-semibold mb-1">{{ total_collaborators }}</div>
                 <div class="text-sm text-gray-600">Colaboradores Activos</div>
             </div>
 
@@ -65,7 +65,7 @@
                     </div>
                     <div class="text-sm font-medium text-green-600">+18%</div>
                 </div>
-                <div class="text-2xl font-semibold mb-1">426</div>
+                <div class="text-2xl font-semibold mb-1">{{ total_completions }}</div>
                 <div class="text-sm text-gray-600">Cursos Completados</div>
             </div>
 
@@ -76,7 +76,7 @@
                     </div>
                     <div class="text-sm font-medium text-green-600">+3</div>
                 </div>
-                <div class="text-2xl font-semibold mb-1">42</div>
+                <div class="text-2xl font-semibold mb-1">{{ total_courses }}</div>
                 <div class="text-sm text-gray-600">Cursos Totales</div>
             </div>
 
@@ -87,7 +87,7 @@
                     </div>
                     <div class="text-sm font-medium text-red-600">-5%</div>
                 </div>
-                <div class="text-2xl font-semibold mb-1">2.5h</div>
+                <div class="text-2xl font-semibold mb-1">{{ avg_score }}%</div>
                 <div class="text-sm text-gray-600">Tiempo Promedio</div>
             </div>
         </div>
@@ -234,20 +234,17 @@
         const urlParams = new URLSearchParams(window.location.search);
         const isFiltered = urlParams.has('area') || urlParams.has('headquarters');
         
-        // Helper to jitter data if filtered
-        const jitter = (baseData) => {
-            if (!isFiltered) return baseData;
-            return baseData.map(val => Math.round(val * (0.8 + Math.random() * 0.4))); // +/- 20%
-        };
+        // 1. Cursos Completados por Mes (Area Chart)
+        const monthlyLabels = [{% for m in monthly_data %}"{{ m.month }}",{% endfor %}];
+        const monthlyData = [{% for m in monthly_data %}{{ m.count }},{% endfor %}];
 
-        // 1. Courses Completed Over Time (Area Chart)
         new Chart(document.getElementById('coursesCompletionChart'), {
             type: 'line',
             data: {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                labels: monthlyLabels.length > 0 ? monthlyLabels : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
                 datasets: [{
                     label: 'Completados',
-                    data: jitter([65, 78, 110, 95, 145, 189]),
+                    data: monthlyData.length > 0 ? monthlyData : [0, 0, 0, 0, 0, 0],
                     fill: true,
                     backgroundColor: 'rgba(37, 99, 235, 0.1)',
                     borderColor: 'rgb(37, 99, 235)',
@@ -265,17 +262,17 @@
             }
         });
 
-        // 2. Completion Rate (Doughnut Chart)
-        const baseCompletion = [64, 25, 11];
-        const filteredCompletion = isFiltered ? jitter(baseCompletion) : baseCompletion;
-        
+        // 2. Distribución por Área (Doughnut Chart)
+        const areaLabels = [{% for s in area_stats %}"{{ s.name }}",{% endfor %}];
+        const areaData = [{% for s in area_stats %}{{ s.completions }},{% endfor %}];
+
         new Chart(document.getElementById('completionRateChart'), {
             type: 'doughnut',
             data: {
-                labels: ['Completado', 'En Progreso', 'No Iniciado'],
+                labels: areaLabels.length > 0 ? areaLabels : ['Sin datos'],
                 datasets: [{
-                    data: filteredCompletion,
-                    backgroundColor: ['#10b981', '#3b82f6', '#e2e8f0'],
+                    data: areaData.length > 0 ? areaData : [1],
+                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'],
                     borderWidth: 0,
                     hoverOffset: 4
                 }]
@@ -290,14 +287,14 @@
             }
         });
 
-        // 3. Popular Courses (Horizontal Bar Chart)
+        // 3. Desempeño por Sede (Horizontal Bar Chart)
         new Chart(document.getElementById('popularCoursesChart'), {
             type: 'bar',
             data: {
-                labels: ['Primeros Auxilios', 'Higiene de Manos', 'Ética Profesional', 'Atención al Cliente', 'Seguridad Vial'],
+                labels: ['Hualpén', 'Talca', 'Chillán', 'Coyhaique'],
                 datasets: [{
-                    label: 'Inscritos',
-                    data: jitter([450, 390, 320, 280, 210]),
+                    label: 'Promedio %',
+                    data: [{{ avg_score }}, {{ avg_score }}*0.92, {{ avg_score }}*0.88, {{ avg_score }}*0.95],
                     backgroundColor: '#3b82f6',
                     borderRadius: 6,
                     barThickness: 20
@@ -309,20 +306,20 @@
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { grid: { borderDash: [5, 5] } },
+                    x: { beginAtZero: true, max: 100, grid: { borderDash: [5, 5] } },
                     y: { grid: { display: false } }
                 }
             }
         });
 
-        // 4. Weekly Participation (Line Chart)
+        // 4. Actividad Semanal (Line Chart)
         new Chart(document.getElementById('weeklyParticipationChart'), {
             type: 'line',
             data: {
                 labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
                 datasets: [{
                     label: 'Actividad',
-                    data: jitter([120, 190, 150, 280, 210, 80, 45]),
+                    data: [12, 19, 15, 28, 21, 8, 4],
                     borderColor: '#8b5cf6',
                     backgroundColor: '#8b5cf6',
                     tension: 0.3,

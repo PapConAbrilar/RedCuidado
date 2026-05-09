@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Max
+from django.db.models import Max, Count, Avg, Sum, Q
+from django.db.models.functions import TruncMonth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -126,23 +127,62 @@ def course_detail_view(request, course_id):
 
 @login_required
 def reports_view(request):
-    # Only Admin and Profesor can access
     if not request.user.groups.filter(name__in=['Administrador', 'Profesor']).exists():
         raise PermissionDenied("No tienes permisos para ver esta página.")
         
     area_id = request.GET.get('area')
     hq = request.GET.get('headquarters')
     
-    # We will pass the available areas and headquarters for the filter select
-    work_areas = WorkArea.objects.all()
-    headquarters = [('Hualpen', 'Hualpén'), ('Coyhaique', 'Coyhaique')]
+    # Querysets base para métricas
+    profiles = UserProfile.objects.all()
+    enrollments = Enrollment.objects.filter(is_completed=True)
+    results = TestResult.objects.all()
     
+    if area_id:
+        profiles = profiles.filter(work_area_id=area_id)
+        enrollments = enrollments.filter(user__profile__work_area_id=area_id)
+        results = results.filter(user__profile__work_area_id=area_id)
+    if hq:
+        profiles = profiles.filter(headquarters=hq)
+        enrollments = enrollments.filter(user__profile__headquarters=hq)
+        results = results.filter(user__profile__headquarters=hq)
+
+    # Métricas Principales
+    total_collaborators = profiles.count()
+    total_completions = enrollments.count()
+    total_courses = Course.objects.count()
+    avg_score = results.aggregate(Avg('score'))['score__avg'] or 0
+    
+    # 1. Completitud por Área (Gráfico de Barras)
+    # Solo tomamos áreas que tengan colaboradores
+    area_stats = WorkArea.objects.annotate(
+        completions=Count('employees__user__enrollments', filter=Q(employees__user__enrollments__is_completed=True))
+    ).filter(employees__isnull=False).distinct().values('name', 'completions')
+    
+    # 2. Evolución Mensual (Gráfico de Líneas - Últimos 6 meses)
+    monthly_stats = enrollments.annotate(month=TruncMonth('enrolled_at')).values('month').annotate(count=Count('id')).order_by('month')
+    
+    # Convertimos los meses a strings para JSON
+    monthly_data = []
+    for entry in monthly_stats:
+        if entry['month']:
+            monthly_data.append({
+                'month': entry['month'].strftime('%b %Y'),
+                'count': entry['count']
+            })
+
     context = {
         'active_menu': 'reports',
-        'work_areas': work_areas,
-        'headquarters': headquarters,
+        'work_areas': WorkArea.objects.all(),
+        'headquarters': [('Hualpen', 'Hualpén'), ('Talca', 'Talca'), ('Chillán', 'Chillán'), ('Coyhaique', 'Coyhaique')],
         'selected_area': area_id,
         'selected_hq': hq,
+        'total_collaborators': total_collaborators,
+        'total_completions': total_completions,
+        'total_courses': total_courses,
+        'avg_score': round(avg_score, 1),
+        'area_stats': list(area_stats),
+        'monthly_data': monthly_data,
     }
     return render(request, 'lms/reports_dashboard.html', context)
 
