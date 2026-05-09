@@ -145,6 +145,14 @@ if os.environ.get('AWS_ACCESS_KEY_ID'):
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'sa-east-1')
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = None
+
+    # Supabase S3 API requires signatures for reads, which is annoying.
+    # But Supabase also provides a direct public CDN for public buckets.
+    # We can tell Django to upload via S3 API, but generate URLs using the public CDN.
+    if AWS_S3_ENDPOINT_URL:
+        # Extracts 'cnzxmmxbpgrgtiaxpqlr' from 'https://cnzxmmxbpgrgtiaxpqlr.storage.supabase.co/storage/v1/s3'
+        project_ref = AWS_S3_ENDPOINT_URL.split('//')[1].split('.')[0]
+        AWS_S3_CUSTOM_DOMAIN = f'{project_ref}.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}'
     
     STORAGES = {
         "default": {
