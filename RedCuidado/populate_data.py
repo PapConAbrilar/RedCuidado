@@ -62,7 +62,11 @@ def populate_data():
     for course in courses:
         test, created = Test.objects.get_or_create(
             course=course,
-            defaults={'title': f'Evaluación: {course.title}', 'passing_score': 70}
+            defaults={
+                'title': f'Evaluación: {course.title}', 
+                'passing_score': 70,
+                'due_date': (datetime.now() + timedelta(days=random.randint(15, 60))).date()
+            }
         )
         if created:
             q = Question.objects.create(test=test, text="¿Es este un curso obligatorio?")

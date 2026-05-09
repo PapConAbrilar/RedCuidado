@@ -77,6 +77,7 @@ class Test(models.Model):
     course = models.OneToOneField(Course, on_delete=models.CASCADE, related_name='test', null=True, blank=True)
     title = models.CharField(max_length=200, default="Evaluación Final")
     passing_score = models.PositiveIntegerField(default=70, help_text="Porcentaje mínimo para aprobar")
+    due_date = models.DateField(null=True, blank=True, verbose_name="Plazo de Entrega")
 
     def __str__(self):
         return f"Examen: {self.title} - {self.course.title}"

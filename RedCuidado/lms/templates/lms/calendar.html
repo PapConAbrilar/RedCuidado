@@ -1,255 +1,119 @@
 {% extends 'lms/base_dashboard.html' %}
+{% load lms_extras %}
+
+{% block extra_css %}
+<!-- FullCalendar CSS -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css' rel='stylesheet' />
+<style>
+    .fc { font-family: 'Inter', sans-serif; }
+    .fc-toolbar-title { font-size: 1.25rem !important; font-weight: 600; color: #1f2937; }
+    .fc-button-primary { background-color: #3b82f6 !important; border-color: #3b82f6 !important; }
+    .fc-event { cursor: pointer; border-radius: 4px; padding: 2px 4px; font-size: 0.75rem; border-left-width: 4px !important; }
+    .fc-daygrid-day-number { font-size: 0.875rem; color: #64748b; padding: 8px !important; }
+    .fc-col-header-cell-cushion { font-size: 0.875rem; font-weight: 600; color: #475569; padding: 8px !important; }
+</style>
+{% endblock %}
 
 {% block dashboard_content %}
 <main class="flex-1 p-6 w-full">
     <div class="space-y-6 max-w-7xl mx-auto">
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl">Calendario de Cursos</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Calendario de Aprendizaje</h1>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Calendar -->
-            <div class="lg:col-span-2 bg-white rounded-lg border border-gray-200 p-6">
-                <!-- Calendar Header -->
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl">
-                        Abril 2026
-                    </h2>
-                    <div class="flex items-center gap-2">
-                        <button class="p-2 hover:bg-gray-100 rounded transition-colors">
-                            <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                        </button>
-                        <button class="p-2 hover:bg-gray-100 rounded transition-colors">
-                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Day Names -->
-                <div class="grid grid-cols-7 gap-0 mb-2">
-                    <div class="text-center text-sm font-semibold text-gray-600 p-2">Dom</div>
-                    <div class="text-center text-sm font-semibold text-gray-600 p-2">Lun</div>
-                    <div class="text-center text-sm font-semibold text-gray-600 p-2">Mar</div>
-                    <div class="text-center text-sm font-semibold text-gray-600 p-2">Mié</div>
-                    <div class="text-center text-sm font-semibold text-gray-600 p-2">Jue</div>
-                    <div class="text-center text-sm font-semibold text-gray-600 p-2">Vie</div>
-                    <div class="text-center text-sm font-semibold text-gray-600 p-2">Sáb</div>
-                </div>
-
-                <!-- Calendar Grid Mockup (Starts Wednesday) -->
-                <div class="grid grid-cols-7 gap-0 border border-gray-200">
-                    <!-- Empty 3 days -->
-                    <div class="min-h-24 bg-gray-50 border border-gray-200"></div>
-                    <div class="min-h-24 bg-gray-50 border border-gray-200"></div>
-                    <div class="min-h-24 bg-gray-50 border border-gray-200"></div>
-                    
-                    <!-- Days -->
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50 transition-colors bg-blue-50">
-                        <div class="text-sm mb-1 font-bold text-blue-600">1</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">2</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">3</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">4</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">5</div>
-                        <div class="space-y-1">
-                            <div class="text-xs p-1 rounded truncate bg-orange-100 text-orange-800 border-l-2 border-orange-500">
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="clock" class="w-3 h-3 flex-shrink-0"></i>
-                                    <span class="truncate">COM 180</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">6</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">7</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">8</div>
-                        <div class="space-y-1">
-                            <div class="text-xs p-1 rounded truncate bg-blue-100 text-blue-800 border-l-2 border-blue-500">
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="file-text" class="w-3 h-3 flex-shrink-0"></i>
-                                    <span class="truncate">COM 180</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">9</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">10</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">11</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">12</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">13</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">14</div>
-                    </div>
-                    
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50 ring-2 ring-blue-500 cursor-pointer">
-                        <div class="text-sm mb-1">15</div>
-                        <div class="space-y-1">
-                            <div class="text-xs p-1 rounded truncate bg-orange-100 text-orange-800 border-l-2 border-orange-500">
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="clock" class="w-3 h-3 flex-shrink-0"></i>
-                                    <span class="truncate">ELD 101</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">16</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">17</div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">18</div>
-                        <div class="space-y-1">
-                            <div class="text-xs p-1 rounded truncate bg-blue-100 text-blue-800 border-l-2 border-blue-500">
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="file-text" class="w-3 h-3 flex-shrink-0"></i>
-                                    <span class="truncate">ELD 101</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- (Filling the rest of the mock month blanks just for visually looking fine) -->
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">19</div></div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">20</div></div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">21</div></div>
-                    
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">22</div>
-                        <div class="space-y-1">
-                            <div class="text-xs p-1 rounded truncate bg-orange-100 text-orange-800 border-l-2 border-orange-500">
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="clock" class="w-3 h-3 flex-shrink-0"></i>
-                                    <span class="truncate">SAF 205</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">23</div></div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">24</div></div>
-                    
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50">
-                        <div class="text-sm mb-1">25</div>
-                        <div class="space-y-1">
-                            <div class="text-xs p-1 rounded truncate bg-blue-100 text-blue-800 border-l-2 border-blue-500">
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="file-text" class="w-3 h-3 flex-shrink-0"></i>
-                                    <span class="truncate">SAF 205</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">26</div></div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">27</div></div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">28</div></div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">29</div></div>
-                    <div class="min-h-24 border border-gray-200 p-2 hover:bg-gray-50"><div class="text-sm mb-1">30</div></div>
-                    <div class="min-h-24 bg-gray-50 border border-gray-200"></div>
-                    <div class="min-h-24 bg-gray-50 border border-gray-200"></div>
-                </div>
-
+            <!-- Calendar Card -->
+            <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                <div id="calendar"></div>
+                
                 <!-- Legend -->
                 <div class="flex items-center gap-6 mt-6 pt-6 border-t border-gray-200">
                     <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-orange-100 border-l-2 border-orange-500 rounded"></div>
-                        <span class="text-sm text-gray-600">Fecha Límite del Curso</span>
+                        <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                        <span class="text-xs text-gray-600 font-medium">Inicio de Curso</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-blue-100 border-l-2 border-blue-500 rounded"></div>
-                        <span class="text-sm text-gray-600">Examen</span>
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <span class="text-xs text-gray-600 font-medium">Plazo de Evaluación</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Events Sidebar -->
+            <!-- Sidebar -->
             <div class="space-y-6">
-                <!-- Selected Date Events mockup -->
-                <div class="bg-white rounded-lg border border-gray-200 p-6">
-                    <h3 class="font-semibold mb-4">
-                        15 de Abril
+                <!-- Upcoming Deadlines -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="bell" class="w-5 h-5 text-red-500"></i>
+                        Próximos Plazos
                     </h3>
                     <div class="space-y-3">
-                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                            <div class="flex items-start gap-2 mb-2">
-                                <i data-lucide="clock" class="w-4 h-4 text-orange-600 mt-0.5"></i>
-                                <div class="flex-1">
-                                    <div class="font-medium text-sm mb-1">Fecha Límite</div>
-                                    <div class="text-sm text-gray-600">Fundamentos del Cuidado del Paciente - Fecha Límite</div>
+                        {% for event in events_json %}
+                            {% if "PLAZO" in event.title %}
+                            <div class="p-3 bg-red-50 rounded-lg border border-red-100">
+                                <div class="text-xs font-bold text-red-700 uppercase mb-1">Evaluación Final</div>
+                                <div class="text-sm font-medium text-gray-800">{{ event.title|cut:"PLAZO: " }}</div>
+                                <div class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                    <i data-lucide="calendar" class="w-3 h-3"></i>
+                                    {{ event.start }}
                                 </div>
                             </div>
-                            <div class="text-xs text-gray-500 pl-6">
-                                Código: ELD 101
-                            </div>
-                        </div>
+                            {% endif %}
+                        {% empty %}
+                            <p class="text-sm text-gray-500 italic">No hay plazos próximos.</p>
+                        {% endfor %}
                     </div>
                 </div>
 
-                <!-- Upcoming Events -->
-                <div class="bg-white rounded-lg border border-gray-200 p-6">
-                    <h3 class="font-semibold mb-4">Próximos Eventos</h3>
-                    <div class="space-y-3">
-                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                            <div class="flex items-start gap-2 mb-2">
-                                <i data-lucide="clock" class="w-4 h-4 text-orange-600 mt-0.5"></i>
-                                <div class="flex-1">
-                                    <div class="font-medium text-sm mb-1">COM 180</div>
-                                    <div class="text-xs text-gray-600 mb-1">Fecha Límite</div>
-                                    <div class="text-xs text-gray-500">5 de Abril, 2026</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                            <div class="flex items-start gap-2 mb-2">
-                                <i data-lucide="file-text" class="w-4 h-4 text-blue-600 mt-0.5"></i>
-                                <div class="flex-1">
-                                    <div class="font-medium text-sm mb-1">COM 180</div>
-                                    <div class="text-xs text-gray-600 mb-1">Examen Final</div>
-                                    <div class="text-xs text-gray-500">8 de Abril, 2026</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Enrolled Courses -->
-                <div class="bg-white rounded-lg border border-gray-200 p-6">
-                    <h3 class="font-semibold mb-4 flex items-center gap-2">
-                        <i data-lucide="book-open" class="w-4 h-4"></i>
-                        Cursos Inscritos
+                <!-- Enrolled Courses List -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="book-open" class="w-5 h-5 text-blue-500"></i>
+                        Mis Cursos
                     </h3>
                     <div class="space-y-2">
-                        <div class="text-sm p-2 bg-gray-50 rounded">ELD 101</div>
-                        <div class="text-sm p-2 bg-gray-50 rounded">SAF 205</div>
-                        <div class="text-sm p-2 bg-gray-50 rounded">DEM 310</div>
-                        <div class="text-sm p-2 bg-gray-50 rounded">NUT 150</div>
-                        <div class="text-sm p-2 bg-gray-50 rounded">COM 180</div>
+                        {% for course in enrolled_courses %}
+                        <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-colors border border-transparent hover:border-gray-100">
+                            <span class="text-sm text-gray-700 font-medium truncate">{{ course.title }}</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-600 rounded uppercase">
+                                {{ course.code }}
+                            </span>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+{% endblock %}
+
+{% block extra_js %}
+<!-- FullCalendar JS -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'es',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek'
+            },
+            buttonText: {
+                today: 'Hoy',
+                month: 'Mes',
+                week: 'Semana'
+            },
+            events: {{ events_json|safe }},
+            eventClick: function(info) {
+                // Posibilidad de redirigir al curso al hacer clic
+                console.log('Evento:', info.event.title);
+            }
+        });
+        calendar.render();
+    });
+</script>
 {% endblock %}

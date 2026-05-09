@@ -241,8 +241,37 @@ def groups_view(request):
 
 @login_required
 def calendar_view(request):
+    user = request.user
+    events = []
+    
+    # 1. Fechas de Inicio (Inscripciones)
+    enrollments = Enrollment.objects.filter(user=user).select_related('course')
+    for enr in enrollments:
+        events.append({
+            'title': f"Inicio: {enr.course.title}",
+            'start': enr.enrolled_at.date().isoformat(),
+            'backgroundColor': 'rgba(59, 130, 246, 0.1)',
+            'borderColor': '#3b82f6',
+            'textColor': '#1e40af',
+            'allDay': True
+        })
+        
+        # 2. Plazos (Due Date del Test)
+        test = getattr(enr.course, 'test', None)
+        if test and test.due_date:
+            events.append({
+                'title': f"PLAZO: {enr.course.title}",
+                'start': test.due_date.isoformat(),
+                'backgroundColor': 'rgba(239, 68, 68, 0.1)',
+                'borderColor': '#ef4444',
+                'textColor': '#991b1b',
+                'allDay': True
+            })
+            
     context = {
         'active_menu': 'calendar',
+        'events_json': events, # We pass it as a list to be JSON serialized in template
+        'enrolled_courses': [enr.course for enr in enrollments]
     }
     return render(request, 'lms/calendar.html', context)
 
