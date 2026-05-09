@@ -144,7 +144,8 @@ if os.environ.get('AWS_ACCESS_KEY_ID'):
     AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'sa-east-1')
     AWS_S3_FILE_OVERWRITE = False
-    AWS_DEFAULT_ACL = 'public-read'
+    AWS_DEFAULT_ACL = None
+    AWS_QUERYSTRING_AUTH = False
     
     STORAGES = {
         "default": {
