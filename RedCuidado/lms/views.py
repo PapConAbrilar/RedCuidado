@@ -73,6 +73,9 @@ def home_view(request):
     # Progress math for home
     course_list = []
     for course in courses:
+        enr = Enrollment.objects.filter(user=user, course=course).first()
+        is_pinned = enr.is_pinned if enr else False
+        
         modules_count = Module.objects.filter(course=course).count()
         total_content = Content.objects.filter(module__course=course).count()
         if total_content > 0:
@@ -84,8 +87,12 @@ def home_view(request):
         course_list.append({
             'course': course,
             'progress': progress,
-            'modules_count': modules_count
+            'modules_count': modules_count,
+            'is_pinned': is_pinned
         })
+
+    # Sort by is_pinned (True first)
+    course_list.sort(key=lambda x: x['is_pinned'], reverse=True)
 
     # Estadísticas para el Sidebar de Administrador
     admin_stats = None
@@ -619,3 +626,11 @@ def collaborator_create_view(request):
         form = CollaboratorCreationForm()
         
     return render(request, 'lms/collaborator_form.html', {'form': form})
+
+@login_required
+@require_POST
+def toggle_pin_view(request, course_id):
+    enrollment, created = Enrollment.objects.get_or_create(user=request.user, course_id=course_id)
+    enrollment.is_pinned = not enrollment.is_pinned
+    enrollment.save()
+    return JsonResponse({'is_pinned': enrollment.is_pinned})

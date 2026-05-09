@@ -78,11 +78,12 @@
                             {{ item.course.code }}
                         </span>
                         <div class="flex gap-2">
-                            <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors" title="Bookmark">
-                                <i data-lucide="bookmark" class="w-4 h-4"></i>
-                            </button>
-                            <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors" title="Download Materials">
-                                <i data-lucide="download" class="w-4 h-4"></i>
+                            <button 
+                                onclick="event.stopPropagation(); togglePin({{ item.course.id }}, this)"
+                                class="p-1.5 {% if item.is_pinned %}text-blue-600 bg-blue-100{% else %}text-gray-400 hover:text-blue-600 hover:bg-blue-50{% endif %} rounded-full transition-all duration-300" 
+                                title="{% if item.is_pinned %}Quitar fijado{% else %}Fijar arriba{% endif %}"
+                            >
+                                <i data-lucide="bookmark" class="w-4 h-4 {% if item.is_pinned %}fill-current{% endif %}"></i>
                             </button>
                         </div>
                     </div>
@@ -150,4 +151,20 @@
 </aside>
 {% endif %}
 
+<script>
+function togglePin(courseId, btn) {
+    fetch(`/course/${courseId}/toggle-pin/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Recargamos para que el curso se mueva a la parte superior según el nuevo orden
+        window.location.reload();
+    });
+}
+</script>
 {% endblock %}
