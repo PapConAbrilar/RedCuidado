@@ -57,10 +57,81 @@
     </div>
 
     <div class="flex items-center gap-4">
-        <button class="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+        <button id="how-to-use-trigger" class="text-gray-600 hover:text-gray-900 flex items-center gap-1">
             <i data-lucide="help-circle" class="w-5 h-5"></i>
             <span class="text-sm">Cómo usar</span>
         </button>
+
+        <!-- Modal de Instrucciones -->
+        <div id="how-to-use-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-blue-50">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="info" class="text-blue-600 w-6 h-6"></i>
+                        <h2 class="text-xl font-bold text-gray-800">Guía de RedCuidado</h2>
+                    </div>
+                    <button id="close-modal" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+                        <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+                    </button>
+                </div>
+                
+                <div class="p-8 space-y-6">
+                    {% if request.user|has_group:"Administrador" %}
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-blue-700">Panel de Administrador</h3>
+                        <ul class="space-y-3">
+                            <li class="flex gap-3 text-sm text-gray-600">
+                                <i data-lucide="users" class="w-5 h-5 text-blue-500 flex-shrink-0"></i>
+                                <span><strong>Gestión de Colaboradores:</strong> Crea nuevos perfiles y asigna áreas en la sección 'Grupos'.</span>
+                            </li>
+                            <li class="flex gap-3 text-sm text-gray-600">
+                                <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-500 flex-shrink-0"></i>
+                                <span><strong>Reportes Globales:</strong> Visualiza métricas de completitud y desempeño por sede en tiempo real.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    {% elif request.user|has_group:"Profesor" %}
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-indigo-700">Portal del Profesor</h3>
+                        <ul class="space-y-3">
+                            <li class="flex gap-3 text-sm text-gray-600">
+                                <i data-lucide="edit-3" class="w-5 h-5 text-indigo-500 flex-shrink-0"></i>
+                                <span><strong>Edición de Cursos:</strong> Sube archivos (PDF, PPTX) y organiza los módulos de aprendizaje.</span>
+                            </li>
+                            <li class="flex gap-3 text-sm text-gray-600">
+                                <i data-lucide="check-square" class="w-5 h-5 text-indigo-500 flex-shrink-0"></i>
+                                <span><strong>Exámenes:</strong> Diseña las preguntas finales y define el porcentaje mínimo de aprobación.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-green-700">Manual del Colaborador</h3>
+                        <ul class="space-y-3">
+                            <li class="flex gap-3 text-sm text-gray-600">
+                                <i data-lucide="play-circle" class="w-5 h-5 text-green-500 flex-shrink-0"></i>
+                                <span><strong>Aprende:</strong> Revisa el contenido de tus cursos asignados a tu propio ritmo.</span>
+                            </li>
+                            <li class="flex gap-3 text-sm text-gray-600">
+                                <i data-lucide="award" class="w-5 h-5 text-green-500 flex-shrink-0"></i>
+                                <span><strong>Certifícate:</strong> Aprueba el examen final para generar y descargar tu certificado en 'Mi Perfil'.</span>
+                            </li>
+                            <li class="flex gap-3 text-sm text-gray-600">
+                                <i data-lucide="calendar" class="w-5 h-5 text-green-500 flex-shrink-0"></i>
+                                <span><strong>Plazos:</strong> Revisa el calendario para no olvidar las fechas límite de tus cursos.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="p-6 bg-gray-50 border-t border-gray-100">
+                    <button id="close-modal-btn" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">
+                        ¡Entendido!
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <div class="relative" id="portal-menu-container">
             <button id="portal-menu-trigger" class="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 rounded-lg">
@@ -98,17 +169,41 @@
 
 {% block extra_scripts %}
 <script>
-    // Header portal dropdown logic (just logout now)
+    // Header portal dropdown logic
     const portalMenuTrigger = document.getElementById('portal-menu-trigger');
     const portalMenu = document.getElementById('portal-menu');
 
-    portalMenuTrigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        portalMenu.classList.toggle('hidden');
+    if (portalMenuTrigger) {
+        portalMenuTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            portalMenu.classList.toggle('hidden');
+        });
+    }
+
+    // How to Use Modal logic
+    const howToUseTrigger = document.getElementById('how-to-use-trigger');
+    const howToUseModal = document.getElementById('how-to-use-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    const closeModalBtnBottom = document.getElementById('close-modal-btn');
+
+    if (howToUseTrigger) {
+        howToUseTrigger.addEventListener('click', () => {
+            howToUseModal.classList.remove('hidden');
+        });
+    }
+
+    const hideModal = () => howToUseModal.classList.add('hidden');
+
+    if (closeModalBtn) closeModalBtn.addEventListener('click', hideModal);
+    if (closeModalBtnBottom) closeModalBtnBottom.addEventListener('click', hideModal);
+    
+    // Close on click outside
+    howToUseModal.addEventListener('click', (e) => {
+        if (e.target === howToUseModal) hideModal();
     });
 
     document.addEventListener('click', (e) => {
-        if (!portalMenu.contains(e.target) && !portalMenuTrigger.contains(e.target)) {
+        if (portalMenu && !portalMenu.contains(e.target) && portalMenuTrigger && !portalMenuTrigger.contains(e.target)) {
             portalMenu.classList.add('hidden');
         }
     });
