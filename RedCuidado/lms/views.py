@@ -48,10 +48,19 @@ def login_view(request):
             
     return render(request, 'lms/login.html', {'error': error})
 
-@login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+@login_required
+def activity_board_view(request):
+    """Renderiza la vista estática (mockup) del Tablón de Actividad."""
+    return render(request, 'lms/activity.html', {'active_menu': 'activity'})
+
+@login_required
+def learning_paths_view(request):
+    """Renderiza la vista estática (mockup) de Rutas de Aprendizaje."""
+    return render(request, 'lms/paths.html', {'active_menu': 'paths'})
 
 @login_required
 def home_view(request):
