@@ -379,9 +379,18 @@
             const h4 = btn.querySelector('h4');
             const p = btn.querySelector('p');
             
-            if (icon) icon.className = icon.className.replace('text-blue-600', 'text-gray-400');
-            if (h4) h4.className = h4.className.replace('text-blue-900', 'text-gray-700');
-            if (p) p.className = p.className.replace('text-blue-700', 'text-gray-500');
+            if (icon) {
+                icon.classList.remove('text-blue-600');
+                icon.classList.add('text-gray-400');
+            }
+            if (h4) {
+                h4.classList.remove('text-blue-900');
+                h4.classList.add('text-gray-700');
+            }
+            if (p) {
+                p.classList.remove('text-blue-700');
+                p.classList.add('text-gray-500');
+            }
         });
 
         // Set active styles
@@ -397,9 +406,18 @@
         const h4 = btnElement.querySelector('h4');
         const p = btnElement.querySelector('p');
         
-        if (icon) icon.className = icon.className.replace('text-gray-400', 'text-blue-600');
-        if (h4) h4.className = h4.className.replace('text-gray-700', 'text-blue-900');
-        if (p) p.className = p.className.replace('text-gray-500', 'text-blue-700');
+        if (icon) {
+            icon.classList.remove('text-gray-400');
+            icon.classList.add('text-blue-600');
+        }
+        if (h4) {
+            h4.classList.remove('text-gray-700');
+            h4.classList.add('text-blue-900');
+        }
+        if (p) {
+            p.classList.remove('text-gray-500');
+            p.classList.add('text-blue-700');
+        }
 
         // Update Step 2 Title & Tab Text
         const step2Title = document.getElementById('step-2-dynamic-title');
