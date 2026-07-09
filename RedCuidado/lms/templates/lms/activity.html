@@ -375,12 +375,13 @@
             if (bgDiv) btn.removeChild(bgDiv);
             
             // Reset text colors
-            const icon = btn.querySelector('i');
+            const icon = btn.querySelector('svg') || btn.querySelector('i');
             const h4 = btn.querySelector('h4');
             const p = btn.querySelector('p');
-            icon.className = icon.className.replace('text-blue-600', 'text-gray-400');
-            h4.className = h4.className.replace('text-blue-900', 'text-gray-700');
-            p.className = p.className.replace('text-blue-700', 'text-gray-500');
+            
+            if (icon) icon.className = icon.className.replace('text-blue-600', 'text-gray-400');
+            if (h4) h4.className = h4.className.replace('text-blue-900', 'text-gray-700');
+            if (p) p.className = p.className.replace('text-blue-700', 'text-gray-500');
         });
 
         // Set active styles
@@ -392,12 +393,13 @@
         btnElement.insertBefore(bgDiv, btnElement.firstChild);
         
         // Set text colors
-        const icon = btnElement.querySelector('i');
+        const icon = btnElement.querySelector('svg') || btnElement.querySelector('i');
         const h4 = btnElement.querySelector('h4');
         const p = btnElement.querySelector('p');
-        icon.className = icon.className.replace('text-gray-400', 'text-blue-600');
-        h4.className = h4.className.replace('text-gray-700', 'text-blue-900');
-        p.className = p.className.replace('text-gray-500', 'text-blue-700');
+        
+        if (icon) icon.className = icon.className.replace('text-gray-400', 'text-blue-600');
+        if (h4) h4.className = h4.className.replace('text-gray-700', 'text-blue-900');
+        if (p) p.className = p.className.replace('text-gray-500', 'text-blue-700');
 
         // Update Step 2 Title & Tab Text
         const step2Title = document.getElementById('step-2-dynamic-title');
