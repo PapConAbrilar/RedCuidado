@@ -93,18 +93,21 @@
     </div>
 
     <!-- Contenido Incidente (Mockup de 4 pasos) -->
-    <div id="content-incidente" class="hidden bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col max-h-[80vh]">
-        <!-- Indicador de pasos (Sticky Header) -->
-        <div class="flex border-b border-gray-100 bg-white sticky top-0 z-10 rounded-t-xl">
-            <div class="flex-1 py-4 text-center text-sm font-medium text-blue-700 border-b-2 border-blue-600 bg-blue-50/30">Visión General del Reporte (Mockup Completo)</div>
+    <div id="content-incidente" class="hidden bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
+        <!-- Indicador de pasos (Clicables) -->
+        <div class="flex border-b border-gray-100 bg-white rounded-t-xl overflow-hidden">
+            <button onclick="switchIncidentStep(1)" id="step-tab-1" class="flex-1 py-3 text-center text-xs font-medium text-blue-700 border-b-2 border-blue-600 bg-blue-50 transition-colors">1. Clasificación</button>
+            <button onclick="switchIncidentStep(2)" id="step-tab-2" class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">2. Zonas</button>
+            <button onclick="switchIncidentStep(3)" id="step-tab-3" class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">3. Detalles</button>
+            <button onclick="switchIncidentStep(4)" id="step-tab-4" class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">4. Envío</button>
         </div>
 
-        <div class="p-8 overflow-y-auto space-y-12">
+        <div class="p-8">
             <!-- PASO 1 -->
-            <div class="space-y-6">
-                <div class="flex items-center gap-3 border-b border-gray-100 pb-3">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">1</div>
+            <div id="step-content-1" class="space-y-6">
+                <div>
                     <h3 class="font-bold text-gray-800 text-lg">Clasificación del Incidente</h3>
+                    <p class="text-sm text-gray-500">Seleccione el tipo de evento ocurrido.</p>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -125,29 +128,29 @@
                         <p class="text-xs text-gray-500">Cambio agudo en signos vitales.</p>
                     </button>
                 </div>
+
+                <div class="flex gap-4 pt-4 border-t border-gray-100">
+                    <div class="flex-1"></div>
+                    <button onclick="switchIncidentStep(2)" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
+                </div>
             </div>
 
             <!-- PASO 2 -->
-            <div class="space-y-6">
-                <div class="flex items-center gap-3 border-b border-gray-100 pb-3">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">2</div>
-                    <div>
-                        <h3 class="font-bold text-gray-800 text-lg">Zonas Corporales Afectadas</h3>
-                        <p class="text-xs text-gray-500 font-normal">Selecciona las regiones con lesión o dolor reportado en el residente.</p>
-                    </div>
+            <div id="step-content-2" class="space-y-6 hidden">
+                <div>
+                    <h3 class="font-bold text-gray-800 text-lg">Zonas Corporales Afectadas</h3>
+                    <p class="text-xs text-gray-500 font-normal">Selecciona las regiones con lesión o dolor reportado en el residente.</p>
                 </div>
                 
                 <div class="flex flex-col md:flex-row gap-8 bg-gray-50/50 p-6 rounded-xl border border-gray-100">
                     <!-- Figura del cuerpo (SVG Mockup) -->
                     <div class="relative w-40 h-80 flex-shrink-0 bg-white rounded-xl flex items-center justify-center border border-gray-200 shadow-sm mx-auto md:mx-0">
                         <svg viewBox="0 0 100 110" class="w-full h-full p-4">
-                            <!-- Cabeza (Seleccionada) -->
                             <ellipse cx="50" cy="12" rx="10" ry="11" fill="#3b82f6" stroke="#2563eb" stroke-width="1" class="animate-pulse" />
                             <rect x="44" y="23" width="12" height="6" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
                             <rect x="33" y="29" width="34" height="24" rx="3" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
                             <rect x="35" y="53" width="30" height="14" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
                             <rect x="22" y="30" width="10" height="22" rx="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <!-- Brazo Derecho (Seleccionado) -->
                             <rect x="68" y="30" width="10" height="22" rx="4" fill="#3b82f6" stroke="#2563eb" stroke-width="1" />
                             <ellipse cx="27" cy="56" rx="6" ry="5" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
                             <ellipse cx="73" cy="56" rx="6" ry="5" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
@@ -171,13 +174,18 @@
                         <button class="px-3 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 bg-white text-left">Rodilla Derecha</button>
                     </div>
                 </div>
+
+                <div class="flex gap-4 pt-4 border-t border-gray-100">
+                    <button onclick="switchIncidentStep(1)" class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
+                    <button onclick="switchIncidentStep(3)" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
+                </div>
             </div>
 
             <!-- PASO 3 -->
-            <div class="space-y-6">
-                <div class="flex items-center gap-3 border-b border-gray-100 pb-3">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">3</div>
+            <div id="step-content-3" class="space-y-6 hidden">
+                <div>
                     <h3 class="font-bold text-gray-800 text-lg">Detalles Clínicos</h3>
+                    <p class="text-sm text-gray-500">Agregue información vital sobre el incidente.</p>
                 </div>
                 
                 <div class="space-y-4">
@@ -204,21 +212,28 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="flex gap-4 pt-4 border-t border-gray-100">
+                    <button onclick="switchIncidentStep(2)" class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
+                    <button onclick="switchIncidentStep(4)" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
+                </div>
             </div>
 
             <!-- PASO 4 -->
-            <div class="space-y-6 bg-blue-50 -mx-8 -mb-8 p-8 border-t border-blue-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="font-bold text-blue-900 text-lg">4. Confirmación y Envío</h3>
-                        <p class="text-sm text-blue-700">Este reporte quedará registrado en la bitácora y enviará notificaciones si es crítico.</p>
+            <div id="step-content-4" class="space-y-6 hidden">
+                <div class="bg-blue-50 p-6 rounded-xl border border-blue-100">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                        <h3 class="font-bold text-blue-900 text-lg">Confirmación y Envío</h3>
                     </div>
-                    <div class="flex gap-4">
-                        <button class="px-6 py-3 border border-gray-300 bg-white rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors shadow-sm">Cancelar</button>
-                        <button class="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors flex items-center gap-2">
-                            <i data-lucide="send" class="w-4 h-4"></i> Guardar Reporte
-                        </button>
-                    </div>
+                    <p class="text-sm text-blue-800">Este reporte quedará registrado en la bitácora y enviará notificaciones si es crítico. Revise que todos los pasos anteriores estén correctos.</p>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button onclick="switchIncidentStep(3)" class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
+                    <button class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="send" class="w-4 h-4"></i> Guardar Reporte
+                    </button>
                 </div>
             </div>
         </div>
@@ -239,6 +254,20 @@
         // Toggle Content
         document.getElementById('content-bitacora').classList.toggle('hidden', tabName !== 'bitacora');
         document.getElementById('content-incidente').classList.toggle('hidden', tabName !== 'incidente');
+    }
+
+    function switchIncidentStep(stepNum) {
+        // Hide all steps
+        for(let i = 1; i <= 4; i++) {
+            document.getElementById('step-content-' + i).classList.add('hidden');
+            let tab = document.getElementById('step-tab-' + i);
+            tab.className = 'flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors';
+        }
+        
+        // Show current step
+        document.getElementById('step-content-' + stepNum).classList.remove('hidden');
+        let currentTab = document.getElementById('step-tab-' + stepNum);
+        currentTab.className = 'flex-1 py-3 text-center text-xs font-medium text-blue-700 border-b-2 border-blue-600 bg-blue-50 transition-colors';
     }
 </script>
 {% endblock %}
