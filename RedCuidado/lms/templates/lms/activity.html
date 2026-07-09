@@ -399,14 +399,18 @@
         h4.className = h4.className.replace('text-gray-700', 'text-blue-900');
         p.className = p.className.replace('text-gray-500', 'text-blue-700');
 
-        // Update Step 2 Title
+        // Update Step 2 Title & Tab Text
         const step2Title = document.getElementById('step-2-dynamic-title');
+        const step2Tab = document.getElementById('step-tab-2');
         if (type === 'caida') {
             step2Title.innerHTML = `<h3 class="font-bold text-gray-800 text-lg">Zonas Corporales Afectadas</h3><p class="text-xs text-gray-500 font-normal">Selecciona las regiones con lesión o dolor reportado en el residente.</p>`;
+            step2Tab.innerText = "2. Zonas";
         } else if (type === 'medicacion') {
             step2Title.innerHTML = `<h3 class="font-bold text-gray-800 text-lg">Detalles del Error de Medicación</h3><p class="text-xs text-gray-500 font-normal">Identifique el fármaco y la naturaleza de la desviación.</p>`;
+            step2Tab.innerText = "2. Fármaco";
         } else if (type === 'deterioro') {
             step2Title.innerHTML = `<h3 class="font-bold text-gray-800 text-lg">Cuadro Clínico Agudo</h3><p class="text-xs text-gray-500 font-normal">Indique los signos y síntomas de alarma que presenta el residente.</p>`;
+            step2Tab.innerText = "2. Síntomas";
         }
 
         // Move to next step automatically
