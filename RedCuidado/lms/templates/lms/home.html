@@ -28,7 +28,69 @@
         {% endif %}
     </div>
 
-    <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+    </div>
+
+    <!-- Rutas de Aprendizaje Estructuradas -->
+    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 p-6 mb-8 relative overflow-hidden">
+        <!-- Decoración de fondo -->
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-100 rounded-full opacity-50 blur-2xl"></div>
+        
+        <div class="relative z-10">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-indigo-900 flex items-center gap-2">
+                        <i data-lucide="map" class="w-5 h-5 text-indigo-600"></i> Tu Ruta de Competencias
+                    </h2>
+                    <p class="text-sm text-indigo-700 mt-1">Sube de nivel completando los cursos requeridos para tu área.</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm font-bold text-indigo-900">Rango Actual: <span class="text-indigo-600">Iniciado</span></div>
+                    <div class="text-xs text-indigo-600 font-medium">Siguiente: Especialista en Cuidados (2/4 cursos)</div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between relative">
+                <!-- Línea conectora -->
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-indigo-200 z-0 rounded-full">
+                    <div class="h-full bg-indigo-600 rounded-full transition-all duration-1000" style="width: 50%;"></div>
+                </div>
+
+                <!-- Nodo 1: Completado -->
+                <div class="relative z-10 flex flex-col items-center gap-2 group cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-200 border-4 border-white transition-transform group-hover:scale-110">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-900">Inducción</span>
+                </div>
+
+                <!-- Nodo 2: Completado -->
+                <div class="relative z-10 flex flex-col items-center gap-2 group cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-200 border-4 border-white transition-transform group-hover:scale-110">
+                        <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-900">Primeros Aux.</span>
+                </div>
+
+                <!-- Nodo 3: En progreso -->
+                <div class="relative z-10 flex flex-col items-center gap-2 group cursor-pointer">
+                    <div class="w-14 h-14 rounded-full bg-white text-indigo-600 flex items-center justify-center shadow-xl border-4 border-indigo-600 transition-transform group-hover:scale-110">
+                        <i data-lucide="brain" class="w-6 h-6 animate-pulse"></i>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-900 bg-white px-2 py-0.5 rounded-full shadow-sm border border-indigo-100">Cuidados Cognitivos</span>
+                </div>
+
+                <!-- Nodo 4: Bloqueado -->
+                <div class="relative z-10 flex flex-col items-center gap-2 group cursor-not-allowed opacity-60">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center border-4 border-white">
+                        <i data-lucide="lock" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-500">Manejo de Crisis</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6 shadow-sm">
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-2">
                 <h2 class="text-xl">Actividad Reciente de Cursos</h2>
@@ -115,41 +177,83 @@
     </div>
 </main>
 
-{% if request.user|has_group:"Administrador" and active_menu != 'reports' %}
-<aside class="w-80 p-6 border-l border-gray-200">
+<aside class="w-96 p-6 border-l border-gray-200 bg-gray-50 overflow-y-auto">
+    <!-- Panel de Actividad / Bitácora de Turno (Visible para todos) -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div class="p-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-white">
+            <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                <i data-lucide="clipboard-list" class="w-5 h-5 text-blue-600"></i> Bitácora de Turno
+            </h3>
+            <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-700 rounded-full">Turno AM</span>
+        </div>
+        
+        <div class="p-4 space-y-4">
+            <!-- Ingreso rápido de novedad -->
+            <div class="relative">
+                <textarea placeholder="Registrar novedad u observación para el siguiente turno..." class="w-full text-sm p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none h-20"></textarea>
+                <button class="absolute bottom-2 right-2 p-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Novedades del tablón -->
+            <div class="space-y-3">
+                <!-- Novedad Crítica (Automática por SOS) -->
+                <div class="p-3 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold text-red-700 flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3"></i> INCIDENTE AUTOMÁTICO</span>
+                        <span class="text-xs text-red-500">14:30</span>
+                    </div>
+                    <p class="text-sm text-red-900 font-medium">Caída de residente reportada vía SOS. Protocolo R-43 activado.</p>
+                    <p class="text-xs text-red-600 mt-1">Reportado por: Turno anterior</p>
+                </div>
+
+                <!-- Novedad Rutinaria -->
+                <div class="p-3 bg-white border border-gray-100 rounded-lg shadow-sm">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold text-gray-700 flex items-center gap-1"><i data-lucide="message-square" class="w-3 h-3 text-gray-400"></i> Observación</span>
+                        <span class="text-xs text-gray-400">09:15</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Revisar stock de insumos en bodega 2, quedan pocas mascarillas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if request.user|has_group:"Administrador" and active_menu != 'reports' %}
     <!-- PortalStats Dinámico -->
-    <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 text-white mb-6">
+    <div class="bg-gradient-to-br from-blue-600 to-indigo-800 rounded-xl p-6 text-white mb-6 shadow-md">
         <h3 class="font-semibold text-lg mb-1">Portal de Administrador</h3>
         <p class="text-blue-100 text-sm mb-6">Resumen del sistema</p>
         
         <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white/10 rounded-lg p-4">
+            <div class="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/10">
                 <i data-lucide="users" class="w-5 h-5 mb-2 text-blue-200"></i>
                 <div class="text-2xl font-bold">{{ admin_stats.total_users }}</div>
                 <div class="text-xs text-blue-200">Usuarios Totales</div>
             </div>
             
-            <div class="bg-white/10 rounded-lg p-4">
+            <div class="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/10">
                 <i data-lucide="graduation-cap" class="w-5 h-5 mb-2 text-blue-200"></i>
                 <div class="text-2xl font-bold">{{ admin_stats.total_courses }}</div>
                 <div class="text-xs text-blue-200">Cursos Activos</div>
             </div>
             
-            <div class="bg-white/10 rounded-lg p-4">
+            <div class="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/10">
                 <i data-lucide="award" class="w-5 h-5 mb-2 text-blue-200"></i>
                 <div class="text-2xl font-bold">{{ admin_stats.certificates_month }}</div>
                 <div class="text-xs text-blue-200">Certificados Mes</div>
             </div>
             
-            <div class="bg-white/10 rounded-lg p-4">
+            <div class="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/10">
                 <i data-lucide="clock" class="w-5 h-5 mb-2 text-blue-200"></i>
                 <div class="text-2xl font-bold">{{ admin_stats.total_certificates }}</div>
                 <div class="text-xs text-blue-200">Total Certificados</div>
             </div>
         </div>
     </div>
+    {% endif %}
 </aside>
-{% endif %}
 
 <script>
 function togglePin(courseId, btn) {
