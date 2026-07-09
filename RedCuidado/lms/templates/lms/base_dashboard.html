@@ -4,7 +4,15 @@
 {% block content %}
 <!-- Sidebar -->
 <div id="sidebar" class="w-60 bg-[#0047AB] h-screen fixed left-0 top-0 flex flex-col text-white z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
-    <div class="flex-1 py-6">
+    
+    <!-- Logo ONG -->
+    <div class="p-6 border-b border-[#003A8C] mb-2">
+        <div class="bg-white p-2 rounded-xl flex items-center justify-center shadow-lg border-2 border-white/20">
+            <img src="{% static 'lms/img/logo.png' %}" alt="ONG Logo" class="max-h-12 object-contain">
+        </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto">
         <a href="{% url 'home' %}"
             class="w-full px-6 py-3 flex items-center gap-3 hover:bg-[#003A8C] transition-colors {% if active_menu == 'homepage' %}bg-[#003A8C]{% endif %}">
             <i data-lucide="home" class="w-5 h-5"></i>
@@ -62,8 +70,6 @@
         <button id="sidebar-toggle" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
             <i data-lucide="menu" class="w-6 h-6 text-gray-600"></i>
         </button>
-        
-        <img src="{% static 'lms/img/logo.png' %}" alt="ALUMCO" style="max-height: 40px;">
         <div class="relative">
             <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
             <input type="text" placeholder="Buscar"
