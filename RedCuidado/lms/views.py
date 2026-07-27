@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from functools import wraps
 from datetime import timedelta
-from .models import Course, Module, Content, ContentProgress, Enrollment, TestResult, WorkArea, UserProfile
+from .models import Course, Module, Content, ContentProgress, Enrollment, TestResult, WorkArea, UserProfile, BitacoraEntry
 from .forms import CourseForm, ModuleForm, ContentForm, CollaboratorCreationForm
 
 def staff_required(view_func):
@@ -54,8 +54,23 @@ def logout_view(request):
 
 @login_required
 def activity_board_view(request):
-    """Renderiza la vista estática (mockup) del Tablón de Actividad."""
-    return render(request, 'lms/activity.html', {'active_menu': 'activity'})
+    """Renderiza la vista del Tablón de Actividad y procesa nuevas entradas de bitácora."""
+    if request.method == 'POST':
+        entry_type = request.POST.get('entry_type')
+        resident_name = request.POST.get('resident_name', '')
+        description = request.POST.get('description', '')
+        
+        if entry_type and description:
+            BitacoraEntry.objects.create(
+                author=request.user,
+                entry_type=entry_type,
+                resident_name=resident_name,
+                description=description
+            )
+        return redirect('activity')
+
+    entries = BitacoraEntry.objects.all()[:20]  # Últimas 20 entradas
+    return render(request, 'lms/activity.html', {'active_menu': 'activity', 'entries': entries})
 
 @login_required
 def learning_paths_view(request):
