@@ -160,79 +160,62 @@
                     class="flex flex-col md:flex-row gap-8 bg-gray-50/50 p-6 rounded-xl border border-gray-100">
                     <div
                         class="relative w-40 h-80 flex-shrink-0 bg-white rounded-xl flex items-center justify-center border border-gray-200 shadow-sm mx-auto md:mx-0">
-                        <svg viewBox="0 0 100 110" class="w-full h-full p-4">
-                            <ellipse cx="50" cy="12" rx="10" ry="11" fill="#3b82f6" stroke="#2563eb" stroke-width="1"
-                                class="animate-pulse" />
-                            <rect x="44" y="23" width="12" height="6" rx="2" fill="#e5e7eb" stroke="#9ca3af"
-                                stroke-width="0.5" />
-                            <rect x="33" y="29" width="34" height="24" rx="3" fill="#e5e7eb" stroke="#9ca3af"
-                                stroke-width="0.5" />
-                            <rect x="35" y="53" width="30" height="14" rx="2" fill="#e5e7eb" stroke="#9ca3af"
-                                stroke-width="0.5" />
-                            <rect x="22" y="30" width="10" height="22" rx="4" fill="#e5e7eb" stroke="#9ca3af"
-                                stroke-width="0.5" />
-                            <rect x="68" y="30" width="10" height="22" rx="4" fill="#3b82f6" stroke="#2563eb"
-                                stroke-width="1" />
-                            <ellipse cx="27" cy="56" rx="6" ry="5" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <ellipse cx="73" cy="56" rx="6" ry="5" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <rect x="35" y="67" width="30" height="8" rx="2" fill="#e5e7eb" stroke="#9ca3af"
-                                stroke-width="0.5" />
-                            <rect x="36" y="75" width="12" height="20" rx="3" fill="#e5e7eb" stroke="#9ca3af"
-                                stroke-width="0.5" />
-                            <rect x="52" y="75" width="12" height="20" rx="3" fill="#e5e7eb" stroke="#9ca3af"
-                                stroke-width="0.5" />
-                            <ellipse cx="42" cy="98" rx="8" ry="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <ellipse cx="58" cy="98" rx="8" ry="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
+                        <svg viewBox="0 0 100 110" class="w-full h-full p-4 transition-all duration-300">
+                            <ellipse id="svg-cabeza" cx="50" cy="12" rx="10" ry="11" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <rect id="svg-cuello" x="44" y="23" width="12" height="6" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <rect id="svg-torax" x="33" y="29" width="34" height="24" rx="3" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <rect id="svg-pelvis-1" x="35" y="53" width="30" height="14" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <rect id="svg-brazo-d-1" x="22" y="30" width="10" height="22" rx="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <rect id="svg-brazo-i-1" x="68" y="30" width="10" height="22" rx="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <ellipse id="svg-brazo-d-2" cx="27" cy="56" rx="6" ry="5" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <ellipse id="svg-brazo-i-2" cx="73" cy="56" rx="6" ry="5" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <rect id="svg-pelvis-2" x="35" y="67" width="30" height="8" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <rect id="svg-pierna-d-1" x="36" y="75" width="12" height="20" rx="3" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <rect id="svg-pierna-i-1" x="52" y="75" width="12" height="20" rx="3" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <ellipse id="svg-pierna-d-2" cx="42" cy="98" rx="8" ry="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
+                            <ellipse id="svg-pierna-i-2" cx="58" cy="98" rx="8" ry="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" class="transition-colors duration-300" />
                         </svg>
                     </div>
 
                     <div class="flex-1 grid grid-cols-2 gap-3 content-start">
                         <label class="cursor-pointer">
-                            <input type="checkbox" name="zonas" value="Cabeza / Cráneo" class="peer sr-only">
-                            <div
-                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                            <input type="checkbox" name="zonas" value="Cabeza / Cráneo" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
+                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
                                 Cabeza / Cráneo</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="checkbox" name="zonas" value="Cara" class="peer sr-only">
-                            <div
-                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                            <input type="checkbox" name="zonas" value="Cara" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
+                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
                                 Cara</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="checkbox" name="zonas" value="Cuello" class="peer sr-only">
-                            <div
-                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                            <input type="checkbox" name="zonas" value="Cuello" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
+                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
                                 Cuello</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="checkbox" name="zonas" value="Tórax" class="peer sr-only">
-                            <div
-                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                            <input type="checkbox" name="zonas" value="Tórax" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
+                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
                                 Tórax</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="checkbox" name="zonas" value="Brazo Derecho" class="peer sr-only">
-                            <div
-                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                            <input type="checkbox" name="zonas" value="Brazo Derecho" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
+                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
                                 Brazo Derecho</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="checkbox" name="zonas" value="Brazo Izquierdo" class="peer sr-only">
-                            <div
-                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                            <input type="checkbox" name="zonas" value="Brazo Izquierdo" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
+                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
                                 Brazo Izquierdo</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="checkbox" name="zonas" value="Cadera / Pelvis" class="peer sr-only">
-                            <div
-                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                            <input type="checkbox" name="zonas" value="Cadera / Pelvis" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
+                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
                                 Cadera / Pelvis</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="checkbox" name="zonas" value="Piernas" class="peer sr-only">
-                            <div
-                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                            <input type="checkbox" name="zonas" value="Piernas" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
+                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
                                 Piernas</div>
                         </label>
                     </div>
@@ -713,6 +696,44 @@
 
         // Show modal
         document.getElementById('entry-details-modal').classList.remove('hidden');
+    }
+
+    function toggleBodyPart(zona, isChecked) {
+        const defaultFill = "#e5e7eb";
+        const defaultStroke = "#9ca3af";
+        const defaultWidth = "0.5";
+        
+        const activeFill = "#fee2e2"; // red-100
+        const activeStroke = "#ef4444"; // red-500
+        const activeWidth = "1.5";
+
+        const parts = {
+            "Cabeza / Cráneo": ["svg-cabeza"],
+            "Cara": ["svg-cabeza"],
+            "Cuello": ["svg-cuello"],
+            "Tórax": ["svg-torax"],
+            "Brazo Derecho": ["svg-brazo-d-1", "svg-brazo-d-2"],
+            "Brazo Izquierdo": ["svg-brazo-i-1", "svg-brazo-i-2"],
+            "Cadera / Pelvis": ["svg-pelvis-1", "svg-pelvis-2"],
+            "Piernas": ["svg-pierna-d-1", "svg-pierna-d-2", "svg-pierna-i-1", "svg-pierna-i-2"]
+        };
+
+        if (parts[zona]) {
+            parts[zona].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (isChecked) {
+                        el.setAttribute('fill', activeFill);
+                        el.setAttribute('stroke', activeStroke);
+                        el.setAttribute('stroke-width', activeWidth);
+                    } else {
+                        el.setAttribute('fill', defaultFill);
+                        el.setAttribute('stroke', defaultStroke);
+                        el.setAttribute('stroke-width', defaultWidth);
+                    }
+                }
+            });
+        }
     }
 </script>
 {% endblock %}
