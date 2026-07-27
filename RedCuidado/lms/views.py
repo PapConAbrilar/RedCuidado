@@ -109,6 +109,16 @@ def activity_board_view(request):
     return render(request, 'lms/activity.html', {'active_menu': 'activity', 'entries': entries})
 
 @login_required
+def delete_bitacora_entry(request, entry_id):
+    if not request.user.is_superuser:
+        return redirect('activity_board')
+    entry = get_object_or_404(BitacoraEntry, id=entry_id)
+    if request.method == 'POST':
+        entry.delete()
+    return redirect('activity_board')
+
+
+@login_required
 def learning_paths_view(request):
     """Renderiza la vista estática (mockup) de Rutas de Aprendizaje."""
     return render(request, 'lms/paths.html', {'active_menu': 'paths'})

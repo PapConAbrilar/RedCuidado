@@ -35,7 +35,7 @@
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
             {% if entries %}
             {% for entry in entries %}
-            <div onclick="openEntryDetails('{{ entry.entry_type }}', '{{ entry.created_at|date:'H:i (d/m/Y)' }}', '{{ entry.author.get_full_name|default:entry.author.username|escapejs }}', '{{ entry.resident_name|default:''|escapejs }}', '{{ entry.description|escapejs }}', {% if entry.incident_data %}{{ entry.incident_data|safe }}{% else %}{}{% endif %})"
+            <div onclick="openEntryDetails('{{ entry.id }}', '{{ entry.entry_type }}', '{{ entry.created_at|date:'H:i (d/m/Y)' }}', '{{ entry.author.get_full_name|default:entry.author.username|escapejs }}', '{{ entry.resident_name|default:''|escapejs }}', '{{ entry.description|escapejs }}', {% if entry.incident_data %}{{ entry.incident_data|safe }}{% else %}{}{% endif %})"
                 class="cursor-pointer p-4 flex gap-4 border-b border-gray-100 {% if entry.entry_type == 'incidente' %}bg-red-50 hover:bg-red-100/50{% else %}hover:bg-gray-50{% endif %} transition-colors">
                 <div class="flex-shrink-0 text-center w-12">
                     <i data-lucide="clock" class="w-4 h-4 text-gray-400 mx-auto mb-1"></i>
@@ -422,6 +422,17 @@
                         </div>
                     </div>
                 </div>
+                
+                {% if request.user.is_superuser %}
+                <div class="p-6 bg-gray-50 border-t border-gray-100 flex gap-3 justify-end flex-shrink-0">
+                    <form id="delete-entry-form" method="POST" action="">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('¿Está seguro de que desea eliminar permanentemente este registro?');" class="px-5 py-2 text-red-600 bg-white border border-red-300 font-medium rounded-lg hover:bg-red-50 transition-colors text-sm flex items-center gap-2">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i> Eliminar Registro
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -632,7 +643,13 @@
         currentTab.className = 'flex-1 py-3 text-center text-xs font-medium text-blue-700 border-b-2 border-blue-600 bg-blue-50 transition-colors';
     }
 
-    function openEntryDetails(type, time, author, resident, description, incidentData) {
+    function openEntryDetails(id, type, time, author, resident, description, incidentData) {
+        // Handle Admin Delete Form
+        const deleteForm = document.getElementById('delete-entry-form');
+        if (deleteForm) {
+            deleteForm.action = '/actividad/borrar/' + id + '/';
+        }
+
         // Set basic details
         document.getElementById('details-subtitle').innerText = `${time} • Ingresado por ${author}` + (resident ? ` • Residente: ${resident}` : '');
         document.getElementById('details-description').innerText = description;
