@@ -265,7 +265,7 @@
 
     <!-- Modal Nueva Entrada de Bitácora -->
     <div id="new-entry-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <form method="POST" action="{% url 'activity' %}" class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
+        <form method="POST" action="{% url 'activity_board' %}" class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
             {% csrf_token %}
             <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50">
                 <div class="flex items-center gap-3">

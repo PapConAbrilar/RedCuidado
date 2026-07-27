@@ -67,7 +67,7 @@ def activity_board_view(request):
                 resident_name=resident_name,
                 description=description
             )
-        return redirect('activity')
+        return redirect('activity_board')
 
     entries = BitacoraEntry.objects.all()[:20]  # Últimas 20 entradas
     return render(request, 'lms/activity.html', {'active_menu': 'activity', 'entries': entries})
