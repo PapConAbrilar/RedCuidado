@@ -110,7 +110,7 @@ def activity_board_view(request):
 
 @login_required
 def delete_bitacora_entry(request, entry_id):
-    if not (request.user.is_staff or request.user.is_superuser):
+    if not (request.user.is_staff or request.user.is_superuser or request.user.username == 'admin'):
         return redirect('activity_board')
     entry = get_object_or_404(BitacoraEntry, id=entry_id)
     if request.method == 'POST':
