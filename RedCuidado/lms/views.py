@@ -56,17 +56,53 @@ def logout_view(request):
 def activity_board_view(request):
     """Renderiza la vista del Tablón de Actividad y procesa nuevas entradas de bitácora."""
     if request.method == 'POST':
-        entry_type = request.POST.get('entry_type')
-        resident_name = request.POST.get('resident_name', '')
-        description = request.POST.get('description', '')
+        form_type = request.POST.get('form_type')
         
-        if entry_type and description:
+        if form_type == 'incidente':
+            # Collect Incident Data
+            incident_category = request.POST.get('incident_category', 'caida')
+            resident_name = request.POST.get('incident_resident', '')
+            description = request.POST.get('incident_description', '')
+            glasgow = request.POST.get('glasgow', '')
+            signos_vitales = request.POST.getlist('signos_vitales')
+            
+            # Category specific data
+            incident_data = {
+                'category': incident_category,
+                'glasgow': glasgow,
+                'signos_vitales': signos_vitales,
+                'specific_details': {}
+            }
+            
+            if incident_category == 'caida':
+                incident_data['specific_details']['zonas_afectadas'] = request.POST.getlist('zonas')
+            elif incident_category == 'medicacion':
+                incident_data['specific_details']['farmaco'] = request.POST.get('farmaco_nombre', '')
+                incident_data['specific_details']['tipo_error'] = request.POST.get('tipo_error', '')
+                incident_data['specific_details']['administrado'] = request.POST.get('admin_paciente', '')
+            elif incident_category == 'deterioro':
+                incident_data['specific_details']['sintomas'] = request.POST.getlist('sintomas')
+
             BitacoraEntry.objects.create(
                 author=request.user,
-                entry_type=entry_type,
+                entry_type='incidente',
                 resident_name=resident_name,
-                description=description
+                description=description,
+                incident_data=incident_data
             )
+        else:
+            # Normal Bitácora Entry
+            entry_type = request.POST.get('entry_type')
+            resident_name = request.POST.get('resident_name', '')
+            description = request.POST.get('description', '')
+            
+            if entry_type and description:
+                BitacoraEntry.objects.create(
+                    author=request.user,
+                    entry_type=entry_type,
+                    resident_name=resident_name,
+                    description=description
+                )
         return redirect('activity_board')
 
     entries = BitacoraEntry.objects.all()[:20]  # Últimas 20 entradas

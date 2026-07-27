@@ -145,6 +145,7 @@ class BitacoraEntry(models.Model):
     entry_type = models.CharField(max_length=20, choices=ENTRY_TYPES, verbose_name="Tipo de Registro")
     resident_name = models.CharField(max_length=150, blank=True, null=True, verbose_name="Residente (Opcional)")
     description = models.TextField(verbose_name="Descripción")
+    incident_data = models.JSONField(blank=True, null=True, default=dict, verbose_name="Datos Adicionales del Incidente")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
