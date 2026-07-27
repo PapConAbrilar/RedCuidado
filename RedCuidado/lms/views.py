@@ -31,20 +31,72 @@ def admin_required(view_func):
         raise PermissionDenied
     return _wrapped_view
 
+def _setup_guest_courses(user):
+    # Ensure guest has UserProfile
+    profile, _ = UserProfile.objects.get_or_create(user=user)
+    
+    # Create or get Mock Courses
+    c1, _ = Course.objects.get_or_create(
+        title="Curso de Inducción RedCuidado",
+        defaults={
+            'description': "Curso de prueba para invitados. Presentación de los protocolos básicos.",
+            'instructor': "Dra. Demo",
+            'duration': 120,
+            'is_mandatory': True
+        }
+    )
+    
+    c2, _ = Course.objects.get_or_create(
+        title="Prevención de Caídas",
+        defaults={
+            'description': "Protocolos y herramientas para evitar caídas en residentes.",
+            'instructor': "Dr. Demo",
+            'duration': 60,
+            'is_mandatory': False
+        }
+    )
+    
+    # Enroll user
+    Enrollment.objects.get_or_create(user=user, course=c1)
+    Enrollment.objects.get_or_create(user=user, course=c2)
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('home')
         
     error = None
     if request.method == 'POST':
-        u = request.POST.get('username')
-        p = request.POST.get('password')
-        user = authenticate(request, username=u, password=p)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
+        action = request.POST.get('action', 'login')
+        
+        if action == 'guest':
+            guest_name = request.POST.get('guest_name', '').strip()
+            if guest_name:
+                username = f"guest_{guest_name.lower().replace(' ', '_')}"
+                # Limit username length to 150 chars max for django User model
+                username = username[:150]
+                user, created = User.objects.get_or_create(
+                    username=username,
+                    defaults={'first_name': guest_name[:30]}
+                )
+                if created:
+                    user.set_unusable_password()
+                    user.save()
+                
+                _setup_guest_courses(user)
+                login(request, user)
+                return redirect('home')
+            else:
+                error = "Debe ingresar un nombre para entrar como invitado."
+                
         else:
-            error = "Usuario o contraseña incorrectos."
+            u = request.POST.get('username')
+            p = request.POST.get('password')
+            user = authenticate(request, username=u, password=p)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                error = "Usuario o contraseña incorrectos."
             
     return render(request, 'lms/login.html', {'error': error})
 
