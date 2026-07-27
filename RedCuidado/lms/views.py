@@ -40,9 +40,8 @@ def _setup_guest_courses(user):
         title="Curso de Inducción RedCuidado",
         defaults={
             'description': "Curso de prueba para invitados. Presentación de los protocolos básicos.",
-            'instructor': "Dra. Demo",
-            'duration': 120,
-            'is_mandatory': True
+            'code': 'DEMO-101',
+            'duration_days': 7
         }
     )
     
@@ -50,9 +49,8 @@ def _setup_guest_courses(user):
         title="Prevención de Caídas",
         defaults={
             'description': "Protocolos y herramientas para evitar caídas en residentes.",
-            'instructor': "Dr. Demo",
-            'duration': 60,
-            'is_mandatory': False
+            'code': 'DEMO-102',
+            'duration_days': 7
         }
     )
     
