@@ -25,7 +25,8 @@
     <div id="content-bitacora" class="space-y-4">
         <div class="flex justify-between items-center">
             <p class="text-sm text-gray-500">4 registros en este turno</p>
-            <button onclick="document.getElementById('new-entry-modal').classList.remove('hidden')" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+            <button onclick="document.getElementById('new-entry-modal').classList.remove('hidden')"
+                class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
                 <i data-lucide="plus" class="w-4 h-4"></i>
                 Nueva Entrada
             </button>
@@ -33,63 +34,80 @@
 
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
             {% if entries %}
-                {% for entry in entries %}
-                <div onclick="openEntryDetails('{{ entry.entry_type }}', '{{ entry.created_at|date:'H:i (d/m/Y)' }}', '{{ entry.author.get_full_name|default:entry.author.username|escapejs }}', '{{ entry.resident_name|default:''|escapejs }}', '{{ entry.description|escapejs }}', {% if entry.incident_data %}{{ entry.incident_data|safe }}{% else %}{}{% endif %})" class="cursor-pointer p-4 flex gap-4 border-b border-gray-100 {% if entry.entry_type == 'incidente' %}bg-red-50 hover:bg-red-100/50{% else %}hover:bg-gray-50{% endif %} transition-colors">
-                    <div class="flex-shrink-0 text-center w-12">
-                        <i data-lucide="clock" class="w-4 h-4 text-gray-400 mx-auto mb-1"></i>
-                        <span class="text-xs font-mono text-gray-500">{{ entry.created_at|date:"H:i" }}</span>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex flex-wrap items-center gap-2 mb-1">
-                            {% if entry.entry_type == 'observacion' %}
-                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Observación</span>
-                            {% elif entry.entry_type == 'pendiente' %}
-                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">Pendiente</span>
-                            {% elif entry.entry_type == 'evaluacion' %}
-                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Evaluación</span>
-                            {% elif entry.entry_type == 'incidente' %}
-                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">Incidente</span>
-                            {% endif %}
-                            
-                            {% if entry.resident_name %}
-                            <span class="flex items-center gap-1 text-xs text-gray-500">
-                                <i data-lucide="user" class="w-3 h-3"></i> {{ entry.resident_name }}
-                            </span>
-                            {% endif %}
-                            
-                            <span class="text-xs text-gray-400 ml-auto">{{ entry.author.first_name }} {{ entry.author.last_name|default:entry.author.username }}</span>
-                        </div>
-                        <p class="text-sm text-gray-700 {% if entry.entry_type == 'incidente' %}font-medium{% endif %}">{{ entry.description|truncatechars:100 }}</p>
-                        {% if entry.entry_type == 'incidente' %}
-                        <div class="flex items-center gap-1 mt-2">
-                            <i data-lucide="alert-circle" class="w-3 h-3 text-red-500"></i>
-                            <span class="text-xs text-red-600 font-semibold">Ver detalles completos del incidente</span>
-                        </div>
-                        {% else %}
-                        <div class="text-xs text-blue-500 mt-1 opacity-0 hover:opacity-100 transition-opacity">Ver detalles completos</div>
+            {% for entry in entries %}
+            <div onclick="openEntryDetails('{{ entry.entry_type }}', '{{ entry.created_at|date:'H:i (d/m/Y)' }}', '{{ entry.author.get_full_name|default:entry.author.username|escapejs }}', '{{ entry.resident_name|default:''|escapejs }}', '{{ entry.description|escapejs }}', {% if entry.incident_data %}{{ entry.incident_data|safe }}{% else %}{}{% endif %})"
+                class="cursor-pointer p-4 flex gap-4 border-b border-gray-100 {% if entry.entry_type == 'incidente' %}bg-red-50 hover:bg-red-100/50{% else %}hover:bg-gray-50{% endif %} transition-colors">
+                <div class="flex-shrink-0 text-center w-12">
+                    <i data-lucide="clock" class="w-4 h-4 text-gray-400 mx-auto mb-1"></i>
+                    <span class="text-xs font-mono text-gray-500">{{ entry.created_at|date:"H:i" }}</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                        {% if entry.entry_type == 'observacion' %}
+                        <span
+                            class="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Observación</span>
+                        {% elif entry.entry_type == 'pendiente' %}
+                        <span
+                            class="px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">Pendiente</span>
+                        {% elif entry.entry_type == 'evaluacion' %}
+                        <span
+                            class="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Evaluación</span>
+                        {% elif entry.entry_type == 'incidente' %}
+                        <span
+                            class="px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">Incidente</span>
                         {% endif %}
+
+                        {% if entry.resident_name %}
+                        <span class="flex items-center gap-1 text-xs text-gray-500">
+                            <i data-lucide="user" class="w-3 h-3"></i> {{ entry.resident_name }}
+                        </span>
+                        {% endif %}
+
+                        <span class="text-xs text-gray-400 ml-auto">{{ entry.author.first_name }} {{
+                            entry.author.last_name|default:entry.author.username }}</span>
                     </div>
+                    <p class="text-sm text-gray-700 {% if entry.entry_type == 'incidente' %}font-medium{% endif %}">{{
+                        entry.description|truncatechars:100 }}</p>
+                    {% if entry.entry_type == 'incidente' %}
+                    <div class="flex items-center gap-1 mt-2">
+                        <i data-lucide="alert-circle" class="w-3 h-3 text-red-500"></i>
+                        <span class="text-xs text-red-600 font-semibold">Ver detalles completos del incidente</span>
+                    </div>
+                    {% else %}
+                    <div class="text-xs text-blue-500 mt-1 opacity-0 hover:opacity-100 transition-opacity">Ver detalles
+                        completos</div>
+                    {% endif %}
                 </div>
-                {% endfor %}
+            </div>
+            {% endfor %}
             {% else %}
-                <div class="p-8 text-center text-gray-500 text-sm">
-                    No hay entradas registradas en este turno aún.
-                </div>
+            <div class="p-8 text-center text-gray-500 text-sm">
+                No hay entradas registradas en este turno aún.
+            </div>
             {% endif %}
         </div>
     </div>
 
     <!-- Contenido Incidente (Mockup de 4 pasos) -->
-    <form id="content-incidente" method="POST" action="{% url 'activity_board' %}" class="hidden bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
+    <form id="content-incidente" method="POST" action="{% url 'activity_board' %}"
+        class="hidden bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
         {% csrf_token %}
         <input type="hidden" name="form_type" value="incidente">
         <input type="hidden" name="incident_category" id="incident_category" value="caida">
         <!-- Indicador de pasos (Clicables) -->
         <div class="flex border-b border-gray-100 bg-white rounded-t-xl overflow-hidden">
-            <button type="button" onclick="switchIncidentStep(1)" id="step-tab-1" class="flex-1 py-3 text-center text-xs font-medium text-blue-700 border-b-2 border-blue-600 bg-blue-50 transition-colors">1. Clasificación</button>
-            <button type="button" onclick="switchIncidentStep(2)" id="step-tab-2" class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">2. Zonas</button>
-            <button type="button" onclick="switchIncidentStep(3)" id="step-tab-3" class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">3. Detalles</button>
-            <button type="button" onclick="switchIncidentStep(4)" id="step-tab-4" class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">4. Envío</button>
+            <button type="button" onclick="switchIncidentStep(1)" id="step-tab-1"
+                class="flex-1 py-3 text-center text-xs font-medium text-blue-700 border-b-2 border-blue-600 bg-blue-50 transition-colors">1.
+                Clasificación</button>
+            <button type="button" onclick="switchIncidentStep(2)" id="step-tab-2"
+                class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">2.
+                Zonas</button>
+            <button type="button" onclick="switchIncidentStep(3)" id="step-tab-3"
+                class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">3.
+                Detalles</button>
+            <button type="button" onclick="switchIncidentStep(4)" id="step-tab-4"
+                class="flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors">4.
+                Envío</button>
         </div>
 
         <div class="p-8">
@@ -99,20 +117,25 @@
                     <h3 class="font-bold text-gray-800 text-lg">Clasificación del Incidente</h3>
                     <p class="text-sm text-gray-500">Seleccione el tipo de evento ocurrido.</p>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <button type="button" onclick="selectIncidentType('caida', this)" class="incident-type-btn p-4 rounded-xl border-2 border-blue-500 bg-blue-50 text-left transition-all relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-bl-full opacity-50 -mr-8 -mt-8"></div>
+                    <button type="button" onclick="selectIncidentType('caida', this)"
+                        class="incident-type-btn p-4 rounded-xl border-2 border-blue-500 bg-blue-50 text-left transition-all relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-bl-full opacity-50 -mr-8 -mt-8">
+                        </div>
                         <i data-lucide="activity" class="w-6 h-6 text-blue-600 mb-2 relative z-10"></i>
                         <h4 class="font-bold text-blue-900 mb-1 relative z-10">Caída</h4>
                         <p class="text-xs text-blue-700 relative z-10">Desde propia altura, cama o silla.</p>
                     </button>
-                    <button type="button" onclick="selectIncidentType('medicacion', this)" class="incident-type-btn p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 bg-white text-left transition-all">
+                    <button type="button" onclick="selectIncidentType('medicacion', this)"
+                        class="incident-type-btn p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 bg-white text-left transition-all">
                         <i data-lucide="pill" class="w-6 h-6 text-gray-400 mb-2"></i>
                         <h4 class="font-bold text-gray-700 mb-1">Error de Medicación</h4>
                         <p class="text-xs text-gray-500">Dosis, paciente o vía incorrecta.</p>
                     </button>
-                    <button type="button" onclick="selectIncidentType('deterioro', this)" class="incident-type-btn p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 bg-white text-left transition-all">
+                    <button type="button" onclick="selectIncidentType('deterioro', this)"
+                        class="incident-type-btn p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 bg-white text-left transition-all">
                         <i data-lucide="thermometer" class="w-6 h-6 text-gray-400 mb-2"></i>
                         <h4 class="font-bold text-gray-700 mb-1">Deterioro Clínico</h4>
                         <p class="text-xs text-gray-500">Cambio agudo en signos vitales.</p>
@@ -121,7 +144,8 @@
 
                 <div class="flex gap-4 pt-4 border-t border-gray-100">
                     <div class="flex-1"></div>
-                    <button type="button" onclick="switchIncidentStep(2)" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
+                    <button type="button" onclick="switchIncidentStep(2)"
+                        class="px-8 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
                 </div>
             </div>
 
@@ -129,108 +153,172 @@
             <div id="step-content-2" class="space-y-6 hidden">
                 <div id="step-2-dynamic-title">
                     <h3 class="font-bold text-gray-800 text-lg">Zonas Corporales Afectadas</h3>
-                    <p class="text-xs text-gray-500 font-normal">Selecciona las regiones con lesión o dolor reportado en el residente.</p>
+                    <p class="text-xs text-gray-500 font-normal">Selecciona las regiones con lesión o dolor reportado en
+                        el residente.</p>
                 </div>
-                
+
                 <!-- CAÍDA: Mapa Corporal -->
-                <div id="step-2-caida" class="flex flex-col md:flex-row gap-8 bg-gray-50/50 p-6 rounded-xl border border-gray-100">
-                    <div class="relative w-40 h-80 flex-shrink-0 bg-white rounded-xl flex items-center justify-center border border-gray-200 shadow-sm mx-auto md:mx-0">
+                <div id="step-2-caida"
+                    class="flex flex-col md:flex-row gap-8 bg-gray-50/50 p-6 rounded-xl border border-gray-100">
+                    <div
+                        class="relative w-40 h-80 flex-shrink-0 bg-white rounded-xl flex items-center justify-center border border-gray-200 shadow-sm mx-auto md:mx-0">
                         <svg viewBox="0 0 100 110" class="w-full h-full p-4">
-                            <ellipse cx="50" cy="12" rx="10" ry="11" fill="#3b82f6" stroke="#2563eb" stroke-width="1" class="animate-pulse" />
-                            <rect x="44" y="23" width="12" height="6" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <rect x="33" y="29" width="34" height="24" rx="3" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <rect x="35" y="53" width="30" height="14" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <rect x="22" y="30" width="10" height="22" rx="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <rect x="68" y="30" width="10" height="22" rx="4" fill="#3b82f6" stroke="#2563eb" stroke-width="1" />
+                            <ellipse cx="50" cy="12" rx="10" ry="11" fill="#3b82f6" stroke="#2563eb" stroke-width="1"
+                                class="animate-pulse" />
+                            <rect x="44" y="23" width="12" height="6" rx="2" fill="#e5e7eb" stroke="#9ca3af"
+                                stroke-width="0.5" />
+                            <rect x="33" y="29" width="34" height="24" rx="3" fill="#e5e7eb" stroke="#9ca3af"
+                                stroke-width="0.5" />
+                            <rect x="35" y="53" width="30" height="14" rx="2" fill="#e5e7eb" stroke="#9ca3af"
+                                stroke-width="0.5" />
+                            <rect x="22" y="30" width="10" height="22" rx="4" fill="#e5e7eb" stroke="#9ca3af"
+                                stroke-width="0.5" />
+                            <rect x="68" y="30" width="10" height="22" rx="4" fill="#3b82f6" stroke="#2563eb"
+                                stroke-width="1" />
                             <ellipse cx="27" cy="56" rx="6" ry="5" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
                             <ellipse cx="73" cy="56" rx="6" ry="5" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <rect x="35" y="67" width="30" height="8" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <rect x="36" y="75" width="12" height="20" rx="3" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
-                            <rect x="52" y="75" width="12" height="20" rx="3" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
+                            <rect x="35" y="67" width="30" height="8" rx="2" fill="#e5e7eb" stroke="#9ca3af"
+                                stroke-width="0.5" />
+                            <rect x="36" y="75" width="12" height="20" rx="3" fill="#e5e7eb" stroke="#9ca3af"
+                                stroke-width="0.5" />
+                            <rect x="52" y="75" width="12" height="20" rx="3" fill="#e5e7eb" stroke="#9ca3af"
+                                stroke-width="0.5" />
                             <ellipse cx="42" cy="98" rx="8" ry="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
                             <ellipse cx="58" cy="98" rx="8" ry="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="0.5" />
                         </svg>
                     </div>
-                    
+
                     <div class="flex-1 grid grid-cols-2 gap-3 content-start">
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Cabeza / Cráneo" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">Cabeza / Cráneo</div>
+                            <div
+                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Cabeza / Cráneo</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Cara" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">Cara</div>
+                            <div
+                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Cara</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Cuello" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">Cuello</div>
+                            <div
+                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Cuello</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Tórax" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">Tórax</div>
+                            <div
+                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Tórax</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Brazo Derecho" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">Brazo Derecho</div>
+                            <div
+                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Brazo Derecho</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Brazo Izquierdo" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">Brazo Izquierdo</div>
+                            <div
+                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Brazo Izquierdo</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Cadera / Pelvis" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">Cadera / Pelvis</div>
+                            <div
+                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Cadera / Pelvis</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Piernas" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">Piernas</div>
+                            <div
+                                class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Piernas</div>
                         </label>
                     </div>
                 </div>
 
                 <!-- MEDICACIÓN: Detalles Farmacológicos -->
-                <div id="step-2-medicacion" class="hidden bg-gray-50/50 p-6 rounded-xl border border-gray-100 space-y-6">
+                <div id="step-2-medicacion"
+                    class="hidden bg-gray-50/50 p-6 rounded-xl border border-gray-100 space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Fármaco Implicado</label>
-                            <input type="text" name="farmaco_nombre" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm bg-white" placeholder="Ej: Losartán 50mg">
+                            <input type="text" name="farmaco_nombre"
+                                class="w-full border border-gray-300 rounded-lg p-2.5 text-sm bg-white"
+                                placeholder="Ej: Losartán 50mg">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Error</label>
-                            <select name="tipo_error" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm bg-white">
+                            <select name="tipo_error"
+                                class="w-full border border-gray-300 rounded-lg p-2.5 text-sm bg-white">
                                 <option value="Dosis incorrecta">Dosis incorrecta</option>
                                 <option value="Paciente equivocado">Paciente equivocado</option>
                                 <option value="Vía de administración errónea">Vía de administración errónea</option>
-                                <option value="Frecuencia equivocada">Frecuencia equivocada (Omisión/Duplicidad)</option>
+                                <option value="Frecuencia equivocada">Frecuencia equivocada (Omisión/Duplicidad)
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-3">¿Se alcanzó a administrar al paciente?</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">¿Se alcanzó a administrar al
+                            paciente?</label>
                         <div class="flex flex-col md:flex-row gap-4">
-                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg bg-white flex-1 hover:border-blue-300 cursor-pointer transition-colors"><input type="radio" name="admin_paciente" value="Sí, dosis completa" class="text-blue-600 w-4 h-4"> Sí, dosis completa</label>
-                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg bg-white flex-1 hover:border-blue-300 cursor-pointer transition-colors"><input type="radio" name="admin_paciente" value="Sí, parcialmente" class="text-blue-600 w-4 h-4"> Sí, parcialmente</label>
-                            <label class="flex items-center gap-2 p-3 border border-green-200 bg-green-50 rounded-lg flex-1 cursor-pointer"><input type="radio" name="admin_paciente" value="No" class="text-green-600 w-4 h-4"> No (Casi error / Detectado a tiempo)</label>
+                            <label
+                                class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg bg-white flex-1 hover:border-blue-300 cursor-pointer transition-colors"><input
+                                    type="radio" name="admin_paciente" value="Sí, dosis completa"
+                                    class="text-blue-600 w-4 h-4"> Sí, dosis completa</label>
+                            <label
+                                class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg bg-white flex-1 hover:border-blue-300 cursor-pointer transition-colors"><input
+                                    type="radio" name="admin_paciente" value="Sí, parcialmente"
+                                    class="text-blue-600 w-4 h-4"> Sí, parcialmente</label>
+                            <label
+                                class="flex items-center gap-2 p-3 border border-green-200 bg-green-50 rounded-lg flex-1 cursor-pointer"><input
+                                    type="radio" name="admin_paciente" value="No" class="text-green-600 w-4 h-4"> No
+                                (Casi error / Detectado a tiempo)</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- DETERIORO: Síntomas de Alarma -->
                 <div id="step-2-deterioro" class="hidden bg-gray-50/50 p-6 rounded-xl border border-gray-100 space-y-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Síntomas de Alarma (Seleccione múltiples)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Síntomas de Alarma (Seleccione
+                        múltiples)</label>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input type="checkbox" name="sintomas" value="Dificultad Respiratoria" class="text-blue-600 rounded w-5 h-5"> Dificultad Respiratoria (Disnea)</label>
-                        <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input type="checkbox" name="sintomas" value="Dolor Torácico" class="text-blue-600 rounded w-5 h-5"> Dolor Torácico Opresivo</label>
-                        <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input type="checkbox" name="sintomas" value="Alteración Consciencia" class="text-blue-600 rounded w-5 h-5"> Alteración de Consciencia o Delirium</label>
-                        <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input type="checkbox" name="sintomas" value="Fiebre" class="text-blue-600 rounded w-5 h-5"> Fiebre alta prolongada (> 38.5°C)</label>
-                        <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input type="checkbox" name="sintomas" value="Convulsión" class="text-blue-600 rounded w-5 h-5"> Crisis Convulsiva</label>
-                        <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input type="checkbox" name="sintomas" value="Hemorragia" class="text-blue-600 rounded w-5 h-5"> Hemorragia Activa Visible</label>
+                        <label
+                            class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input
+                                type="checkbox" name="sintomas" value="Dificultad Respiratoria"
+                                class="text-blue-600 rounded w-5 h-5"> Dificultad Respiratoria (Disnea)</label>
+                        <label
+                            class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input
+                                type="checkbox" name="sintomas" value="Dolor Torácico"
+                                class="text-blue-600 rounded w-5 h-5"> Dolor Torácico Opresivo</label>
+                        <label
+                            class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input
+                                type="checkbox" name="sintomas" value="Alteración Consciencia"
+                                class="text-blue-600 rounded w-5 h-5"> Alteración de Consciencia o Delirium</label>
+                        <label
+                            class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input
+                                type="checkbox" name="sintomas" value="Fiebre" class="text-blue-600 rounded w-5 h-5">
+                            Fiebre alta prolongada (> 38.5°C)</label>
+                        <label
+                            class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input
+                                type="checkbox" name="sintomas" value="Convulsión"
+                                class="text-blue-600 rounded w-5 h-5"> Crisis Convulsiva</label>
+                        <label
+                            class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-white cursor-pointer transition-colors"><input
+                                type="checkbox" name="sintomas" value="Hemorragia"
+                                class="text-blue-600 rounded w-5 h-5"> Hemorragia Activa Visible</label>
                     </div>
                 </div>
 
                 <div class="flex gap-4 pt-4 border-t border-gray-100">
-                    <button type="button" onclick="switchIncidentStep(1)" class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
-                    <button type="button" onclick="switchIncidentStep(3)" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
+                    <button type="button" onclick="switchIncidentStep(1)"
+                        class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
+                    <button type="button" onclick="switchIncidentStep(3)"
+                        class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
                 </div>
             </div>
 
@@ -240,20 +328,27 @@
                     <h3 class="font-bold text-gray-800 text-lg">Detalles Clínicos</h3>
                     <p class="text-sm text-gray-500">Agregue información vital sobre el incidente.</p>
                 </div>
-                
+
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Residente Implicado (Opcional)</label>
-                        <input type="text" name="incident_resident" class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white" placeholder="Nombre del residente...">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Residente Implicado
+                            (Opcional)</label>
+                        <input type="text" name="incident_resident"
+                            class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                            placeholder="Nombre del residente...">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Descripción de los hechos</label>
-                        <textarea name="incident_description" rows="3" class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white" placeholder="Ej: Residente fue encontrado en el suelo del baño..."></textarea>
+                        <textarea name="incident_description" rows="3"
+                            class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                            placeholder="Ej: Residente fue encontrado en el suelo del baño..."></textarea>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Estado de Conciencia (Glasgow)</label>
-                            <select name="glasgow" class="w-full border border-gray-300 rounded-lg p-2 text-sm bg-white">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Estado de Conciencia
+                                (Glasgow)</label>
+                            <select name="glasgow"
+                                class="w-full border border-gray-300 rounded-lg p-2 text-sm bg-white">
                                 <option value="15 - Normal">15 - Normal</option>
                                 <option value="14 - Confusión Leve">14 - Confusión Leve</option>
                                 <option value="13 - Menor">13 - Menor</option>
@@ -262,17 +357,25 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Signos Vitales Tomados</label>
                             <div class="flex gap-4 items-center h-10">
-                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="signos_vitales" value="PA" checked class="rounded text-blue-600"> PA</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="signos_vitales" value="FC" checked class="rounded text-blue-600"> FC</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="signos_vitales" value="SatO2" checked class="rounded text-blue-600"> SatO2</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox"
+                                        name="signos_vitales" value="PA" checked class="rounded text-blue-600">
+                                    PA</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox"
+                                        name="signos_vitales" value="FC" checked class="rounded text-blue-600">
+                                    FC</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox"
+                                        name="signos_vitales" value="SatO2" checked class="rounded text-blue-600">
+                                    SatO2</label>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex gap-4 pt-4 border-t border-gray-100">
-                    <button type="button" onclick="switchIncidentStep(2)" class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
-                    <button type="button" onclick="switchIncidentStep(4)" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
+                    <button type="button" onclick="switchIncidentStep(2)"
+                        class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
+                    <button type="button" onclick="switchIncidentStep(4)"
+                        class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors">Siguiente</button>
                 </div>
             </div>
 
@@ -283,128 +386,150 @@
                         <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
                         <h3 class="font-bold text-blue-900 text-lg">Confirmación y Envío</h3>
                     </div>
-                    <p class="text-sm text-blue-800">Este reporte quedará registrado en la bitácora y enviará notificaciones si es crítico. Revise que todos los pasos anteriores estén correctos.</p>
+                    <p class="text-sm text-blue-800">Este reporte quedará registrado en la bitácora y enviará
+                        notificaciones si es crítico. Revise que todos los pasos anteriores estén correctos.</p>
                 </div>
 
                 <div class="flex gap-4 pt-4">
-                    <button type="button" onclick="switchIncidentStep(3)" class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
-                    <button type="submit" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors flex items-center justify-center gap-2">
+                    <button type="button" onclick="switchIncidentStep(3)"
+                        class="flex-1 py-3 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 font-medium transition-colors">Atrás</button>
+                    <button type="submit"
+                        class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-colors flex items-center justify-center gap-2">
                         <i data-lucide="send" class="w-4 h-4"></i> Guardar Reporte
                     </button>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
-    <!-- Modal Ver Detalles de Bitácora -->
-    <div id="entry-details-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
-            <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50 flex-shrink-0">
-                <div class="flex items-center gap-3">
-                    <div id="details-icon-container" class="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                        <i data-lucide="info" class="w-5 h-5"></i>
+
+        <!-- Modal Ver Detalles de Bitácora -->
+        <div id="entry-details-modal"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div
+                class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50 flex-shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div id="details-icon-container" class="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800">Detalles del Registro</h2>
+                            <p id="details-subtitle" class="text-xs text-gray-500"></p>
+                        </div>
                     </div>
+                    <button type="button"
+                        onclick="document.getElementById('entry-details-modal').classList.add('hidden')"
+                        class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+                        <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 overflow-y-auto flex-1 space-y-4">
                     <div>
-                        <h2 class="text-xl font-bold text-gray-800">Detalles del Registro</h2>
-                        <p id="details-subtitle" class="text-xs text-gray-500"></p>
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Descripción</h4>
+                        <p id="details-description"
+                            class="text-sm text-gray-800 bg-gray-50 p-3 rounded-lg border border-gray-100"></p>
                     </div>
-                </div>
-                <button type="button" onclick="document.getElementById('entry-details-modal').classList.add('hidden')" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
-                    <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 overflow-y-auto flex-1 space-y-4">
-                <div>
-                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Descripción</h4>
-                    <p id="details-description" class="text-sm text-gray-800 bg-gray-50 p-3 rounded-lg border border-gray-100"></p>
-                </div>
-                
-                <div id="details-incident-section" class="hidden space-y-4 pt-4 border-t border-gray-100">
-                    <h4 class="text-xs font-bold text-red-400 uppercase tracking-wider mb-2 flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3"></i> Datos del Incidente</h4>
-                    <div class="grid grid-cols-2 gap-3" id="details-incident-grid">
-                        <!-- Incident metadata goes here via JS -->
+
+                    <div id="details-incident-section" class="hidden space-y-4 pt-4 border-t border-gray-100">
+                        <h4
+                            class="text-xs font-bold text-red-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                            <i data-lucide="alert-triangle" class="w-3 h-3"></i> Datos del Incidente</h4>
+                        <div class="grid grid-cols-2 gap-3" id="details-incident-grid">
+                            <!-- Incident metadata goes here via JS -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal Nueva Entrada de Bitácora -->
-    <div id="new-entry-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <form method="POST" action="{% url 'activity_board' %}" class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
-            {% csrf_token %}
-            <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-                <div class="flex items-center gap-3">
-                    <div class="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                        <i data-lucide="edit-3" class="w-5 h-5"></i>
+        <!-- Modal Nueva Entrada de Bitácora -->
+        <div id="new-entry-modal"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <form method="POST" action="{% url 'activity_board' %}"
+                class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
+                {% csrf_token %}
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                            <i data-lucide="edit-3" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800">Nueva Entrada de Bitácora</h2>
                     </div>
-                    <h2 class="text-xl font-bold text-gray-800">Nueva Entrada de Bitácora</h2>
+                    <button type="button" onclick="document.getElementById('new-entry-modal').classList.add('hidden')"
+                        class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+                        <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+                    </button>
                 </div>
-                <button type="button" onclick="document.getElementById('new-entry-modal').classList.add('hidden')" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
-                    <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Registro</label>
-                    <div class="grid grid-cols-3 gap-3">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="entry_type" value="observacion" class="peer sr-only" checked>
-                            <div class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50 transition-all">
-                                <span class="block text-xs font-bold text-blue-700">Observación</span>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="entry_type" value="pendiente" class="peer sr-only">
-                            <div class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 hover:bg-gray-50 transition-all">
-                                <span class="block text-xs font-bold text-yellow-700">Pendiente</span>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="entry_type" value="evaluacion" class="peer sr-only">
-                            <div class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50 transition-all">
-                                <span class="block text-xs font-bold text-purple-700">Evaluación</span>
-                            </div>
-                        </label>
+
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Registro</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="entry_type" value="observacion" class="peer sr-only" checked>
+                                <div
+                                    class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50 transition-all">
+                                    <span class="block text-xs font-bold text-blue-700">Observación</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="entry_type" value="pendiente" class="peer sr-only">
+                                <div
+                                    class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 hover:bg-gray-50 transition-all">
+                                    <span class="block text-xs font-bold text-yellow-700">Pendiente</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="entry_type" value="evaluacion" class="peer sr-only">
+                                <div
+                                    class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50 transition-all">
+                                    <span class="block text-xs font-bold text-purple-700">Evaluación</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Residente (Opcional)</label>
+                        <div class="relative">
+                            <i data-lucide="search"
+                                class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" name="resident_name" placeholder="Buscar residente..."
+                                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                        <textarea name="description" required rows="4"
+                            class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Redacte los detalles de la observación..."></textarea>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Residente (Opcional)</label>
-                    <div class="relative">
-                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" name="resident_name" placeholder="Buscar residente..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-                    <textarea name="description" required rows="4" class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Redacte los detalles de la observación..."></textarea>
-                </div>
-            </div>
-
-            <div class="p-6 bg-gray-50 border-t border-gray-100 flex gap-3 justify-end">
-                <button type="button" onclick="document.getElementById('new-entry-modal').classList.add('hidden')" class="px-5 py-2 text-gray-600 bg-white border border-gray-300 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm">
-                    Cancelar
-                </button>
-                <button type="submit" class="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-sm transition-colors text-sm flex items-center gap-2">
-                    <i data-lucide="save" class="w-4 h-4"></i> Guardar
-                </button>
-            </div>
-        </form>
-    </div>
+                <div class="p-6 bg-gray-50 border-t border-gray-100 flex gap-3 justify-end">
+                    <button type="button" onclick="document.getElementById('new-entry-modal').classList.add('hidden')"
+                        class="px-5 py-2 text-gray-600 bg-white border border-gray-300 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-sm transition-colors text-sm flex items-center gap-2">
+                        <i data-lucide="save" class="w-4 h-4"></i> Guardar
+                    </button>
+            </form>
+        </div>
 </main>
 
 <script>
     function switchTab(tabName) {
         // Toggle Buttons
-        document.getElementById('tab-bitacora').className = tabName === 'bitacora' 
+        document.getElementById('tab-bitacora').className = tabName === 'bitacora'
             ? 'px-5 py-2 rounded-md text-sm font-medium transition-colors bg-white text-blue-700 shadow-sm'
             : 'px-5 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-800';
-            
-        document.getElementById('tab-incidente').className = tabName === 'incidente' 
+
+        document.getElementById('tab-incidente').className = tabName === 'incidente'
             ? 'px-5 py-2 rounded-md text-sm font-medium transition-colors bg-white text-red-600 shadow-sm'
             : 'px-5 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-800';
 
@@ -418,25 +543,25 @@
     function selectIncidentType(type, btnElement) {
         try {
             currentIncidentType = type;
-            
+
             // Set hidden form input
             document.getElementById('incident_category').value = type;
 
             // Update button styles
             document.querySelectorAll('.incident-type-btn').forEach(btn => {
                 btn.className = 'incident-type-btn p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 bg-white text-left transition-all relative overflow-hidden';
-                
+
                 // Remove colored background elements if they exist
                 const bgDiv = btn.querySelector('div.bg-blue-100');
                 if (bgDiv && bgDiv.parentNode === btn) {
                     btn.removeChild(bgDiv);
                 }
-                
+
                 // Reset text colors
                 const icon = btn.querySelector('svg') || btn.querySelector('i');
                 const h4 = btn.querySelector('h4');
                 const p = btn.querySelector('p');
-                
+
                 if (icon && icon.classList) {
                     icon.classList.remove('text-blue-600');
                     icon.classList.add('text-gray-400');
@@ -454,17 +579,17 @@
             // Set active styles
             if (btnElement) {
                 btnElement.className = 'incident-type-btn p-4 rounded-xl border-2 border-blue-500 bg-blue-50 text-left transition-all relative overflow-hidden';
-                
+
                 // Add colored background element
                 const bgDiv = document.createElement('div');
                 bgDiv.className = 'absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-bl-full opacity-50 -mr-8 -mt-8';
                 btnElement.insertBefore(bgDiv, btnElement.firstChild);
-                
+
                 // Set text colors
                 const icon = btnElement.querySelector('svg') || btnElement.querySelector('i');
                 const h4 = btnElement.querySelector('h4');
                 const p = btnElement.querySelector('p');
-                
+
                 if (icon && icon.classList) {
                     icon.classList.remove('text-gray-400');
                     icon.classList.add('text-blue-600');
@@ -482,7 +607,7 @@
             // Update Step 2 Title & Tab Text
             const step2Title = document.getElementById('step-2-dynamic-title');
             const step2Tab = document.getElementById('step-tab-2');
-            
+
             if (step2Title && step2Tab) {
                 if (type === 'caida') {
                     step2Title.innerHTML = `<h3 class="font-bold text-gray-800 text-lg">Zonas Corporales Afectadas</h3><p class="text-xs text-gray-500 font-normal">Selecciona las regiones con lesión o dolor reportado en el residente.</p>`;
@@ -498,7 +623,7 @@
 
             // Move to next step automatically
             setTimeout(() => switchIncidentStep(2), 300);
-        } catch(e) {
+        } catch (e) {
             console.error(e);
             alert("Error JS: " + e.message);
         }
@@ -514,12 +639,12 @@
         }
 
         // Hide all steps
-        for(let i = 1; i <= 4; i++) {
+        for (let i = 1; i <= 4; i++) {
             document.getElementById('step-content-' + i).classList.add('hidden');
             let tab = document.getElementById('step-tab-' + i);
             tab.className = 'flex-1 py-3 text-center text-xs font-medium text-gray-400 hover:bg-gray-50 transition-colors';
         }
-        
+
         // Show current step
         document.getElementById('step-content-' + stepNum).classList.remove('hidden');
         let currentTab = document.getElementById('step-tab-' + stepNum);
@@ -530,12 +655,12 @@
         // Set basic details
         document.getElementById('details-subtitle').innerText = `${time} • Ingresado por ${author}` + (resident ? ` • Residente: ${resident}` : '');
         document.getElementById('details-description').innerText = description;
-        
+
         // Handle Icon and Colors based on type
         const iconContainer = document.getElementById('details-icon-container');
         iconContainer.className = 'p-2 rounded-lg ';
         let iconName = 'info';
-        
+
         if (type === 'observacion') {
             iconContainer.className += 'bg-blue-100 text-blue-600';
             iconName = 'eye';
@@ -549,18 +674,18 @@
             iconContainer.className += 'bg-red-100 text-red-600';
             iconName = 'alert-triangle';
         }
-        
+
         iconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5"></i>`;
         lucide.createIcons();
-        
+
         // Handle Incident Data dynamically
         const incidentSection = document.getElementById('details-incident-section');
         const incidentGrid = document.getElementById('details-incident-grid');
         incidentGrid.innerHTML = ''; // clear old
-        
+
         if (type === 'incidente' && incidentData) {
             incidentSection.classList.remove('hidden');
-            
+
             const addField = (label, value) => {
                 if (value) {
                     incidentGrid.innerHTML += `
@@ -571,11 +696,11 @@
                     `;
                 }
             };
-            
+
             addField('Categoría', incidentData.category);
             addField('Glasgow', incidentData.glasgow);
             addField('Signos Vitales Tomados', incidentData.signos_vitales);
-            
+
             if (incidentData.specific_details) {
                 const spec = incidentData.specific_details;
                 addField('Zonas Afectadas', spec.zonas_afectadas);
@@ -587,7 +712,7 @@
         } else {
             incidentSection.classList.add('hidden');
         }
-        
+
         // Show modal
         document.getElementById('entry-details-modal').classList.remove('hidden');
     }
