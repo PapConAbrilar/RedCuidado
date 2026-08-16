@@ -9,7 +9,7 @@
             <div class="relative w-full max-w-md ml-4">
                 <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
                 <input type="text" id="course-search-input" placeholder="Buscar curso por nombre..."
-                    class="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm" />
+                    class="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm">
             </div>
         </div>
         {% if request.user|has_group:"Administrador" or request.user|has_group:"Profesor" %}
@@ -28,13 +28,13 @@
                         src="{{ item.course.image_url }}"
                         alt="{{ item.course.title }}"
                         class="w-full h-full object-cover"
-                    />
+                    >
                     {% elif item.course.image %}
                     <img
                         src="{{ item.course.image.url }}"
                         alt="{{ item.course.title }}"
                         class="w-full h-full object-cover"
-                    />
+                    >
                     {% else %}
                     <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
                         <i data-lucide="image" class="w-12 h-12"></i>
@@ -61,9 +61,9 @@
                             </button>
                         </div>
                     </div>
-                    <h3 class="font-semibold text-lg mb-4 text-gray-900 line-clamp-2">
+                    <h2 class="font-semibold text-lg mb-4 text-gray-900 line-clamp-2">
                         {{ item.course.title }}
-                    </h3>
+                    </h2>
                     
                     <div class="mt-auto">
                         <div class="flex justify-between text-sm mb-2">

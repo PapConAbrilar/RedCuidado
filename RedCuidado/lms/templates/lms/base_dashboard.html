@@ -86,11 +86,11 @@
 
         <div class="relative" id="portal-menu-container">
             <button id="portal-menu-trigger" aria-label="Abrir menú de usuario" aria-haspopup="menu" aria-expanded="false" class="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-purple-500" aria-hidden="true"></div>
-                <div class="text-left">
-                    <div class="text-sm font-medium">{{ request.user.username }}</div>
-                    <div class="text-xs text-gray-500">{{ request.user.groups.first.name|default:"Usuario" }}</div>
-                </div>
+                <span class="block w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-purple-500" aria-hidden="true"></span>
+                <span class="block text-left">
+                    <span class="block text-sm font-medium">{{ request.user.username }}</span>
+                    <span class="block text-xs text-gray-500">{{ request.user.groups.first.name|default:"Usuario" }}</span>
+                </span>
                 <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500" aria-hidden="true"></i>
             </button>
 
@@ -209,43 +209,43 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button onclick="showSosProtocol('Caída de Residente')" class="flex items-start gap-4 p-4 bg-white rounded-2xl border-2 border-gray-200 hover:border-red-500 hover:shadow-md transition-all text-left group focus:border-red-600 focus:bg-red-50">
-                        <div class="p-3 bg-orange-100 text-orange-600 rounded-xl group-hover:bg-red-100 group-hover:text-red-600">
+                        <span class="block p-3 bg-orange-100 text-orange-600 rounded-xl group-hover:bg-red-100 group-hover:text-red-600">
                             <i data-lucide="activity" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 group-hover:text-red-700">Caída de Residente</h4>
-                            <p class="text-xs text-gray-500 mt-1">Despliega protocolo R-43 (Inmovilización y evaluación de signos).</p>
-                        </div>
+                        </span>
+                        <span class="block">
+                            <strong class="block font-bold text-gray-900 group-hover:text-red-700 text-base">Caída de Residente</strong>
+                            <span class="block text-xs text-gray-500 mt-1">Despliega protocolo R-43 (Inmovilización y evaluación de signos).</span>
+                        </span>
                     </button>
                     
                     <button onclick="showSosProtocol('Descompensación Severa')" class="flex items-start gap-4 p-4 bg-white rounded-2xl border-2 border-gray-200 hover:border-red-500 hover:shadow-md transition-all text-left group focus:border-red-600 focus:bg-red-50">
-                        <div class="p-3 bg-purple-100 text-purple-600 rounded-xl group-hover:bg-red-100 group-hover:text-red-600">
+                        <span class="block p-3 bg-purple-100 text-purple-600 rounded-xl group-hover:bg-red-100 group-hover:text-red-600">
                             <i data-lucide="brain-circuit" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 group-hover:text-red-700">Descompensación Severa</h4>
-                            <p class="text-xs text-gray-500 mt-1">Guía rápida de estabilización y parámetros vitales.</p>
-                        </div>
+                        </span>
+                        <span class="block">
+                            <strong class="block font-bold text-gray-900 group-hover:text-red-700 text-base">Descompensación Severa</strong>
+                            <span class="block text-xs text-gray-500 mt-1">Guía rápida de estabilización y parámetros vitales.</span>
+                        </span>
                     </button>
 
                     <button onclick="showSosProtocol('Ahogo / Atragantamiento')" class="flex items-start gap-4 p-4 bg-white rounded-2xl border-2 border-gray-200 hover:border-red-500 hover:shadow-md transition-all text-left group focus:border-red-600 focus:bg-red-50">
-                        <div class="p-3 bg-blue-100 text-blue-600 rounded-xl group-hover:bg-red-100 group-hover:text-red-600">
+                        <span class="block p-3 bg-blue-100 text-blue-600 rounded-xl group-hover:bg-red-100 group-hover:text-red-600">
                             <i data-lucide="droplets" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 group-hover:text-red-700">Ahogo / Atragantamiento</h4>
-                            <p class="text-xs text-gray-500 mt-1">Protocolo Heimlich y despeje de vías respiratorias.</p>
-                        </div>
+                        </span>
+                        <span class="block">
+                            <strong class="block font-bold text-gray-900 group-hover:text-red-700 text-base">Ahogo / Atragantamiento</strong>
+                            <span class="block text-xs text-gray-500 mt-1">Protocolo Heimlich y despeje de vías respiratorias.</span>
+                        </span>
                     </button>
 
                     <button onclick="showSosProtocol('Fuga / Extravío')" class="flex items-start gap-4 p-4 bg-white rounded-2xl border-2 border-gray-200 hover:border-red-500 hover:shadow-md transition-all text-left group focus:border-red-600 focus:bg-red-50">
-                        <div class="p-3 bg-green-100 text-green-600 rounded-xl group-hover:bg-red-100 group-hover:text-red-600">
+                        <span class="block p-3 bg-green-100 text-green-600 rounded-xl group-hover:bg-red-100 group-hover:text-red-600">
                             <i data-lucide="door-open" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 group-hover:text-red-700">Fuga / Extravío</h4>
-                            <p class="text-xs text-gray-500 mt-1">Protocolo F-01 de búsqueda interna y alerta a conserjería.</p>
-                        </div>
+                        </span>
+                        <span class="block">
+                            <strong class="block font-bold text-gray-900 group-hover:text-red-700 text-base">Fuga / Extravío</strong>
+                            <span class="block text-xs text-gray-500 mt-1">Protocolo F-01 de búsqueda interna y alerta a conserjería.</span>
+                        </span>
                     </button>
                 </div>
             </div>
