@@ -189,13 +189,26 @@ def learning_paths_view(request):
         })
         
     global_progress = int((completed_courses / total_courses) * 100) if total_courses > 0 else 0
+    
+    # Calcular Rango Dinámico
+    if completed_courses == 0:
+        current_rank = "Iniciado"
+        next_rank = f"Especialista en Cuidados ({completed_courses}/{total_courses} cursos)"
+    elif completed_courses < total_courses:
+        current_rank = "Especialista en Cuidados"
+        next_rank = f"Maestro del Cuidado ({completed_courses}/{total_courses} cursos)"
+    else:
+        current_rank = "Maestro del Cuidado"
+        next_rank = "¡Rango Máximo Alcanzado!"
         
     context = {
         'active_menu': 'paths',
         'path_nodes': path_nodes,
         'global_progress': global_progress,
         'completed_courses': completed_courses,
-        'total_courses': total_courses
+        'total_courses': total_courses,
+        'current_rank': current_rank,
+        'next_rank': next_rank
     }
     return render(request, 'lms/paths.html', context)
 

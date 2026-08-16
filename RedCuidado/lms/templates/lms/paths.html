@@ -22,8 +22,8 @@
                     <p class="text-indigo-700 mt-1 max-w-lg">Desbloquea nuevas competencias y rangos completando las capacitaciones en orden. Esto asegura un estándar de atención óptimo.</p>
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-indigo-100 text-right min-w-[200px]">
-                    <div class="text-sm font-bold text-indigo-900">Rango Actual: <span class="text-indigo-600 text-lg">Iniciado</span></div>
-                    <div class="text-xs text-indigo-600 font-medium mt-1">Siguiente: Especialista en Cuidados ({{ completed_courses }}/{{ total_courses }} cursos)</div>
+                    <div class="text-sm font-bold text-indigo-900">Rango Actual: <span class="text-indigo-600 text-lg">{{ current_rank }}</span></div>
+                    <div class="text-xs text-indigo-600 font-medium mt-1">Siguiente: {{ next_rank }}</div>
                     <div class="w-full bg-indigo-100 rounded-full h-1.5 mt-2">
                         <div class="bg-indigo-600 h-1.5 rounded-full transition-all duration-1000" style="width: {{ global_progress }}%;"></div>
                     </div>
