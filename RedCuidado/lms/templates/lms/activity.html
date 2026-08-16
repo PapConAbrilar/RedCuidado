@@ -318,8 +318,7 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Residente Implicado
-                            (Opcional)</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Residente Implicado</label>
                         <input type="text" name="incident_resident"
                             class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                             placeholder="Nombre del residente...">
@@ -683,7 +682,12 @@
 
         // Validar Paso 3 (Si no hubo error en el 2)
         if (!errorMsg) {
-            if (!descArea.value.trim()) {
+            const residentName = document.querySelector('input[name="incident_resident"]').value.trim();
+            if (!residentName) {
+                errorMsg = "Debes indicar el nombre del residente implicado.";
+                errorStep = 3;
+                errorElement = document.querySelector('input[name="incident_resident"]');
+            } else if (!descArea.value.trim()) {
                 errorMsg = "La descripción de los hechos clínicos es un campo obligatorio.";
                 errorStep = 3;
                 errorElement = descArea;
