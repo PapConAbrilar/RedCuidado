@@ -53,12 +53,12 @@
     </form>
 
     <!-- Modal de Confirmación -->
-    <div id="confirm-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all p-6 text-center">
             <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i data-lucide="help-circle" class="w-8 h-8"></i>
             </div>
-            <h2 class="text-xl font-bold text-gray-800 mb-2">¿Estás seguro?</h2>
+            <h2 id="confirm-title" class="text-xl font-bold text-gray-800 mb-2">¿Estás seguro?</h2>
             <p class="text-sm text-gray-500 mb-6">
                 Una vez enviadas las respuestas no podrás modificarlas. Asegúrate de haber revisado bien antes de enviar para calificación final.
             </p>

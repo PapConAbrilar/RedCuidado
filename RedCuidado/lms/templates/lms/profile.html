@@ -37,7 +37,7 @@
                             <div class="p-2 bg-yellow-50 text-yellow-600 rounded-lg">
                                 <i data-lucide="star" class="w-5 h-5"></i>
                             </div>
-                            <span class="text-xs text-gray-400">{{ enrollment.enrolled_at|date:"d M, Y" }}</span>
+                            <span class="text-xs text-gray-500">{{ enrollment.enrolled_at|date:"d M, Y" }}</span>
                         </div>
                         <h3 class="font-bold text-lg text-gray-900 mb-1 line-clamp-2">{{ enrollment.course.title }}</h3>
                         <p class="text-sm text-green-600 font-medium">Curso Completado con Éxito</p>
@@ -50,7 +50,7 @@
                 <div class="col-span-full py-12 text-center bg-gray-50 rounded-xl border border-dashed border-gray-300">
                     <i data-lucide="award" class="w-12 h-12 text-gray-300 mx-auto mb-3"></i>
                     <h3 class="text-gray-600 font-medium">Aún no tienes certificados</h3>
-                    <p class="text-gray-400 text-sm mt-1">Completa tu primer curso para obtener uno.</p>
+                    <p class="text-gray-500 text-sm mt-1">Completa tu primer curso para obtener uno.</p>
                 </div>
                 {% endfor %}
             </div>

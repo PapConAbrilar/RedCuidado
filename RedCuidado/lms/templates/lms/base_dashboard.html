@@ -56,21 +56,21 @@
     class="h-16 bg-white border-b border-gray-200 fixed top-0 left-0 lg:left-60 right-0 z-40 flex items-center justify-between px-4 lg:px-6">
     <div class="flex items-center gap-3 lg:gap-6">
         <!-- Menu Toggle Button (Mobile) -->
-        <button id="sidebar-toggle" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <i data-lucide="menu" class="w-6 h-6 text-gray-600"></i>
+        <button id="sidebar-toggle" aria-label="Abrir menú lateral" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i data-lucide="menu" class="w-6 h-6 text-gray-600" aria-hidden="true"></i>
         </button>
     </div>
 
     <div class="flex items-center gap-2 lg:gap-4">
         <!-- Control de Constancia (Rachas) -->
-        <button onclick="document.getElementById('streak-modal').classList.remove('hidden')" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 border border-orange-100 rounded-full text-orange-600 shadow-sm hover:bg-orange-100 transition-colors" title="Ver detalle de racha">
-            <i data-lucide="flame" class="w-4 h-4 fill-orange-500 text-orange-500 animate-pulse"></i>
+        <button onclick="document.getElementById('streak-modal').classList.remove('hidden')" aria-label="Ver racha de días conectados" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 border border-orange-100 rounded-full text-orange-600 shadow-sm hover:bg-orange-100 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500" title="Ver detalle de racha">
+            <i data-lucide="flame" class="w-4 h-4 fill-orange-500 text-orange-500 animate-pulse" aria-hidden="true"></i>
             <span class="text-sm font-bold">{{ request.user.profile.current_streak|default:"0" }}</span>
         </button>
 
         <!-- Botón SOS Emergencia Contextual -->
-        <button id="sos-trigger" class="flex items-center gap-1.5 px-3 lg:px-4 py-1.5 lg:py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg lg:rounded-xl shadow-md shadow-red-200 transition-colors font-bold text-sm lg:text-base animate-pulse">
-            <i data-lucide="siren" class="w-4 h-4 lg:w-5 lg:h-5"></i>
+        <button id="sos-trigger" aria-label="Activar protocolo SOS" class="flex items-center gap-1.5 px-3 lg:px-4 py-1.5 lg:py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg lg:rounded-xl shadow-md shadow-red-200 transition-colors font-bold text-sm lg:text-base animate-pulse focus:outline-none focus:ring-2 focus:ring-red-500">
+            <i data-lucide="siren" class="w-4 h-4 lg:w-5 lg:h-5" aria-hidden="true"></i>
             <span class="hidden sm:inline">SOS Emergencia</span>
             <span class="sm:hidden">SOS</span>
         </button>
@@ -78,20 +78,20 @@
         <!-- Divider -->
         <div class="h-6 w-px bg-gray-200 hidden lg:block mx-1"></div>
 
-        <button id="how-to-use-trigger" class="text-gray-600 hover:text-gray-900 flex items-center gap-1">
-            <i data-lucide="help-circle" class="w-5 h-5"></i>
+        <button id="how-to-use-trigger" aria-label="Abrir tutorial de uso" class="text-gray-600 hover:text-gray-900 flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1">
+            <i data-lucide="help-circle" class="w-5 h-5" aria-hidden="true"></i>
             <span class="text-sm hidden lg:inline">Cómo usar</span>
         </button>
 
 
         <div class="relative" id="portal-menu-container">
-            <button id="portal-menu-trigger" class="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 rounded-lg">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-purple-500"></div>
+            <button id="portal-menu-trigger" aria-label="Abrir menú de usuario" aria-haspopup="menu" aria-expanded="false" class="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-purple-500" aria-hidden="true"></div>
                 <div class="text-left">
                     <div class="text-sm font-medium">{{ request.user.username }}</div>
                     <div class="text-xs text-gray-500">{{ request.user.groups.first.name|default:"Usuario" }}</div>
                 </div>
-                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500" aria-hidden="true"></i>
             </button>
 
             <div id="portal-menu"
@@ -111,13 +111,14 @@
     </div>
 </div>
 
-<!-- Modal de Instrucciones (Fuera del header para z-index) -->
-<div id="how-to-use-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+<!-- Modal SOS / Tutorial -->
+    <div id="tutorial-modal" role="dialog" aria-modal="true" aria-labelledby="tutorial-title"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
         <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-blue-50">
             <div class="flex items-center gap-2">
                 <i data-lucide="info" class="text-blue-600 w-6 h-6"></i>
-                <h2 class="text-xl font-bold text-gray-800">Guía de RedCuidado</h2>
+                <h2 id="tutorial-title" class="text-xl font-bold text-gray-800">Guía de RedCuidado</h2>
             </div>
             <button id="close-modal" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
                 <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
@@ -182,8 +183,9 @@
     </div>
 </div>
 
-<!-- Modal SOS / Protocolo de Emergencia (Fuera del header para z-index) -->
-<div id="sos-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
+<!-- Modal SOS de Emergencia Real -->
+    <div id="sos-modal" role="dialog" aria-modal="true" aria-labelledby="sos-title"
+        class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-red-900/40 backdrop-blur-sm p-4">
     <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden transform transition-all border-4 border-red-500">
         <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-red-50">
             <div class="flex items-center gap-3">
@@ -429,13 +431,13 @@
 </script>
     
     <!-- Modal Racha -->
-    <div id="streak-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div id="streak-modal" role="dialog" aria-modal="true" aria-labelledby="streak-title" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all p-6 text-center">
-            <div class="w-20 h-20 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 relative">
+            <div class="w-20 h-20 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 relative" aria-hidden="true">
                 <div class="absolute inset-0 bg-orange-200 rounded-full animate-ping opacity-25"></div>
                 <i data-lucide="flame" class="w-10 h-10 fill-orange-500 relative z-10"></i>
             </div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">¡Racha de {{ request.user.profile.current_streak|default:"0" }} días!</h2>
+            <h2 id="streak-title" class="text-2xl font-bold text-gray-800 mb-1">¡Racha de {{ request.user.profile.current_streak|default:"0" }} días!</h2>
             <p class="text-sm text-gray-500 mb-6 px-2">
                 Te has conectado a RedCuidado en días consecutivos. La constancia es la clave para dominar los protocolos y convertirte en un Maestro del Cuidado. ¡Sigue así!
             </p>

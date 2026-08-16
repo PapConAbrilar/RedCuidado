@@ -22,7 +22,7 @@
     <div class="bg-white rounded-xl shadow-sm border {% if result.passed %}border-green-200{% else %}border-red-200{% endif %} overflow-hidden max-w-sm mx-auto mb-10">
         <div class="px-6 py-6 text-center">
             <p class="text-sm uppercase tracking-widest font-semibold {% if result.passed %}text-green-600{% else %}text-red-500{% endif %} mb-2">Tu Puntaje Final</p>
-            <div class="text-5xl font-black text-gray-800">{{ result.score|floatformat:0 }}<span class="text-2xl text-gray-400">%</span></div>
+            <div class="text-5xl font-black text-gray-800">{{ result.score|floatformat:0 }}<span class="text-2xl text-gray-500">%</span></div>
             <p class="text-sm text-gray-500 mt-3">Mínimo para aprobar: {{ test.passing_score }}%</p>
         </div>
     </div>

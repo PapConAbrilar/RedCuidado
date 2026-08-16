@@ -7,7 +7,7 @@
         <div class="flex items-center gap-4 flex-1">
             <h1 class="text-2xl font-bold text-gray-800 whitespace-nowrap">Tus Cursos</h1>
             <div class="relative w-full max-w-md ml-4">
-                <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
                 <input type="text" id="course-search-input" placeholder="Buscar curso por nombre..."
                     class="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm" />
             </div>
@@ -36,7 +36,7 @@
                         class="w-full h-full object-cover"
                     />
                     {% else %}
-                    <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                    <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
                         <i data-lucide="image" class="w-12 h-12"></i>
                     </div>
                     {% endif %}
@@ -54,7 +54,7 @@
                         <div class="flex gap-2">
                             <button 
                                 onclick="event.stopPropagation(); togglePin({{ item.course.id }}, this)"
-                                class="p-1.5 {% if item.is_pinned %}text-blue-600 bg-blue-100{% else %}text-gray-400 hover:text-blue-600 hover:bg-blue-50{% endif %} rounded-full transition-all duration-300" 
+                                class="p-1.5 {% if item.is_pinned %}text-blue-600 bg-blue-100{% else %}text-gray-500 hover:text-blue-600 hover:bg-blue-50{% endif %} rounded-full transition-all duration-300" 
                                 title="{% if item.is_pinned %}Quitar fijado{% else %}Fijar arriba{% endif %}"
                             >
                                 <i data-lucide="bookmark" class="w-4 h-4 {% if item.is_pinned %}fill-current{% endif %}"></i>
@@ -104,7 +104,7 @@
         <!-- Mensaje de sin resultados -->
         <div id="no-results-message" class="hidden flex-col items-center justify-center py-16 text-center">
             <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                <i data-lucide="search-x" class="w-10 h-10 text-gray-400"></i>
+                <i data-lucide="search-x" class="w-10 h-10 text-gray-500"></i>
             </div>
             <h3 class="text-lg font-semibold text-gray-800">Ningún curso coincide</h3>
             <p class="text-gray-500 mt-2">Intenta buscar con otras palabras clave.</p>
