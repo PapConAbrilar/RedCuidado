@@ -258,28 +258,8 @@
                     <button onclick="backToSosStep1()" class="text-sm font-bold text-blue-600 hover:text-blue-800 bg-blue-50 px-4 py-2 rounded-lg transition-colors">Volver a categorías</button>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl border-2 border-red-100 shadow-sm space-y-6">
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-black flex-shrink-0 text-lg">1</div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-lg">Asegurar e Inmovilizar</h4>
-                            <p class="text-sm text-gray-600 mt-1">No mueva al residente de su posición actual. Asegúrese de que el entorno sea seguro para usted y para él. Verifique de inmediato si hay signos de sangrado activo o traumatismo craneal.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-black flex-shrink-0 text-lg">2</div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-lg">Evaluación Primaria (Consciencia)</h4>
-                            <p class="text-sm text-gray-600 mt-1">Háblele al residente en voz alta: pregunte su nombre y si sabe dónde está (Evaluación de Escala de Glasgow básica). Si no responde, verifique pulso y respiración.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-black flex-shrink-0 text-lg">3</div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-lg">Signos Vitales y Triaje</h4>
-                            <p class="text-sm text-gray-600 mt-1">Utilice el kit de emergencia más cercano para tomar Presión Arterial y Saturación de Oxígeno. Mantenga al paciente abrigado mientras llega el equipo médico de soporte.</p>
-                        </div>
-                    </div>
+                <div id="sos-protocol-steps" class="bg-white p-6 rounded-xl border-2 border-red-100 shadow-sm space-y-6">
+                    <!-- Los pasos se inyectan dinámicamente con JavaScript -->
                 </div>
 
                 <div class="bg-red-100 rounded-xl p-4 border border-red-200 flex items-start gap-3">
@@ -354,8 +334,49 @@
     const closeSosBtn = document.getElementById('close-sos');
     const cancelSosBtn = document.getElementById('cancel-sos');
 
+    const sosProtocols = {
+        'Caída de Residente': [
+            { title: 'Asegurar e Inmovilizar', text: 'No mueva al residente de su posición actual. Asegúrese de que el entorno sea seguro para usted y para él. Verifique de inmediato si hay signos de sangrado activo o traumatismo craneal.' },
+            { title: 'Evaluación Primaria (Consciencia)', text: 'Háblele al residente en voz alta: pregunte su nombre y si sabe dónde está (Evaluación de Escala de Glasgow básica). Si no responde, verifique pulso y respiración.' },
+            { title: 'Signos Vitales y Triaje', text: 'Utilice el kit de emergencia más cercano para tomar Presión Arterial y Saturación de Oxígeno. Mantenga al paciente abrigado mientras llega el equipo médico de soporte.' }
+        ],
+        'Descompensación Severa': [
+            { title: 'Posición de Seguridad', text: 'Coloque al residente en posición semisentada o recostada según su estado. Afloje prendas ajustadas.' },
+            { title: 'Control de Signos Vitales', text: 'Mida inmediatamente la presión arterial, frecuencia cardíaca y saturación. Anote los valores para comunicárselos al médico.' },
+            { title: 'Soporte Vital Básico', text: 'Si el paciente pierde el conocimiento y no respira, inicie maniobras de RCP. Si respira pero está inconsciente, posición lateral de seguridad.' }
+        ],
+        'Ahogo / Atragantamiento': [
+            { title: 'Identificar Obstrucción', text: 'Pregunte "¿Se está ahogando?". Si no puede hablar, toser o respirar, asuma obstrucción total.' },
+            { title: 'Maniobra de Heimlich', text: 'Párese detrás del residente, abrázelo por la cintura. Coloque el puño sobre el ombligo y presione hacia adentro y arriba fuertemente.' },
+            { title: 'Pérdida de Consciencia', text: 'Si pierde el conocimiento, recuéstelo en el suelo, inicie compresiones torácicas y llame a emergencias inmediatamente.' }
+        ],
+        'Fuga / Extravío': [
+            { title: 'Alerta Inmediata a Accesos', text: 'Notifique inmediatamente a conserjería y guardias de seguridad para bloquear salidas.' },
+            { title: 'Búsqueda Sectorizada', text: 'Inicie protocolo F-01: Revise áreas comunes, habitaciones y perímetro externo inmediato. Divida al personal en cuadrantes.' },
+            { title: 'Notificación Externa', text: 'Si no se encuentra en 15 minutos, notifique a familiares directos y autoridades correspondientes.' }
+        ]
+    };
+
     function showSosProtocol(title) {
         document.getElementById('sos-protocol-title').innerText = title;
+        
+        const stepsContainer = document.getElementById('sos-protocol-steps');
+        stepsContainer.innerHTML = '';
+        
+        const steps = sosProtocols[title] || sosProtocols['Caída de Residente'];
+        
+        steps.forEach((step, index) => {
+            stepsContainer.innerHTML += `
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-black flex-shrink-0 text-lg">${index + 1}</div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">${step.title}</h4>
+                        <p class="text-sm text-gray-600 mt-1">${step.text}</p>
+                    </div>
+                </div>
+            `;
+        });
+
         document.getElementById('sos-step-1').classList.add('hidden');
         document.getElementById('sos-step-2').classList.remove('hidden');
     }
