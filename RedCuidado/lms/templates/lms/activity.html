@@ -125,24 +125,24 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <button type="button" onclick="selectIncidentType('caida', this)"
                         class="incident-type-btn p-4 rounded-xl border-2 border-blue-500 bg-blue-50 text-left transition-all relative overflow-hidden">
-                        <div
-                            class="absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-bl-full opacity-50 -mr-8 -mt-8">
-                        </div>
+                        <span
+                            class="block absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-bl-full opacity-50 -mr-8 -mt-8">
+                        </span>
                         <i data-lucide="activity" class="w-6 h-6 text-blue-600 mb-2 relative z-10"></i>
-                        <h4 class="font-bold text-blue-900 mb-1 relative z-10">Caída</h4>
-                        <p class="text-xs text-blue-700 relative z-10">Desde propia altura, cama o silla.</p>
+                        <strong class="block font-bold text-blue-900 mb-1 relative z-10 text-base">Caída</strong>
+                        <span class="block text-xs text-blue-700 relative z-10">Desde propia altura, cama o silla.</span>
                     </button>
                     <button type="button" onclick="selectIncidentType('medicacion', this)"
                         class="incident-type-btn p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 bg-white text-left transition-all">
                         <i data-lucide="pill" class="w-6 h-6 text-gray-500 mb-2"></i>
-                        <h4 class="font-bold text-gray-700 mb-1">Error de Medicación</h4>
-                        <p class="text-xs text-gray-500">Dosis, paciente o vía incorrecta.</p>
+                        <strong class="block font-bold text-gray-700 mb-1 text-base">Error de Medicación</strong>
+                        <span class="block text-xs text-gray-500">Dosis, paciente o vía incorrecta.</span>
                     </button>
                     <button type="button" onclick="selectIncidentType('deterioro', this)"
                         class="incident-type-btn p-4 rounded-xl border-2 border-gray-200 hover:border-blue-300 bg-white text-left transition-all">
                         <i data-lucide="thermometer" class="w-6 h-6 text-gray-500 mb-2"></i>
-                        <h4 class="font-bold text-gray-700 mb-1">Deterioro Clínico</h4>
-                        <p class="text-xs text-gray-500">Cambio agudo en signos vitales.</p>
+                        <strong class="block font-bold text-gray-700 mb-1 text-base">Deterioro Clínico</strong>
+                        <span class="block text-xs text-gray-500">Cambio agudo en signos vitales.</span>
                     </button>
                 </div>
 
@@ -186,43 +186,43 @@
                     <div class="flex-1 grid grid-cols-2 gap-3 content-start">
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Cabeza / Cráneo" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
-                                Cabeza / Cráneo</div>
+                            <span class="block px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Cabeza / Cráneo</span>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Cara" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
-                                Cara</div>
+                            <span class="block px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Cara</span>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Cuello" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
-                                Cuello</div>
+                            <span class="block px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Cuello</span>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Tórax" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
-                                Tórax</div>
+                            <span class="block px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Tórax</span>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Brazo Derecho" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
-                                Brazo Derecho</div>
+                            <span class="block px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Brazo Derecho</span>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Brazo Izquierdo" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
-                                Brazo Izquierdo</div>
+                            <span class="block px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Brazo Izquierdo</span>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Cadera / Pelvis" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
-                                Cadera / Pelvis</div>
+                            <span class="block px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Cadera / Pelvis</span>
                         </label>
                         <label class="cursor-pointer">
                             <input type="checkbox" name="zonas" value="Piernas" onchange="toggleBodyPart(this.value, this.checked)" class="peer sr-only">
-                            <div class="px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
-                                Piernas</div>
+                            <span class="block px-3 py-2 text-sm rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 peer-checked:font-medium text-gray-600 bg-white text-left transition-all">
+                                Piernas</span>
                         </label>
                     </div>
                 </div>
@@ -466,24 +466,24 @@
                         <div class="grid grid-cols-3 gap-3">
                             <label class="cursor-pointer">
                                 <input type="radio" name="entry_type" value="observacion" class="peer sr-only" checked>
-                                <div
-                                    class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50 transition-all">
+                                <span
+                                    class="block text-center p-3 rounded-lg border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50 transition-all">
                                     <span class="block text-xs font-bold text-blue-700">Observación</span>
-                                </div>
+                                </span>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="entry_type" value="pendiente" class="peer sr-only">
-                                <div
-                                    class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 hover:bg-gray-50 transition-all">
+                                <span
+                                    class="block text-center p-3 rounded-lg border border-gray-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 hover:bg-gray-50 transition-all">
                                     <span class="block text-xs font-bold text-yellow-700">Pendiente</span>
-                                </div>
+                                </span>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="entry_type" value="evaluacion" class="peer sr-only">
-                                <div
-                                    class="text-center p-3 rounded-lg border border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50 transition-all">
+                                <span
+                                    class="block text-center p-3 rounded-lg border border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50 transition-all">
                                     <span class="block text-xs font-bold text-purple-700">Evaluación</span>
-                                </div>
+                                </span>
                             </label>
                         </div>
                     </div>
@@ -515,6 +515,7 @@
                         class="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-sm transition-colors text-sm flex items-center gap-2">
                         <i data-lucide="save" class="w-4 h-4"></i> Guardar
                     </button>
+                </div>
             </form>
         </div>
 </main>
