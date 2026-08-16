@@ -239,7 +239,25 @@ def learning_paths_view(request):
 @login_required
 def home_view(request):
     from django.db.models import Q
+    from django.utils import timezone
     user = request.user
+    
+    # Update Streak Logic
+    if hasattr(user, 'profile'):
+        profile = user.profile
+        today = timezone.now().date()
+        if profile.last_login_date:
+            delta = (today - profile.last_login_date).days
+            if delta == 1:
+                profile.current_streak += 1
+            elif delta > 1:
+                profile.current_streak = 1
+        else:
+            profile.current_streak = 1
+            
+        if profile.last_login_date != today:
+            profile.last_login_date = today
+            profile.save(update_fields=['current_streak', 'last_login_date'])
     
     # Admins and Profs see all courses
     if user.is_superuser or user.groups.filter(name__in=['Administrador', 'Profesor']).exists():

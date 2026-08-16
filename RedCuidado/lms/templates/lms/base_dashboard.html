@@ -63,10 +63,10 @@
 
     <div class="flex items-center gap-2 lg:gap-4">
         <!-- Control de Constancia (Rachas) -->
-        <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 border border-orange-100 rounded-full text-orange-600 shadow-sm" title="¡Racha actual! 5 días seguidos">
-            <i data-lucide="flame" class="w-4 h-4 fill-orange-500 text-orange-500"></i>
-            <span class="text-sm font-bold">5</span>
-        </div>
+        <button onclick="document.getElementById('streak-modal').classList.remove('hidden')" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 border border-orange-100 rounded-full text-orange-600 shadow-sm hover:bg-orange-100 transition-colors" title="Ver detalle de racha">
+            <i data-lucide="flame" class="w-4 h-4 fill-orange-500 text-orange-500 animate-pulse"></i>
+            <span class="text-sm font-bold">{{ request.user.profile.current_streak|default:"0" }}</span>
+        </button>
 
         <!-- Botón SOS Emergencia Contextual -->
         <button id="sos-trigger" class="flex items-center gap-1.5 px-3 lg:px-4 py-1.5 lg:py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg lg:rounded-xl shadow-md shadow-red-200 transition-colors font-bold text-sm lg:text-base animate-pulse">
@@ -426,6 +426,26 @@
         if (e.target === sosModal) hideSosModal();
     });
 
+</script>
+    
+    <!-- Modal Racha -->
+    <div id="streak-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all p-6 text-center">
+            <div class="w-20 h-20 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 relative">
+                <div class="absolute inset-0 bg-orange-200 rounded-full animate-ping opacity-25"></div>
+                <i data-lucide="flame" class="w-10 h-10 fill-orange-500 relative z-10"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">¡Racha de {{ request.user.profile.current_streak|default:"0" }} días!</h2>
+            <p class="text-sm text-gray-500 mb-6 px-2">
+                Te has conectado a RedCuidado en días consecutivos. La constancia es la clave para dominar los protocolos y convertirte en un Maestro del Cuidado. ¡Sigue así!
+            </p>
+            <button type="button" onclick="document.getElementById('streak-modal').classList.add('hidden')" class="w-full py-3 px-4 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 shadow-md shadow-orange-200 transition-colors">
+                ¡Entendido!
+            </button>
+        </div>
+    </div>
+
+<script>
     // Sidebar Toggle Logic
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebar-toggle');

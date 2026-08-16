@@ -21,6 +21,10 @@ class UserProfile(models.Model):
     employee_id = models.CharField(max_length=50, unique=True, blank=True, null=True, verbose_name="ID de Colaborador")
     work_area = models.ForeignKey(WorkArea, on_delete=models.SET_NULL, null=True, blank=True, related_name="employees", verbose_name="Área de Trabajo")
     headquarters = models.CharField(max_length=50, choices=HEADQUARTER_CHOICES, default='Hualpen', verbose_name="Sede")
+    
+    # Streak tracking
+    current_streak = models.PositiveIntegerField(default=0, verbose_name="Racha Actual (Días)")
+    last_login_date = models.DateField(null=True, blank=True, verbose_name="Última Conexión")
 
     def __str__(self):
         return f"{self.user.username} - {self.employee_id or 'Sin ID'}"
