@@ -171,7 +171,49 @@ def delete_bitacora_entry(request, entry_id):
 @login_required
 def learning_paths_view(request):
     """Renderiza la vista estática (mockup) de Rutas de Aprendizaje."""
-    return render(request, 'lms/paths.html', {'active_menu': 'paths'})
+    enrollments = Enrollment.objects.filter(user=request.user).select_related('course').order_by('id')[:3]
+    
+    path_nodes = []
+    completed_courses = 0
+    total_courses = enrollments.count()
+    
+    for enr in enrollments:
+        course = enr.course
+        total_content = Content.objects.filter(module__course=course).count()
+        if total_content > 0:
+            completed_content = ContentProgress.objects.filter(user=request.user, content__module__course=course, is_completed=True).count()
+            progress = int((completed_content / total_content) * 100)
+        else:
+            progress = 0
+            
+        if enr.is_completed or progress == 100:
+            status = 'completed'
+            completed_courses += 1
+            icon = 'shield-check'
+        elif progress > 0:
+            status = 'in_progress'
+            icon = 'brain'
+        else:
+            status = 'pending'
+            icon = 'play'
+            
+        path_nodes.append({
+            'course': course,
+            'progress': progress,
+            'status': status,
+            'icon': icon
+        })
+        
+    global_progress = int((completed_courses / total_courses) * 100) if total_courses > 0 else 0
+        
+    context = {
+        'active_menu': 'paths',
+        'path_nodes': path_nodes,
+        'global_progress': global_progress,
+        'completed_courses': completed_courses,
+        'total_courses': total_courses
+    }
+    return render(request, 'lms/paths.html', context)
 
 @login_required
 def home_view(request):
