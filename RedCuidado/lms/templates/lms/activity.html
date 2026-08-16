@@ -650,19 +650,66 @@
     }
 
     function validateIncidentForm(event) {
+        event.preventDefault(); // Stop default submission to do custom checks
+        
+        const type = document.getElementById('incident_category').value;
         const descArea = document.querySelector('textarea[name="incident_description"]');
-        if (!descArea.value.trim()) {
-            event.preventDefault();
-            alert('Campos sin completar: Por favor, ingrese la descripción de los hechos en el Paso 3 antes de enviar el reporte.');
-            switchIncidentStep(3);
-            setTimeout(() => {
-                descArea.focus();
-                descArea.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-                setTimeout(() => descArea.classList.remove('border-red-500', 'ring-2', 'ring-red-200'), 3000);
-            }, 100);
+        let errorMsg = "";
+        let errorStep = 0;
+        let errorElement = null;
+
+        // Validar Paso 2
+        if (type === 'caida') {
+            const zonas = document.querySelectorAll('input[name="zonas"]:checked');
+            if (zonas.length === 0) {
+                errorMsg = "Debes seleccionar al menos una zona corporal afectada en el mapa o lista.";
+                errorStep = 2;
+            }
+        } else if (type === 'medicacion') {
+            const farmaco = document.querySelector('input[name="farmaco_nombre"]').value.trim();
+            const admin = document.querySelector('input[name="admin_paciente"]:checked');
+            if (!farmaco || !admin) {
+                errorMsg = "Debes indicar el nombre del fármaco implicado y seleccionar si se alcanzó a administrar.";
+                errorStep = 2;
+                if (!farmaco) errorElement = document.querySelector('input[name="farmaco_nombre"]');
+            }
+        } else if (type === 'deterioro') {
+            const sintomas = document.querySelectorAll('input[name="sintomas"]:checked');
+            if (sintomas.length === 0) {
+                errorMsg = "Debes seleccionar al menos un síntoma de alarma de la lista.";
+                errorStep = 2;
+            }
+        }
+
+        // Validar Paso 3 (Si no hubo error en el 2)
+        if (!errorMsg) {
+            if (!descArea.value.trim()) {
+                errorMsg = "La descripción de los hechos clínicos es un campo obligatorio.";
+                errorStep = 3;
+                errorElement = descArea;
+            }
+        }
+
+        if (errorMsg) {
+            // Mostrar modal personalizado
+            document.getElementById('validation-modal-msg').innerText = errorMsg;
+            document.getElementById('validation-modal').classList.remove('hidden');
+            
+            // Redirigir al paso faltante
+            switchIncidentStep(errorStep);
+            
+            if (errorElement) {
+                setTimeout(() => {
+                    errorElement.focus();
+                    errorElement.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+                    setTimeout(() => errorElement.classList.remove('border-red-500', 'ring-2', 'ring-red-200'), 3000);
+                }, 300);
+            }
             return false;
         }
-        return true;
+
+        // Si pasa todas las validaciones
+        document.getElementById('content-incidente').submit();
     }
 
     function openEntryDetails(id, type, time, author, resident, description, incidentData) {
@@ -775,4 +822,22 @@
         }
     }
 </script>
+
+        <!-- Modal de Validación de Incidente -->
+        <div id="validation-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all p-6 text-center">
+                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-xl font-bold text-gray-800 mb-2">Campos incompletos</h2>
+                <p id="validation-modal-msg" class="text-sm text-gray-500 mb-6 px-2">
+                    Por favor, completa todos los campos obligatorios.
+                </p>
+                <button type="button" onclick="document.getElementById('validation-modal').classList.add('hidden')" class="w-full py-3 px-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 shadow-md shadow-red-200 transition-colors">
+                    Revisar Reporte
+                </button>
+            </div>
+        </div>
+
+</main>
 {% endblock %}
