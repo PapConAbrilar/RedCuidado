@@ -35,28 +35,12 @@ def _setup_guest_courses(user):
     # Ensure guest has UserProfile
     profile, _ = UserProfile.objects.get_or_create(user=user)
     
-    # Create or get Mock Courses
-    c1, _ = Course.objects.get_or_create(
-        title="Curso de Inducción RedCuidado",
-        defaults={
-            'description': "Curso de prueba para invitados. Presentación de los protocolos básicos.",
-            'code': 'DEMO-101',
-            'duration_days': 7
-        }
-    )
-    
-    c2, _ = Course.objects.get_or_create(
-        title="Prevención de Caídas",
-        defaults={
-            'description': "Protocolos y herramientas para evitar caídas en residentes.",
-            'code': 'DEMO-102',
-            'duration_days': 7
-        }
-    )
-    
-    # Enroll user
-    Enrollment.objects.get_or_create(user=user, course=c1)
-    Enrollment.objects.get_or_create(user=user, course=c2)
+    # Enroll user in default courses
+    default_codes = ['ELD 101', 'SAF 205', 'DEM 310']
+    for code in default_codes:
+        course = Course.objects.filter(code=code).first()
+        if course:
+            Enrollment.objects.get_or_create(user=user, course=course)
 
 def login_view(request):
     if request.user.is_authenticated:
