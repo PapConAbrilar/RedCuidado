@@ -106,9 +106,9 @@
                 <div class="bg-white rounded-xl shadow-lg border border-gray-200 h-[80vh] overflow-hidden flex flex-col">
                     {% if current_content.file %}
                     {% if "http" in current_content.file.url %}
-                        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ current_content.file.url|urlencode }}" class="w-full h-full border-0"></iframe>
+                        <iframe src="https://docs.google.com/gview?url={{ current_content.file.url|urlencode }}&embedded=true" class="w-full h-full border-0"></iframe>
                     {% else %}
-                        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ request.scheme }}://{{ request.get_host }}{{ current_content.file.url|urlencode }}" class="w-full h-full border-0"></iframe>
+                        <iframe src="https://docs.google.com/gview?url={{ request.scheme }}://{{ request.get_host }}{{ current_content.file.url|urlencode }}&embedded=true" class="w-full h-full border-0"></iframe>
                     {% endif %}
                     <div class="p-4 bg-gray-50 border-t flex justify-between items-center text-xs text-gray-500">
                         <span>Presentación: {{ current_content.file.name }}</span>
