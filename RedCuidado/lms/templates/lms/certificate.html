@@ -127,12 +127,11 @@
     <!-- Action Bar (Not Printed) -->
     <div class="no-print max-w-4xl mx-auto w-full bg-white rounded-xl shadow-md border border-gray-200 p-4 mb-8 flex justify-between items-center z-50">
         <div>
-            <!-- Header text removed per request -->
-        </div>
-        <div class="flex gap-4">
             <a href="{% url 'profile' %}" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors flex items-center gap-2">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver al Perfil
             </a>
+        </div>
+        <div>
             <button onclick="window.print()" class="px-6 py-2 bg-blue-600 border border-transparent rounded-lg text-white hover:bg-blue-700 font-medium transition-colors shadow flex items-center gap-2">
                 <i data-lucide="printer" class="w-4 h-4"></i> Imprimir en PDF
             </button>
