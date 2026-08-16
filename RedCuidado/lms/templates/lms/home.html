@@ -3,51 +3,25 @@
 
 {% block dashboard_content %}
 <main class="flex-1 p-6 min-w-0">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-4">
-            <h1 class="text-2xl">Portal de {{ request.user.groups.first.name|default:"Usuario" }}</h1>
-            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                Filtros
-            </button>
-            <div class="flex items-center gap-2 text-gray-600">
-                <span class="text-sm">Ordenar por</span>
-                <select class="px-3 py-1 border border-gray-300 rounded bg-white text-sm">
-                    <option>Nombre</option>
-                    <option>Fecha</option>
-                    <option>Progreso</option>
-                </select>
-                <button class="p-1 hover:bg-gray-100 rounded">
-                    <i data-lucide="arrow-up" class="w-4 h-4"></i>
-                </button>
+    <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4 flex-1">
+            <h1 class="text-2xl font-bold text-gray-800 whitespace-nowrap">Tus Cursos</h1>
+            <div class="relative w-full max-w-md ml-4">
+                <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="course-search-input" placeholder="Buscar curso por nombre..."
+                    class="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm" />
             </div>
         </div>
         {% if request.user|has_group:"Administrador" or request.user|has_group:"Profesor" %}
-        <a href="{% url 'course_create' %}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 flex items-center gap-2">
+        <a href="{% url 'course_create' %}" class="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 flex items-center gap-2 shadow-sm transition-colors">
             <i data-lucide="plus" class="w-4 h-4"></i> Crear Nuevo Curso
         </a>
         {% endif %}
     </div>
 
-    <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-        <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center gap-2">
-                <h2 class="text-xl">Actividad Reciente de Cursos</h2>
-                <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
-            </div>
-            <div class="flex items-center gap-2">
-                <button class="p-1 hover:bg-gray-100 rounded opacity-50 cursor-not-allowed">
-                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                </button>
-                <span class="text-sm text-gray-600">1/2</span>
-                <button class="p-1 hover:bg-gray-100 rounded">
-                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courses-grid">
             {% for item in courses %}
-            <div class="bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full" onclick="window.location.href=`{% url 'course_detail' item.course.id %}`">
+            <div class="course-card bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full" data-title="{{ item.course.title|lower }}" onclick="window.location.href=`{% url 'course_detail' item.course.id %}`">
                 <div class="relative h-48">
                     {% if item.course.image_url %}
                     <img
@@ -112,7 +86,6 @@
             </div>
             {% endfor %}
         </div>
-    </div>
 </main>
 
 {% if request.user|has_group:"Administrador" and active_menu != 'reports' %}
@@ -152,6 +125,24 @@
 {% endif %}
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById('course-search-input');
+    const courseCards = document.querySelectorAll('.course-card');
+
+    if(searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            courseCards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                if(title.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+});
 function togglePin(courseId, btn) {
     fetch(`/course/${courseId}/toggle-pin/`, {
         method: 'POST',
