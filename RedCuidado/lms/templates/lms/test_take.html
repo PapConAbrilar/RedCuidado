@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <form method="post" class="space-y-8">
+    <form id="test-form" method="post" class="space-y-8" onsubmit="return handleFormSubmit(event)">
         {% csrf_token %}
         
         {% for question in questions %}
@@ -45,11 +45,50 @@
 
         {% if questions %}
         <div class="flex justify-end pt-4">
-            <button type="submit" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 shadow-md transition-colors flex items-center gap-2" onclick="return confirm('¿Estás seguro de enviar tus respuestas para calificación final?')">
+            <button type="submit" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 shadow-md transition-colors flex items-center gap-2">
                 <i data-lucide="send" class="w-5 h-5"></i> Enviar Evaluación
             </button>
         </div>
         {% endif %}
     </form>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirm-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all p-6 text-center">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="help-circle" class="w-8 h-8"></i>
+            </div>
+            <h2 class="text-xl font-bold text-gray-800 mb-2">¿Estás seguro?</h2>
+            <p class="text-sm text-gray-500 mb-6">
+                Una vez enviadas las respuestas no podrás modificarlas. Asegúrate de haber revisado bien antes de enviar para calificación final.
+            </p>
+            <div class="flex gap-3 justify-center">
+                <button type="button" onclick="document.getElementById('confirm-modal').classList.add('hidden')" class="flex-1 py-3 px-4 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
+                    Revisar de nuevo
+                </button>
+                <button type="button" onclick="confirmSubmit()" class="flex-1 py-3 px-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-md transition-colors">
+                    Sí, Enviar
+                </button>
+            </div>
+        </div>
+    </div>
 </main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let isConfirmed = false;
+    
+    function handleFormSubmit(event) {
+        if (!isConfirmed) {
+            event.preventDefault(); // Detiene el envío
+            document.getElementById('confirm-modal').classList.remove('hidden'); // Muestra el modal
+        }
+    }
+    
+    function confirmSubmit() {
+        isConfirmed = true;
+        document.getElementById('test-form').submit(); // Envía el formulario saltándose el evento onsubmit
+    }
+</script>
 {% endblock %}
