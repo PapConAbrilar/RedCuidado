@@ -170,7 +170,7 @@ def learning_paths_view(request):
         else:
             progress = 0
             
-        if enr.is_completed or progress == 100:
+        if enr.is_completed:
             status = 'completed'
             completed_courses += 1
             icon = 'shield-check'
