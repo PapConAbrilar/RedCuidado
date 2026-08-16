@@ -621,6 +621,10 @@ def learning_view(request, course_id, content_id=None):
     prev_content = all_content[current_index - 1] if current_index > 0 else None
     next_content = all_content[current_index + 1] if current_index < len(all_content) - 1 else None
     
+    total_content = len(all_content)
+    completed_count = len(completed_ids)
+    progress_percentage = int((completed_count / total_content) * 100) if total_content > 0 else 0
+    
     context = {
         'course': course,
         'modules': modules,
@@ -628,6 +632,7 @@ def learning_view(request, course_id, content_id=None):
         'prev_content': prev_content,
         'next_content': next_content,
         'completed_ids': completed_ids,
+        'progress_percentage': progress_percentage,
         'active_menu': 'courses',
     }
     return render(request, 'lms/learning.html', context)
