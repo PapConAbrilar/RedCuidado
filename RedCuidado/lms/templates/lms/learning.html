@@ -10,7 +10,7 @@
                 <i data-lucide="chevron-left" class="w-4 h-4"></i>
                 Volver al Curso
             </a>
-            <h2 class="font-bold text-gray-900 leading-tight text-xl">{{ course.title }}</h2>
+            <h1 class="font-bold text-gray-900 leading-tight text-xl">{{ course.title }}</h1>
             <div class="mt-4">
                 <div class="flex justify-between text-xs text-gray-500 mb-1">
                     <span>Tu progreso</span>
@@ -119,7 +119,7 @@
                 </div>
                 {% elif current_content.content_type == 'text' %}
                 <div class="bg-white p-10 rounded-xl shadow-sm border border-gray-200 prose max-w-none">
-                    <h1 class="text-3xl font-bold mb-6">{{ current_content.title }}</h1>
+                    <h2 class="text-3xl font-bold mb-6">{{ current_content.title }}</h2>
                     <div class="text-gray-700 leading-relaxed space-y-4 text-lg">
                         {{ current_content.text_content|linebreaks }}
                     </div>
