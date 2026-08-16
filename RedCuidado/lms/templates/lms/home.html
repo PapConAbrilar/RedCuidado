@@ -71,8 +71,8 @@
                                 <span class="font-bold text-green-600">¡Curso Completado!</span>
                                 <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
                             {% elif item.progress == 100 %}
-                                <span class="font-bold text-orange-500">Examen Pendiente</span>
-                                <span class="font-medium text-orange-500">{{ item.progress }}%</span>
+                                <span class="font-bold text-blue-600">Examen Pendiente</span>
+                                <span class="font-medium text-blue-600">{{ item.progress }}%</span>
                             {% else %}
                                 <span class="text-gray-600">Progreso</span>
                                 <span class="font-medium text-blue-600">{{ item.progress }}%</span>
@@ -82,7 +82,7 @@
                             {% if item.is_completed %}
                                 <div class="bg-green-500 h-2 rounded-full transition-all duration-500" style="width: 100%;"></div>
                             {% elif item.progress == 100 %}
-                                <div class="bg-orange-400 h-2 rounded-full transition-all duration-500" style="width: 100%;"></div>
+                                <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 100%;"></div>
                             {% else %}
                                 <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: {{ item.progress }}%;"></div>
                             {% endif %}
