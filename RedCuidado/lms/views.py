@@ -239,8 +239,8 @@ def home_view(request):
             'is_pinned': is_pinned
         })
 
-    # Sort by is_pinned (True first)
-    course_list.sort(key=lambda x: x['is_pinned'], reverse=True)
+    # Sort by ID to match learning path order
+    course_list.sort(key=lambda x: x['course'].id)
 
     # Estadísticas para el Sidebar de Administrador
     admin_stats = None
