@@ -93,7 +93,7 @@
     </div>
 
     <!-- Contenido Incidente (Mockup de 4 pasos) -->
-    <form id="content-incidente" method="POST" action="{% url 'activity_board' %}"
+    <form id="content-incidente" method="POST" action="{% url 'activity_board' %}" onsubmit="return validateIncidentForm(event)"
         class="hidden bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
         {% csrf_token %}
         <input type="hidden" name="form_type" value="incidente">
@@ -647,6 +647,22 @@
         document.getElementById('step-content-' + stepNum).classList.remove('hidden');
         let currentTab = document.getElementById('step-tab-' + stepNum);
         currentTab.className = 'flex-1 py-3 text-center text-xs font-medium text-blue-700 border-b-2 border-blue-600 bg-blue-50 transition-colors';
+    }
+
+    function validateIncidentForm(event) {
+        const descArea = document.querySelector('textarea[name="incident_description"]');
+        if (!descArea.value.trim()) {
+            event.preventDefault();
+            alert('Campos sin completar: Por favor, ingrese la descripción de los hechos en el Paso 3 antes de enviar el reporte.');
+            switchIncidentStep(3);
+            setTimeout(() => {
+                descArea.focus();
+                descArea.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+                setTimeout(() => descArea.classList.remove('border-red-500', 'ring-2', 'ring-red-200'), 3000);
+            }, 100);
+            return false;
+        }
+        return true;
     }
 
     function openEntryDetails(id, type, time, author, resident, description, incidentData) {
