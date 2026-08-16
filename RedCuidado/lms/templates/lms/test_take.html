@@ -12,7 +12,7 @@
             <i data-lucide="info" class="w-5 h-5"></i>
         </div>
         <div>
-            <h3 class="font-semibold text-blue-900">Instrucciones</h3>
+            <h2 class="font-semibold text-blue-900">Instrucciones</h2>
             <p class="text-sm text-blue-800 mt-1">
                 Lee cuidadosamente cada pregunta y selecciona la alternativa que consideres correcta. Para aprobar, debes obtener un puntaje igual o superior al <strong>{{ test.passing_score }}%</strong>.
                 Si no apruebas, tendrás que volver a revisar el contenido del curso.
@@ -26,7 +26,7 @@
         {% for question in questions %}
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                <h3 class="font-medium text-gray-800 text-lg">{{ forloop.counter }}. {{ question.text }}</h3>
+                <h2 class="font-medium text-gray-800 text-lg">{{ forloop.counter }}. {{ question.text }}</h2>
             </div>
             <div class="p-6 space-y-3">
                 {% for answer in question.answers.all %}
