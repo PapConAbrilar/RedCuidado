@@ -139,8 +139,30 @@ def activity_board_view(request):
                 )
         return redirect('activity_board')
 
-    entries = BitacoraEntry.objects.all()[:20]  # Últimas 20 entradas
-    return render(request, 'lms/activity.html', {'active_menu': 'activity', 'entries': entries})
+    from django.utils.dateparse import parse_date
+    from django.utils import timezone
+
+    date_str = request.GET.get('date')
+    selected_date = None
+    
+    if date_str:
+        selected_date = parse_date(date_str)
+        
+    if selected_date:
+        # SQLite safe date filtering
+        entries = BitacoraEntry.objects.filter(
+            created_at__year=selected_date.year,
+            created_at__month=selected_date.month,
+            created_at__day=selected_date.day
+        ).order_by('-created_at')
+    else:
+        entries = BitacoraEntry.objects.all().order_by('-created_at')[:20]  # Últimas 20 entradas
+
+    return render(request, 'lms/activity.html', {
+        'active_menu': 'activity', 
+        'entries': entries,
+        'selected_date': date_str or timezone.now().strftime('%Y-%m-%d')
+    })
 
 @login_required
 def delete_bitacora_entry(request, entry_id):
