@@ -249,7 +249,8 @@ def home_view(request):
             'course': course,
             'progress': progress,
             'modules_count': modules_count,
-            'is_pinned': is_pinned
+            'is_pinned': is_pinned,
+            'is_completed': enr.is_completed if enr else False
         })
 
     # Sort by ID to match learning path order
