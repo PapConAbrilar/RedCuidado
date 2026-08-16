@@ -7,9 +7,9 @@
     
     <!-- Logo ONG -->
     <div class="p-6 border-b border-[#003A8C] mb-2">
-        <div class="bg-white p-2 rounded-xl flex items-center justify-center shadow-lg border-2 border-white/20">
-            <img src="{% static 'lms/img/logo.png' %}" alt="ONG Logo" class="max-h-12 object-contain">
-        </div>
+        <a href="{% url 'home' %}" class="bg-white p-2 rounded-xl flex items-center justify-center shadow-lg border-2 border-white/20 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white">
+            <img src="{% static 'lms/img/logo.png' %}" alt="Logo RedCuidado - Ir al inicio" class="max-h-12 object-contain">
+        </a>
     </div>
 
     <div class="flex-1 overflow-y-auto">
