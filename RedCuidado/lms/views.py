@@ -148,10 +148,10 @@ def activity_board_view(request):
         selected_date = parse_date(date_str)
     else:
         # Por defecto, mostrar solo las del día actual
-        selected_date = timezone.now().date()
+        selected_date = timezone.localdate()
         
     if not selected_date:
-        selected_date = timezone.now().date()
+        selected_date = timezone.localdate()
         
     # SQLite safe date filtering
     entries = BitacoraEntry.objects.filter(
