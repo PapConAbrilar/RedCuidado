@@ -57,7 +57,7 @@
                     
                     {% if request.user|has_group:"Administrador" or request.user|has_group:"Profesor" %}
                     <th class="px-6 py-4 font-medium">Cursos Asignados</th>
-                    <th class="px-6 py-4 font-medium text-right">Acciones</th>
+
                     {% endif %}
                 </tr>
             </thead>
@@ -102,9 +102,7 @@
                         <span class="text-gray-500 italic">Sin cursos</span>
                         {% endif %}
                     </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Ver Detalles</button>
-                    </td>
+
                     {% endif %}
                 </tr>
                 {% empty %}
